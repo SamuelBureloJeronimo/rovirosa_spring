@@ -2,7 +2,9 @@ package com.rovirosa.rovirosa_spring.controllers;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import com.google.zxing.common.HybridBinarizer;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,10 +66,10 @@ public class OcrController {
             System.out.println(cleanText);
 
             // Expresiones regulares
-            Pattern curpPattern = Pattern.compile("\\b[A-Z0-9]{18}\\b");
-            Pattern fechaPattern = Pattern.compile("\\d{2}/\\d{2}/\\d{4}");
+            Pattern curpPattern = Pattern.compile("\\b([A-Z]{4}\\d{6}[HM][A-Z]{5}[A-Z0-9]{2})\\b");
+            Pattern fechaPattern = Pattern.compile("(0[1-9]|[12][0-9]|3[01])[/-](0[1-9]|1[0-2])[/-](19|20)\\d{2}");
 
-            Matcher curpMatcher = curpPattern.matcher(cleanText.substring(220));
+            Matcher curpMatcher = curpPattern.matcher(cleanText);
             Matcher fechaMatcher = fechaPattern.matcher(cleanText);
 
             String curp = curpMatcher.find() ? curpMatcher.group() : "";
@@ -78,21 +81,40 @@ public class OcrController {
             if (sexoMatcher.find())
                 sexo = sexoMatcher.group(1).toUpperCase();
 
-            // Buscar la sección del nombre
-            String apellidoP = "";
-            String apellidoM = "";
-            String nombre = "";
+            String apellidoP = "", apellidoM = "", nombre = "";
 
-            String[] lineas = text.split("\n");
-            for (int i = 0; i < lineas.length; i++) {
-                if (lineas[i].toUpperCase().contains("NOMBRE")) {
-                    if (i + 1 < lineas.length)
-                        apellidoP = lineas[i + 1].trim();
-                    if (i + 2 < lineas.length)
-                        apellidoM = lineas[i + 2].trim();
-                    if (i + 3 < lineas.length)
-                        nombre = lineas[i + 3].trim();
-                    break;
+            // Buscar la línea de "NOMBRE"
+            Pattern nombreLinePattern = Pattern.compile("NOMBRE\\s+([A-ZÁÉÍÓÚÑ ]+?)(?=DOMICILIO|CLAVE|CURP|FECHA|SECCION|VIGENCIA|$)");
+            Matcher nombreLineMatcher = nombreLinePattern.matcher(cleanText);
+            if (nombreLineMatcher.find()) {
+                String fullName = nombreLineMatcher.group(1).trim();
+                String[] parts = fullName.split("\\s+");
+
+                // Lista de partículas para apellidos compuestos
+                Set<String> particles = Set.of("DE", "DEL", "LA", "LOS", "LAS", "SAN", "SANTA");
+
+                List<String> tokens = new ArrayList<>();
+                for (int i = 0; i < parts.length; i++) {
+                    String token = parts[i];
+                    // Si es partícula, une con el anterior
+                    if (particles.contains(token) && i + 1 < parts.length) {
+                        tokens.set(tokens.size() - 1, tokens.get(tokens.size() - 1) + " " + token + " " + parts[i + 1]);
+                        i++; // saltar el siguiente
+                    } else {
+                        tokens.add(token);
+                    }
+                }
+
+                // Heurística según número de bloques
+                if (tokens.size() >= 3) {
+                    apellidoP = tokens.get(0);
+                    apellidoM = tokens.get(1);
+                    nombre = String.join(" ", tokens.subList(2, tokens.size()));
+                } else if (tokens.size() == 2) {
+                    apellidoP = tokens.get(0);
+                    nombre = tokens.get(1);
+                } else if (tokens.size() == 1) {
+                    apellidoP = tokens.get(0);
                 }
             }
 
@@ -104,6 +126,11 @@ public class OcrController {
             result.put("apellidoM", apellidoM);
             result.put("nombre", nombre);
 
+            System.out.println(result);
+            if (curp.isEmpty() || nombre.isEmpty() || apellidoM.isEmpty() || apellidoP.isEmpty() ) {
+                return (ResponseEntity<?>) ResponseEntity.badRequest();
+            }
+
             return ResponseEntity.ok(result);
 
         } catch (Exception e) {
@@ -112,56 +139,65 @@ public class OcrController {
     }
 
     @PostMapping("/ine-reverso")
-    public ResponseEntity<?> processINEReverso(@RequestParam("ine") MultipartFile file)
-            throws IOException, InterruptedException {
-        // Guardar archivo temporal
-        File tempFile = File.createTempFile("ine_", ".jpeg");
-        file.transferTo(tempFile);
-
-        // Archivo de salida temporal
-        File outputFile = File.createTempFile("ocr_output_", ".txt");
-
-        // Ejecutar tesseract
-        String[] cmd = {
-                "tesseract",
-                tempFile.getAbsolutePath(),
-                outputFile.getAbsolutePath().replaceAll("\\.txt$", ""),
-                "-l", "spa" // mejor para MRZ
-        };
-        ProcessBuilder pb = new ProcessBuilder(cmd);
-        pb.redirectErrorStream(true);
-        Process process = pb.start();
-        process.waitFor();
-
-        // Leer OCR sin quitar saltos de línea
-        String text = Files.readString(outputFile.toPath()).toUpperCase().trim();
-        System.out.println("OCR CRUDO: " + text);
-
-        // === Lectura QR ===
-        BufferedImage bufferedImage = ImageIO.read(tempFile);
-        LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
-        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
-        String qrText;
+    public ResponseEntity<?> processINEReverso(@RequestParam("ine") MultipartFile file) {
         try {
-            Result result = new MultiFormatReader().decode(bitmap);
-            qrText = result.getText();
+            // Guardar archivo temporal
+            File tempFile = File.createTempFile("ine_", ".jpeg");
+            file.transferTo(tempFile);
+
+            // Archivo de salida temporal
+            File outputFile = File.createTempFile("ocr_output_", ".txt");
+
+            // Ejecutar tesseract
+            String[] cmd = {
+                    "tesseract",
+                    tempFile.getAbsolutePath(),
+                    outputFile.getAbsolutePath().replaceAll("\\.txt$", ""),
+                    "-l", "spa" // mejor para MRZ
+            };
+            ProcessBuilder pb = new ProcessBuilder(cmd);
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            process.waitFor();
+
+            // Leer OCR sin quitar saltos de línea
+            String text = Files.readString(outputFile.toPath()).toUpperCase().trim();
+            System.out.println("OCR CRUDO: " + text);
+
+            // === Lectura QR ===
+            BufferedImage bufferedImage = ImageIO.read(tempFile);
+            LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+            String qrText = "";
+            try {
+                Result result = new MultiFormatReader().decode(bitmap);
+                qrText = result.getText();
+            } catch (Exception e) {
+                qrText = "";
+            }
+
+            // Parseo
+            Map<String, String> parsed = parseINE(text);
+
+            if (parsed.isEmpty() || qrText.isEmpty())
+                return (ResponseEntity<?>) ResponseEntity.badRequest();
+
+            // Respuesta
+            Map<String, Object> response = new HashMap<>();
+            response.put("qr_text", qrText);
+            response.putAll(parsed);
+
+            System.out.println(response);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            qrText = "";
+            return (ResponseEntity<?>) ResponseEntity.badRequest();
+
         }
-
-        // Parseo
-        Map<String, String> parsed = parseINE(text);
-
-        // Respuesta
-        Map<String, Object> response = new HashMap<>();
-        response.put("qr_text", qrText);
-        response.putAll(parsed);
-
-        return ResponseEntity.ok(response);
     }
 
-    public Map<String, String> parseINE(String ocrText) {
+    private Map<String, String> parseINE(String ocrText) {
         Map<String, String> data = new HashMap<>();
 
         // Dividir por líneas (no eliminar \n en el cleanText)
