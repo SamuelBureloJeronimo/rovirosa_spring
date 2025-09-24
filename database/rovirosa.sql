@@ -1,0 +1,658 @@
+-- MySQL dump 10.13  Distrib 8.0.43, for Linux (x86_64)
+--
+-- Host: localhost    Database: distribuidora
+-- ------------------------------------------------------
+-- Server version	8.0.43-0ubuntu0.22.04.2
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `categorias`
+--
+
+DROP TABLE IF EXISTS `categorias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categorias` (
+  `id` int NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categorias`
+--
+
+LOCK TABLES `categorias` WRITE;
+/*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `chat_venta`
+--
+
+DROP TABLE IF EXISTS `chat_venta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chat_venta` (
+  `id` int NOT NULL,
+  `venta_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `mensaje` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `enviado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `archivo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK__ventas` (`venta_id`),
+  KEY `FK_chat_venta_usuarios` (`user_id`),
+  CONSTRAINT `FK__ventas` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_chat_venta_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chat_venta`
+--
+
+LOCK TABLES `chat_venta` WRITE;
+/*!40000 ALTER TABLE `chat_venta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chat_venta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clientes`
+--
+
+DROP TABLE IF EXISTS `clientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clientes` (
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `ine_front` varchar(50) NOT NULL,
+  `ine_back` varchar(50) NOT NULL,
+  `dir_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_clientes_direcciones` (`dir_id`),
+  KEY `FK_clientes_usuarios` (`user_id`),
+  CONSTRAINT `FK_clientes_direcciones` FOREIGN KEY (`dir_id`) REFERENCES `direcciones` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FK_clientes_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clientes`
+--
+
+LOCK TABLES `clientes` WRITE;
+/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `descuento_categ`
+--
+
+DROP TABLE IF EXISTS `descuento_categ`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `descuento_categ` (
+  `id` int NOT NULL,
+  `categ_id` int NOT NULL,
+  `config_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_descuento_categ_categorias` (`categ_id`),
+  KEY `FK_descuento_categ_descuentos_config` (`config_id`),
+  CONSTRAINT `FK_descuento_categ_categorias` FOREIGN KEY (`categ_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_descuento_categ_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `descuento_categ`
+--
+
+LOCK TABLES `descuento_categ` WRITE;
+/*!40000 ALTER TABLE `descuento_categ` DISABLE KEYS */;
+/*!40000 ALTER TABLE `descuento_categ` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `descuento_marca`
+--
+
+DROP TABLE IF EXISTS `descuento_marca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `descuento_marca` (
+  `id` int NOT NULL,
+  `marca_id` int DEFAULT NULL,
+  `config_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_descuento_marca_descuentos_config` (`config_id`),
+  KEY `FK_descuento_marca_descuentos_config_2` (`marca_id`),
+  CONSTRAINT `FK_descuento_marca_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_descuento_marca_descuentos_config_2` FOREIGN KEY (`marca_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `descuento_marca`
+--
+
+LOCK TABLES `descuento_marca` WRITE;
+/*!40000 ALTER TABLE `descuento_marca` DISABLE KEYS */;
+/*!40000 ALTER TABLE `descuento_marca` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `descuentos_config`
+--
+
+DROP TABLE IF EXISTS `descuentos_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `descuentos_config` (
+  `id` int NOT NULL,
+  `tipo` enum('porcentaje','fijo') NOT NULL COMMENT '1 = Porcentaje, 2 = Monto Fijo',
+  `valor` double NOT NULL,
+  `objetivo` enum('producto','categoria','marca') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '1 = Producto, 2 = Categoria',
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `banner` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Si no sube un banner no se muestra en la pantalla de inicio',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `descuentos_config`
+--
+
+LOCK TABLES `descuentos_config` WRITE;
+/*!40000 ALTER TABLE `descuentos_config` DISABLE KEYS */;
+/*!40000 ALTER TABLE `descuentos_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `descuentos_producto`
+--
+
+DROP TABLE IF EXISTS `descuentos_producto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `descuentos_producto` (
+  `id` int NOT NULL,
+  `producto_id` int NOT NULL,
+  `config_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_descuentos_producto_descuentos_config` (`config_id`) USING BTREE,
+  KEY `FK_descuentos_producto_productos` (`producto_id`),
+  CONSTRAINT `FK_descuentos_producto_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_descuentos_producto_productos` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `descuentos_producto`
+--
+
+LOCK TABLES `descuentos_producto` WRITE;
+/*!40000 ALTER TABLE `descuentos_producto` DISABLE KEYS */;
+/*!40000 ALTER TABLE `descuentos_producto` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalles_envio`
+--
+
+DROP TABLE IF EXISTS `detalles_envio`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalles_envio` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `venta_id` int NOT NULL,
+  `estado` int NOT NULL DEFAULT '1' COMMENT '1 = Pendiente, 2 = En preparación, 3 = En ruta, 4 = Entregado, 5 = Cancelado',
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `venta_id` (`venta_id`),
+  CONSTRAINT `detalles_envio_ibfk_1` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalles_envio`
+--
+
+LOCK TABLES `detalles_envio` WRITE;
+/*!40000 ALTER TABLE `detalles_envio` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalles_envio` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalles_venta`
+--
+
+DROP TABLE IF EXISTS `detalles_venta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalles_venta` (
+  `id` int NOT NULL,
+  `venta_id` int NOT NULL,
+  `producto_id` int NOT NULL,
+  `cantidad_inicial` int NOT NULL,
+  `cantidad_final` int DEFAULT NULL,
+  `precio_unit` decimal(10,2) NOT NULL,
+  `desc_unit` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_detalles_venta_ventas` (`venta_id`),
+  KEY `FK_detalles_venta_productos` (`producto_id`),
+  CONSTRAINT `FK_detalles_venta_productos` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_detalles_venta_ventas` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalles_venta`
+--
+
+LOCK TABLES `detalles_venta` WRITE;
+/*!40000 ALTER TABLE `detalles_venta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalles_venta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `direcciones`
+--
+
+DROP TABLE IF EXISTS `direcciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `direcciones` (
+  `id` int NOT NULL,
+  `latitud` decimal(10,8) NOT NULL DEFAULT '0.00000000',
+  `longitud` decimal(11,8) NOT NULL DEFAULT '0.00000000',
+  `referencia` varchar(255) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `direcciones`
+--
+
+LOCK TABLES `direcciones` WRITE;
+/*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `empresa_config`
+--
+
+DROP TABLE IF EXISTS `empresa_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `empresa_config` (
+  `id` int NOT NULL,
+  `max_prod` int NOT NULL,
+  `email_app` varchar(150) DEFAULT NULL,
+  `codigo_app` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'lrhm upio jpnh tvpv',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `empresa_config`
+--
+
+LOCK TABLES `empresa_config` WRITE;
+/*!40000 ALTER TABLE `empresa_config` DISABLE KEYS */;
+/*!40000 ALTER TABLE `empresa_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `empresa_info`
+--
+
+DROP TABLE IF EXISTS `empresa_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `empresa_info` (
+  `id` int NOT NULL,
+  `rfc` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `descrip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `rfc` (`rfc`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `empresa_info`
+--
+
+LOCK TABLES `empresa_info` WRITE;
+/*!40000 ALTER TABLE `empresa_info` DISABLE KEYS */;
+/*!40000 ALTER TABLE `empresa_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `marcas`
+--
+
+DROP TABLE IF EXISTS `marcas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `marcas` (
+  `id` int NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `logo` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `marcas`
+--
+
+LOCK TABLES `marcas` WRITE;
+/*!40000 ALTER TABLE `marcas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `marcas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notificaciones`
+--
+
+DROP TABLE IF EXISTS `notificaciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notificaciones` (
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `titulo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `descrip` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_notificaciones_usuarios` (`user_id`),
+  CONSTRAINT `FK_notificaciones_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notificaciones`
+--
+
+LOCK TABLES `notificaciones` WRITE;
+/*!40000 ALTER TABLE `notificaciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notificaciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pagos`
+--
+
+DROP TABLE IF EXISTS `pagos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pagos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `metodo` enum('efectivo','transferencia','terminal','link_mp') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `monto` decimal(10,2) NOT NULL,
+  `paga_con` decimal(10,2) DEFAULT NULL,
+  `fecha` timestamp NULL DEFAULT NULL,
+  `compr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `estado` enum('pendiente','pagado','rechazado') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'pendiente',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pagos`
+--
+
+LOCK TABLES `pagos` WRITE;
+/*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `personas`
+--
+
+DROP TABLE IF EXISTS `personas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `curp` varchar(18) NOT NULL,
+  `tel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `app` varchar(50) NOT NULL,
+  `apm` varchar(50) NOT NULL,
+  `fech_nac` date NOT NULL,
+  `sexo` int NOT NULL COMMENT '1 = Masculino, 2 = Femenino',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `curp` (`curp`),
+  UNIQUE KEY `tel` (`tel`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personas`
+--
+
+LOCK TABLES `personas` WRITE;
+/*!40000 ALTER TABLE `personas` DISABLE KEYS */;
+INSERT INTO `personas` VALUES (7,'BUJS030806HTCRRMA9','9361165168','Samuel','Burelos','Jeronimo','2003-08-06',1),(9,'BUJS030806HTCRRMA8','9361165167','Samuel','Burelos','Jeronimo','2003-08-06',1);
+/*!40000 ALTER TABLE `personas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `productos`
+--
+
+DROP TABLE IF EXISTS `productos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `productos` (
+  `id` int NOT NULL,
+  `categ_id` int NOT NULL,
+  `marca_id` int NOT NULL,
+  `imagen` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `stock` int NOT NULL,
+  `vendidos` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `FK_productos_categorias` (`categ_id`),
+  KEY `FK_productos_marcas` (`marca_id`),
+  CONSTRAINT `FK_productos_categorias` FOREIGN KEY (`categ_id`) REFERENCES `categorias` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_productos_marcas` FOREIGN KEY (`marca_id`) REFERENCES `marcas` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `productos`
+--
+
+LOCK TABLES `productos` WRITE;
+/*!40000 ALTER TABLE `productos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `productos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `puntos_distribucion`
+--
+
+DROP TABLE IF EXISTS `puntos_distribucion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `puntos_distribucion` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `direc_id` int NOT NULL,
+  `info_id` int NOT NULL,
+  `config_id` int NOT NULL,
+  `estado` enum('habilitado','deshabilitado') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'habilitado',
+  `descrip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_puntos_distribucion_direcciones` (`direc_id`),
+  KEY `FK_puntos_distribucion_empresa_info` (`info_id`) USING BTREE,
+  KEY `FK_puntos_distribucion_empresa_config` (`config_id`),
+  CONSTRAINT `FK_puntos_distribucion_direcciones` FOREIGN KEY (`direc_id`) REFERENCES `direcciones` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_puntos_distribucion_empresa_config` FOREIGN KEY (`config_id`) REFERENCES `empresa_config` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `FK_puntos_distribucion_empresa_info` FOREIGN KEY (`info_id`) REFERENCES `empresa_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `puntos_distribucion`
+--
+
+LOCK TABLES `puntos_distribucion` WRITE;
+/*!40000 ALTER TABLE `puntos_distribucion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puntos_distribucion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `repartidores`
+--
+
+DROP TABLE IF EXISTS `repartidores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `repartidores` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `pd_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK__usuarios_repartidor` (`user_id`),
+  KEY `FK_repartidores_puntos_distribucion` (`pd_id`),
+  CONSTRAINT `FK__usuarios_repartidor` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_repartidores_puntos_distribucion` FOREIGN KEY (`pd_id`) REFERENCES `puntos_distribucion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `repartidores`
+--
+
+LOCK TABLES `repartidores` WRITE;
+/*!40000 ALTER TABLE `repartidores` DISABLE KEYS */;
+/*!40000 ALTER TABLE `repartidores` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tracking_repartidores`
+--
+
+DROP TABLE IF EXISTS `tracking_repartidores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tracking_repartidores` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `venta_id` int NOT NULL,
+  `latitud` double(10,8) DEFAULT NULL,
+  `longitud` double(11,8) DEFAULT NULL,
+  `fecha` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `venta_id` (`venta_id`),
+  CONSTRAINT `tracking_repartidores_ibfk_2` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tracking_repartidores`
+--
+
+LOCK TABLES `tracking_repartidores` WRITE;
+/*!40000 ALTER TABLE `tracking_repartidores` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tracking_repartidores` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `persona_id` int NOT NULL,
+  `correo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `estado` enum('activo','suspendido') NOT NULL DEFAULT 'activo' COMMENT '0 = Activa, 1 = Suspendida',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `rol` enum('ADMIN','CLIENTE','REPARTIDOR') NOT NULL DEFAULT 'CLIENTE',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `correo` (`correo`),
+  KEY `FK_usuarios_personas` (`persona_id`),
+  CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (2,7,'samuelbj0608@gmail.com','141592','suspendido','2025-09-24 17:20:12','CLIENTE');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ventas`
+--
+
+DROP TABLE IF EXISTS `ventas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ventas` (
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `direc_id` int NOT NULL,
+  `pago_id` int NOT NULL,
+  `fecha_inic` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_fin` timestamp NULL DEFAULT NULL,
+  `calif` int DEFAULT NULL COMMENT 'Calificación del usuario por la venta',
+  PRIMARY KEY (`id`),
+  KEY `FK_ventas_direcciones` (`direc_id`),
+  KEY `FK_ventas_pagos` (`pago_id`),
+  KEY `FK_ventas_usuarios` (`user_id`),
+  CONSTRAINT `FK_ventas_direcciones` FOREIGN KEY (`direc_id`) REFERENCES `direcciones` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`),
+  CONSTRAINT `FK_ventas_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ventas`
+--
+
+LOCK TABLES `ventas` WRITE;
+/*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-09-24 13:21:21
