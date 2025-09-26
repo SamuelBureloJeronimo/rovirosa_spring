@@ -25,6 +25,7 @@ public class SecurityConfig {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()  // rutas públicas
+                        .requestMatchers("/api/v1/mail/**").permitAll()  // rutas públicas
                         .anyRequest().authenticated()             // lo demás requiere JWT
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

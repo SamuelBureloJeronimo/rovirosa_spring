@@ -1,0 +1,142 @@
+package com.rovirosa.rovirosa_spring.services;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Iterator;
+import java.util.UUID;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.rovirosa.rovirosa_spring.services.interfaces.IStorage;
+
+import jakarta.annotation.PostConstruct;
+
+@Service
+public class StorageService implements IStorage {
+
+    @Value("${media.location}")
+    private String mediaLocation;
+
+    private Path rootLocation;
+
+    @Override
+    @PostConstruct
+    public void init() throws IOException {
+        rootLocation = Paths.get(mediaLocation);
+        Files.createDirectories(rootLocation);
+    }
+
+    @Override
+    public String store(MultipartFile file) {
+        try {
+            if (file.isEmpty())
+                throw new IllegalArgumentException("Cannot store empty file");
+
+            String originalName = file.getOriginalFilename();
+            if (originalName == null) {
+                throw new IllegalArgumentException("File original filename is null");
+            }
+
+            String filename = UUID.randomUUID().toString() + ".jpg"; // 🔥 forzamos JPG al comprimir
+            Path destinationFile = rootLocation.resolve(Paths.get(filename)).normalize().toAbsolutePath();
+
+            if (file.getSize() > 100 * 1024) {
+                // Leer imagen original
+                BufferedImage originalImage = ImageIO.read(file.getInputStream());
+                if (originalImage == null) {
+                    throw new IllegalArgumentException("El archivo no es una imagen válida");
+                }
+
+                // 🔥 Convertir a RGB (quita canal alpha si existe)
+                BufferedImage rgbImage = new BufferedImage(
+                        originalImage.getWidth(),
+                        originalImage.getHeight(),
+                        BufferedImage.TYPE_INT_RGB);
+                rgbImage.createGraphics().drawImage(originalImage, 0, 0, java.awt.Color.WHITE, null);
+
+                // Guardar como JPG comprimido
+                try (OutputStream os = Files.newOutputStream(destinationFile)) {
+                    Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+                    if (!writers.hasNext())
+                        throw new IllegalStateException("No writers found for jpg");
+
+                    ImageWriter writer = writers.next();
+                    try (ImageOutputStream ios = ImageIO.createImageOutputStream(os)) {
+                        writer.setOutput(ios);
+
+                        ImageWriteParam param = writer.getDefaultWriteParam();
+                        if (param.canWriteCompressed()) {
+                            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                            param.setCompressionQuality(0.6f); // calidad ~60%
+                        }
+
+                        writer.write(null, new IIOImage(rgbImage, null, null), param);
+                    }
+                    writer.dispose();
+                }
+
+            } else {
+                // Guardar directo si es pequeño
+                try (InputStream inputStream = file.getInputStream()) {
+                    Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+
+            return filename;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file ", e);
+        }
+    }
+
+    @Override
+    public Resource loadAsResource(String filename) {
+
+        try {
+            System.out.println("rootLocation: " + rootLocation.toString());
+            Path file = rootLocation.resolve(filename);
+            System.out.println("Buscando archivo en: " + file.toAbsolutePath());
+            Resource resource = new UrlResource((file.toUri()));
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read file: " + filename);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Could not read file: " + filename, e);
+        }
+
+    }
+
+    @Override
+    public void delete(String filename) {
+        try {
+            Path fileToDelete = rootLocation.resolve(filename).normalize().toAbsolutePath();
+            if (Files.exists(fileToDelete)) {
+                Files.delete(fileToDelete);
+                System.out.println("Archivo eliminado: " + fileToDelete.toString());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al eliminar el archivo: " + filename, e);
+        }
+    }
+
+}
