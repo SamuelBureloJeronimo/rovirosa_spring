@@ -3,6 +3,7 @@ package com.rovirosa.rovirosa_spring.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rovirosa.rovirosa_spring.repositories.UsuarioRepository;
 import com.rovirosa.rovirosa_spring.services.interfaces.IEmail;
 
 import jakarta.mail.MessagingException;
@@ -28,6 +29,8 @@ public class EmailService implements IEmail {
      */
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private UsuarioRepository userRep;
 
     /**
      * Sends an email with HTML content to the specified recipient.
@@ -45,7 +48,17 @@ public class EmailService implements IEmail {
         helper.setTo(to);
         helper.setSubject(subjet);
         helper.setText(htmlContenido, true);
-        helper.setFrom("tu_correo@gmail.com");
+        helper.setFrom("samuelbj0608@gmail.com");
+    }
+
+    @Override
+    public Boolean validate(String mail) {
+
+        Boolean exist = userRep.existsByCorreo(mail);        
+        if(exist)
+            return true;
+        else
+            return false;
     }
 
 }

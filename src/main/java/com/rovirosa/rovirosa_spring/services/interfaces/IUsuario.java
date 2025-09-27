@@ -10,6 +10,9 @@ public interface IUsuario {
 
     public String existUser(Usuario usuario);
 
+    public Boolean existCurp(String curp);
+    public Boolean existTel(String tel);
+
     public List<Usuario> getAllUsers();
     
 }

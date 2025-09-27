@@ -22,4 +22,12 @@ public interface IEmail {
      * @throws MessagingException if an error occurs while sending the email
      */
     public void sendEmailWithHtml(String to, String subjet, String htmlContenido) throws MessagingException;
+
+    /**
+     * Validates the given email address.
+     *
+     * @param mail the email address to validate
+     * @throws IllegalArgumentException if the email address is invalid
+     */
+    public Boolean validate(String mail);
 }

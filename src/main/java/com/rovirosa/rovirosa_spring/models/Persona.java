@@ -34,7 +34,7 @@ public class Persona implements Serializable {
     private LocalDate fechNac;
 
     @Column(name = "sexo", nullable = false)
-    private Integer sexo; 
+    private String sexo; 
     // 1 = Masculino, 2 = Femenino
 
     // Constructor vacío
@@ -42,7 +42,7 @@ public class Persona implements Serializable {
     }
 
     // Constructor con parámetros
-    public Persona(Integer id, String curp, String tel, String nombre, String app, String apm, LocalDate fechNac, Integer sexo) {
+    public Persona(Integer id, String curp, String tel, String nombre, String app, String apm, LocalDate fechNac, String sexo) {
         this.id = id;
         this.curp = curp;
         this.tel = tel;
@@ -110,11 +110,11 @@ public class Persona implements Serializable {
         this.fechNac = fechNac;
     }
 
-    public Integer getSexo() {
+    public String getSexo() {
         return sexo;
     }
 
-    public void setSexo(Integer sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 

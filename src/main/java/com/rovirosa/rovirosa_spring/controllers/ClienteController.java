@@ -6,19 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.rovirosa.rovirosa_spring.models.Usuario;
-import com.rovirosa.rovirosa_spring.services.UsuarioService;
+import com.rovirosa.rovirosa_spring.models.Cliente;
+import com.rovirosa.rovirosa_spring.services.ClienteService;
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class UsuarioController {
-
+@RequestMapping("/api/v1/clients")
+public class ClienteController {
     @Autowired
-    private UsuarioService userServ;
+    private ClienteService clientServ;
 
     @GetMapping("/get-all")
-    public List<Usuario> getAllUsers() {
-        return userServ.getAllUsers();
+    public List<Cliente> getAllClients() {
+        return clientServ.getAll();
     }
 }

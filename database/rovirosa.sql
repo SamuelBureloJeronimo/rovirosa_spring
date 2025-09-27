@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS `clientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clientes` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `ine_front` varchar(50) NOT NULL,
   `ine_back` varchar(50) NOT NULL,
@@ -85,9 +85,9 @@ CREATE TABLE `clientes` (
   PRIMARY KEY (`id`),
   KEY `FK_clientes_direcciones` (`dir_id`),
   KEY `FK_clientes_usuarios` (`user_id`),
-  CONSTRAINT `FK_clientes_direcciones` FOREIGN KEY (`dir_id`) REFERENCES `direcciones` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FK_clientes_direcciones` FOREIGN KEY (`dir_id`) REFERENCES `direcciones` (`id`),
   CONSTRAINT `FK_clientes_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,6 +96,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+INSERT INTO `clientes` VALUES (3,5,'7532cda8-c43c-41fc-be03-55b5f506a3ad.jpg','8c8f5c40-5762-40ca-9deb-9b77de37c2c8.jpg',2),(5,7,'1e1bcab4-dee4-4ae5-843d-594474afd64a.jpg','1e4a5f58-5f30-4621-820f-2c2d3cf43ea3.jpg',4),(6,8,'8ba1b872-5f16-44ec-8014-207f1b924538.jpg','9b5112d7-7b8a-4868-b272-ba24a4f44887.jpg',5);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,12 +279,12 @@ DROP TABLE IF EXISTS `direcciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `direcciones` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `latitud` decimal(10,8) NOT NULL DEFAULT '0.00000000',
   `longitud` decimal(11,8) NOT NULL DEFAULT '0.00000000',
   `referencia` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,6 +293,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
+INSERT INTO `direcciones` VALUES (1,17.62150000,92.60399000,'Mi casa esta casi llegando a la gonzalo becerra'),(2,17.76217470,-92.60392169,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.'),(3,17.75622433,-92.60272724,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.'),(4,17.75619463,-92.60273773,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.'),(5,17.76220543,-92.60399185,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.');
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -441,11 +443,11 @@ CREATE TABLE `personas` (
   `app` varchar(50) NOT NULL,
   `apm` varchar(50) NOT NULL,
   `fech_nac` date NOT NULL,
-  `sexo` int NOT NULL COMMENT '1 = Masculino, 2 = Femenino',
+  `sexo` enum('MASCULINO','FEMENINO') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `curp` (`curp`),
   UNIQUE KEY `tel` (`tel`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -454,7 +456,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES (7,'BUJS030806HTCRRMA9','9361165168','Samuel','Burelos','Jeronimo','2003-08-06',1),(9,'BUJS030806HTCRRMA8','9361165167','Samuel','Burelos','Jeronimo','2003-08-06',1),(12,'CAJL030806HTCRRMA6','9361559988','Luis Angel','Cambrano','Jimenez','2003-08-06',1);
+INSERT INTO `personas` VALUES (13,'BUJS030806HTCRRMA9','9361165168','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO'),(15,'CIPE031220HTCHZDA3','9361145678','EDGAR ANTONIO','CHICO','POZO','2003-12-20','MASCULINO'),(16,'BUJS030806HTCRRMAI','9361165169','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO');
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -509,7 +511,7 @@ CREATE TABLE `puntos_distribucion` (
   KEY `FK_puntos_distribucion_direcciones` (`direc_id`),
   KEY `FK_puntos_distribucion_empresa_info` (`info_id`) USING BTREE,
   KEY `FK_puntos_distribucion_empresa_config` (`config_id`),
-  CONSTRAINT `FK_puntos_distribucion_direcciones` FOREIGN KEY (`direc_id`) REFERENCES `direcciones` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_puntos_distribucion_direcciones` FOREIGN KEY (`direc_id`) REFERENCES `direcciones` (`id`),
   CONSTRAINT `FK_puntos_distribucion_empresa_config` FOREIGN KEY (`config_id`) REFERENCES `empresa_config` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `FK_puntos_distribucion_empresa_info` FOREIGN KEY (`info_id`) REFERENCES `empresa_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -599,7 +601,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `correo` (`correo`),
   KEY `FK_usuarios_personas` (`persona_id`),
   CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -608,7 +610,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (2,7,'cliente@gmail.com','cliente','activo','2025-09-24 17:20:12','CLIENTE'),(4,12,'admin@gmail.com','admin','activo','2025-09-26 04:51:48','ADMIN');
+INSERT INTO `usuarios` VALUES (5,13,'cliente@gmail.com','cliente','activo','2025-09-27 06:32:58','CLIENTE'),(7,15,'nuevoth79@gmail.com','edgar141592','activo','2025-09-27 06:52:19','CLIENTE'),(8,16,'santorosario0608@gmail.com','samuel141592','activo','2025-09-27 06:59:19','CLIENTE');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -631,7 +633,7 @@ CREATE TABLE `ventas` (
   KEY `FK_ventas_direcciones` (`direc_id`),
   KEY `FK_ventas_pagos` (`pago_id`),
   KEY `FK_ventas_usuarios` (`user_id`),
-  CONSTRAINT `FK_ventas_direcciones` FOREIGN KEY (`direc_id`) REFERENCES `direcciones` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `FK_ventas_direcciones` FOREIGN KEY (`direc_id`) REFERENCES `direcciones` (`id`),
   CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`),
   CONSTRAINT `FK_ventas_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -655,4 +657,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-26  0:37:42
+-- Dump completed on 2025-09-27  1:28:15

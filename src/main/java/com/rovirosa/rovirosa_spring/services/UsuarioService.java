@@ -38,20 +38,32 @@ public class UsuarioService implements IUsuario {
     public String existUser(Usuario usuario) {
         // Buscar por correo y contraseña
         Boolean us = this.userRepo.existsByCorreo(usuario.getCorreo());
-        if(us)
+        if (us)
             return "El correo proporcionado ya existe.";
-        
+
         // Si no encuentra busca por curp
         us = this.userRepo.existsByPersona_Curp(usuario.getPersona().getCurp());
-        if(us)
+        if (us)
             return "La curp proporcionada ya existe.";
-        
-        //Si no encuentra busca por Telefono
+
+        // Si no encuentra busca por Telefono
         us = this.userRepo.existsByPersona_Tel(usuario.getPersona().getTel());
-        if(us)
+        if (us)
             return "El teléfono porporcionado ya existe.";
-        
+
         return "";
-    }  
+    }
+
+    @Override
+    public Boolean existCurp(String curp) {
+        // Busca por curp
+        return this.userRepo.existsByPersona_Curp(curp);
+    }
+
+    @Override
+    public Boolean existTel(String tel) {
+        // Busca por Telefono
+        return this.userRepo.existsByPersona_Tel(tel);
+    }
 
 }

@@ -2,7 +2,6 @@ package com.rovirosa.rovirosa_spring.controllers;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDate;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.rovirosa.rovirosa_spring.models.Persona;
+import com.rovirosa.rovirosa_spring.models.Cliente;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 import com.rovirosa.rovirosa_spring.services.AuthService;
+import com.rovirosa.rovirosa_spring.services.ClienteService;
 import com.rovirosa.rovirosa_spring.services.StorageService;
 import com.rovirosa.rovirosa_spring.services.UsuarioService;
 import com.rovirosa.rovirosa_spring.utils.JwtUtil;
@@ -36,6 +38,9 @@ public class AuthController {
     private UsuarioService userServ;
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private ClienteService clientServ;
+
 
     /**
      * Handles GET requests to the "/test" endpoint.
@@ -63,7 +68,7 @@ public class AuthController {
         Usuario us = authServ.login(user, password);
         HashMap<String, String> res = new HashMap<>();
         if (us != null) {
-            if (us.getEstado().equals("suspendido")){
+            if (us.getEstado().equals("suspendido")) {
                 res.put("msg", "Tu cuenta ha sido suspendida por mal uso de la aplicación.");
                 return ResponseEntity.status(403).body(res);
             }
@@ -78,12 +83,15 @@ public class AuthController {
     /**
      * Handles HTTP GET requests to retrieve a file by its filename.
      * Loads the requested file as a {@link Resource} using the storage service,
-     * determines its content type, and returns it in the response with the appropriate
+     * determines its content type, and returns it in the response with the
+     * appropriate
      * Content-Type header.
      *
      * @param filename the name of the file to retrieve from storage
-     * @return a {@link ResponseEntity} containing the file as a resource and the correct content type
-     * @throws IOException if an I/O error occurs while loading the file or determining its content type
+     * @return a {@link ResponseEntity} containing the file as a resource and the
+     *         correct content type
+     * @throws IOException if an I/O error occurs while loading the file or
+     *                     determining its content type
      */
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
@@ -96,56 +104,44 @@ public class AuthController {
                 .body(file);
     }
 
-    /**
-     * Handles user registration requests.
-     * 
-     * Expects user and personal information as request parameters, creates a new
-     * {@link Usuario}
-     * and associated {@link Persona}, and persists them using the user service.
-     *
-     * @param curp     The CURP (unique population registry code) of the user.
-     * @param tel      The user's telephone number.
-     * @param nombre   The user's first name.
-     * @param app      The user's paternal surname.
-     * @param apm      The user's maternal surname.
-     * @param fech_nac The user's date of birth.
-     * @param sexo     The user's gender (as an integer code).
-     * @param correo   The user's email address.
-     * @param password The user's password.
-     * @return A {@link ResponseEntity} containing the ID of the newly created user
-     *         and HTTP status 201 (Created).
-     */
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(
-            @RequestParam String curp, @RequestParam String tel, @RequestParam String nombre, @RequestParam String app,
-            @RequestParam String apm, @RequestParam LocalDate fech_nac, @RequestParam Integer sexo,
-            @RequestParam String correo,
-            @RequestParam String password) {
+    public ResponseEntity<HashMap<String, String>> registerClient(
+            @RequestPart Cliente cliente,
+            @RequestPart("ine_front") MultipartFile ineFront,
+            @RequestPart("ine_back") MultipartFile ineBack) {
+        HashMap<String, String> reponse = new HashMap<>();
 
-        Persona persona = new Persona();
-        persona.setCurp(curp);
-        persona.setTel(tel);
-        persona.setNombre(nombre);
-        persona.setApp(app);
-        persona.setApm(apm);
-        persona.setFechNac(fech_nac);
-        persona.setSexo(sexo);
+        System.out.println(cliente);
 
-        Usuario user = new Usuario();
-        user.setPersona(persona);
-        user.setCorreo(correo);
-        user.setPassword(password);
+        cliente.setIneFront(storageService.store(ineFront));
+        cliente.setIneBack(storageService.store(ineBack));
 
-        try {
-            // Validar si no existe el correo/curp/telefono
-            String res = this.userServ.existUser(user);
-            if (res.isEmpty()) { // Si no existe entonces procede a crear el usuario
-                this.userServ.create(user);
-                return ResponseEntity.ok().body(jwtUtil.generateToken(correo, "CLIENTE"));
-            } else // Si existe entonces responde con el campo duplicado
-                return ResponseEntity.badRequest().body(res);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        String token = clientServ.register(cliente);
+        reponse.put("token", token);
+        return ResponseEntity.status(200).body(reponse);
+    }
+
+    @GetMapping("/validate-curp/{curp}")
+    public ResponseEntity<HashMap<String, Boolean>> validate_curp(@PathVariable String curp) {
+        HashMap<String, Boolean> response = new HashMap<>();
+        Boolean exist = userServ.existCurp(curp);
+        response.put("existe", exist);
+        if (exist) {
+            return ResponseEntity.status(200).body(response);
+        } else {
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
+    @GetMapping("/validate-tel/{tel}")
+    public ResponseEntity<HashMap<String, Boolean>> validate_tel(@PathVariable String tel) {
+        HashMap<String, Boolean> response = new HashMap<>();
+        Boolean exist = userServ.existTel(tel);
+        response.put("existe", exist);
+        if (exist) {
+            return ResponseEntity.status(200).body(response);
+        } else {
+            return ResponseEntity.status(400).body(response);
         }
     }
 
