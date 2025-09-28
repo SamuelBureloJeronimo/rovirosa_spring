@@ -1,8 +1,6 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -14,50 +12,67 @@ public class Producto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(nullable = false, length = 100)
-    private String nombre;
-
-    @Column(length = 255)
-    private String descripcion;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal precio;
-
-    @Column(nullable = false)
-    private Integer stock;
-
+    
     // Relaciones con Categoria y Marca
-    @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categoria;
-
     @ManyToOne
     @JoinColumn(name = "marca_id", nullable = false)
     private Marca marca;
+
+    @Column(name = "imagen", nullable = false, length = 100)
+    private String imagen;
+
+    @Column(name = "nombre", nullable = false, length = 100)
+    private String nombre;
+
+    @Column(name = "precio", nullable = false)
+    private Double precio;
+
+    @Column(name = "stock", nullable = false)
+    private Integer stock;
+
+    @Column(name = "vendidos", nullable = false)
+    private Integer vendidos = 0;
+
+
 
     // Constructor vacío
     public Producto() {
     }
 
     // Constructor con parámetros
-    public Producto(Integer id, String nombre, String descripcion, BigDecimal precio, Integer stock, Categoria categoria, Marca marca) {
+    public Producto(Integer id, Marca marca, String imagen, String nombre, Double precio,
+            Integer stock, Integer vendidos) {
         this.id = id;
+        this.marca = marca;
+        this.imagen = imagen;
         this.nombre = nombre;
-        this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
-        this.categoria = categoria;
-        this.marca = marca;
+        this.vendidos = vendidos;
     }
 
-    // Getters y Setters
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -68,19 +83,11 @@ public class Producto implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public BigDecimal getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(BigDecimal precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
@@ -92,19 +99,13 @@ public class Producto implements Serializable {
         this.stock = stock;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Integer getVendidos() {
+        return vendidos;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setVendidos(Integer vendidos) {
+        this.vendidos = vendidos;
     }
 
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
+        
 }

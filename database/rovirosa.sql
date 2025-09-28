@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.43, for Linux (x86_64)
 --
--- Host: localhost    Database: distribuidora
+-- Host: localhost    Database: rovirosa
 -- ------------------------------------------------------
 -- Server version	8.0.43-0ubuntu0.22.04.2
 
@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `categorias`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categorias` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,6 +35,7 @@ CREATE TABLE `categorias` (
 
 LOCK TABLES `categorias` WRITE;
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
+INSERT INTO `categorias` VALUES (2,'Cervezas'),(3,'Sabritas');
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -46,7 +47,7 @@ DROP TABLE IF EXISTS `chat_venta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chat_venta` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `venta_id` int NOT NULL,
   `user_id` int NOT NULL,
   `mensaje` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -87,7 +88,7 @@ CREATE TABLE `clientes` (
   KEY `FK_clientes_usuarios` (`user_id`),
   CONSTRAINT `FK_clientes_direcciones` FOREIGN KEY (`dir_id`) REFERENCES `direcciones` (`id`),
   CONSTRAINT `FK_clientes_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +97,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (3,5,'7532cda8-c43c-41fc-be03-55b5f506a3ad.jpg','8c8f5c40-5762-40ca-9deb-9b77de37c2c8.jpg',2),(5,7,'1e1bcab4-dee4-4ae5-843d-594474afd64a.jpg','1e4a5f58-5f30-4621-820f-2c2d3cf43ea3.jpg',4),(6,8,'8ba1b872-5f16-44ec-8014-207f1b924538.jpg','9b5112d7-7b8a-4868-b272-ba24a4f44887.jpg',5);
+INSERT INTO `clientes` VALUES (7,9,'ine/b99ec6d3-6568-4496-84e0-d1ed43805c2b.jpg','ine/c028dd7c-ac03-4385-bfcb-677b3b3995c3.jpg',6);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +109,7 @@ DROP TABLE IF EXISTS `descuento_categ`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `descuento_categ` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `categ_id` int NOT NULL,
   `config_id` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -136,7 +137,7 @@ DROP TABLE IF EXISTS `descuento_marca`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `descuento_marca` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `marca_id` int DEFAULT NULL,
   `config_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -164,7 +165,7 @@ DROP TABLE IF EXISTS `descuentos_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `descuentos_config` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `tipo` enum('porcentaje','fijo') NOT NULL COMMENT '1 = Porcentaje, 2 = Monto Fijo',
   `valor` double NOT NULL,
   `objetivo` enum('producto','categoria','marca') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '1 = Producto, 2 = Categoria',
@@ -192,7 +193,7 @@ DROP TABLE IF EXISTS `descuentos_producto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `descuentos_producto` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `producto_id` int NOT NULL,
   `config_id` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -247,7 +248,7 @@ DROP TABLE IF EXISTS `detalles_venta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `detalles_venta` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `venta_id` int NOT NULL,
   `producto_id` int NOT NULL,
   `cantidad_inicial` int NOT NULL,
@@ -284,7 +285,7 @@ CREATE TABLE `direcciones` (
   `longitud` decimal(11,8) NOT NULL DEFAULT '0.00000000',
   `referencia` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +294,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (1,17.62150000,92.60399000,'Mi casa esta casi llegando a la gonzalo becerra'),(2,17.76217470,-92.60392169,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.'),(3,17.75622433,-92.60272724,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.'),(4,17.75619463,-92.60273773,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.'),(5,17.76220543,-92.60399185,'Mi casa esta llegando a la calle gonzalo becerra, casa azul con blanco y portones rojos afuera.');
+INSERT INTO `direcciones` VALUES (6,17.76213824,-92.60400196,'Mi casa es color azul con blanco y portones rojos afuera.');
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,7 +306,7 @@ DROP TABLE IF EXISTS `empresa_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `empresa_config` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `max_prod` int NOT NULL,
   `email_app` varchar(150) DEFAULT NULL,
   `codigo_app` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'lrhm upio jpnh tvpv',
@@ -330,7 +331,7 @@ DROP TABLE IF EXISTS `empresa_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `empresa_info` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `rfc` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -357,11 +358,14 @@ DROP TABLE IF EXISTS `marcas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `marcas` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `categ_id` int NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `logo` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  KEY `FK_marcas_categoria` (`categ_id`),
+  CONSTRAINT `FK_marcas_categoria` FOREIGN KEY (`categ_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -370,6 +374,7 @@ CREATE TABLE `marcas` (
 
 LOCK TABLES `marcas` WRITE;
 /*!40000 ALTER TABLE `marcas` DISABLE KEYS */;
+INSERT INTO `marcas` VALUES (1,2,'Heineken','marcas/7e7a0bc7-dd58-4d30-aef9-4da875e77984.jpg'),(2,2,'Modelo','marcas/c5820529-6f94-4b08-9ded-7ec4a468fe94.jpg'),(3,2,'Corona','marcas/52ea3fb4-cef3-42a1-b2cd-27e5076d2b4c.jpg'),(4,2,'Dos equis','marcas/5093838c-765d-476d-9a4d-b69c9e55f67d.jpg'),(5,2,'Tecate','marcas/d256c0a3-402f-4433-bbb0-655a71f7cb8f.jpg'),(6,2,'Bohemia','marcas/34283cfa-c72a-4a99-93ff-46aeb32c8118.jpg'),(7,2,'Sol','marcas/00e2b4e5-19a1-4a01-94b3-59c951c6eece.jpg'),(8,2,'Victoria','marcas/6ffad478-9305-46a8-8d79-cbfbe5cf9f27.jpg'),(9,2,'Carta blanca','marcas/e5d1f35a-5b25-4a37-b178-9221da4d73ba.jpg'),(10,2,'Totopos','marcas/160f5e1a-8de4-41d5-848d-79c4f47f007d.jpg'),(11,2,'Estrella galicia','marcas/080408e1-508c-47a6-bb2e-e0ea3c3834e0.jpg');
 /*!40000 ALTER TABLE `marcas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -381,8 +386,8 @@ DROP TABLE IF EXISTS `notificaciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notificaciones` (
-  `id` int NOT NULL,
-  `user_id` int DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `titulo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `descrip` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`),
@@ -447,7 +452,7 @@ CREATE TABLE `personas` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `curp` (`curp`),
   UNIQUE KEY `tel` (`tel`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -456,7 +461,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES (13,'BUJS030806HTCRRMA9','9361165168','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO'),(15,'CIPE031220HTCHZDA3','9361145678','EDGAR ANTONIO','CHICO','POZO','2003-12-20','MASCULINO'),(16,'BUJS030806HTCRRMAI','9361165169','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO');
+INSERT INTO `personas` VALUES (17,'BUJS030806HTCRRMA9','9361165168','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO');
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,8 +473,7 @@ DROP TABLE IF EXISTS `productos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `productos` (
-  `id` int NOT NULL,
-  `categ_id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `marca_id` int NOT NULL,
   `imagen` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -477,11 +481,9 @@ CREATE TABLE `productos` (
   `stock` int NOT NULL,
   `vendidos` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `FK_productos_categorias` (`categ_id`),
   KEY `FK_productos_marcas` (`marca_id`),
-  CONSTRAINT `FK_productos_categorias` FOREIGN KEY (`categ_id`) REFERENCES `categorias` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_productos_marcas` FOREIGN KEY (`marca_id`) REFERENCES `marcas` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -490,6 +492,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
+INSERT INTO `productos` VALUES (1,3,'productos/a291ed0e-b3ad-4cdc-acbe-a8827c17abdf.jpg','Cerveza Modelo 1/2 Corona',23.80,250,0),(2,3,'productos/0baa68a9-5649-4801-872d-8e1fcee6d0eb.jpg','Cerveza Corona 473 ml 4 PZS',92.89,100,0),(3,10,'productos/6e84a880-6676-42c9-a229-c36c23d6b467.jpg','Totopos Del Hogar 280 gr.',30.50,100,0);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -534,7 +537,7 @@ DROP TABLE IF EXISTS `repartidores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `repartidores` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `pd_id` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -601,7 +604,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `correo` (`correo`),
   KEY `FK_usuarios_personas` (`persona_id`),
   CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -610,7 +613,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (5,13,'cliente@gmail.com','cliente','activo','2025-09-27 06:32:58','CLIENTE'),(7,15,'nuevoth79@gmail.com','edgar141592','activo','2025-09-27 06:52:19','CLIENTE'),(8,16,'santorosario0608@gmail.com','samuel141592','activo','2025-09-27 06:59:19','CLIENTE');
+INSERT INTO `usuarios` VALUES (9,17,'admin@gmail.com','admin','activo','2025-09-27 17:09:49','ADMIN');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -622,7 +625,7 @@ DROP TABLE IF EXISTS `ventas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ventas` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `direc_id` int NOT NULL,
   `pago_id` int NOT NULL,
@@ -657,4 +660,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-27  1:28:15
+-- Dump completed on 2025-09-28  2:00:03

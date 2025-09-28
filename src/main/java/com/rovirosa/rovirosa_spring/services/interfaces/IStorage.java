@@ -8,9 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IStorage {
     void init() throws IOException;
 
-    String store(MultipartFile file);
+    String store(MultipartFile file, String prefix);
 
-    Resource loadAsResource(String filename);
+    Resource loadAsResource(String filename, String prefix);
 
     void delete(String filename);
 }

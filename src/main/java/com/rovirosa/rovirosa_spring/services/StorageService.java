@@ -44,7 +44,7 @@ public class StorageService implements IStorage {
     }
 
     @Override
-    public String store(MultipartFile file) {
+    public String store(MultipartFile file, String prefix) {
         try {
             if (file.isEmpty())
                 throw new IllegalArgumentException("Cannot store empty file");
@@ -55,7 +55,7 @@ public class StorageService implements IStorage {
             }
 
             String filename = UUID.randomUUID().toString() + ".jpg"; // 🔥 forzamos JPG al comprimir
-            Path destinationFile = rootLocation.resolve(Paths.get(filename)).normalize().toAbsolutePath();
+            Path destinationFile = rootLocation.resolve(prefix+Paths.get(filename)).normalize().toAbsolutePath();
 
             if (file.getSize() > 100 * 1024) {
                 // Leer imagen original
@@ -107,11 +107,11 @@ public class StorageService implements IStorage {
     }
 
     @Override
-    public Resource loadAsResource(String filename) {
+    public Resource loadAsResource(String filename, String prefix) {
 
         try {
             System.out.println("rootLocation: " + rootLocation.toString());
-            Path file = rootLocation.resolve(filename);
+            Path file = rootLocation.resolve(prefix+filename);
             System.out.println("Buscando archivo en: " + file.toAbsolutePath());
             Resource resource = new UrlResource((file.toUri()));
 

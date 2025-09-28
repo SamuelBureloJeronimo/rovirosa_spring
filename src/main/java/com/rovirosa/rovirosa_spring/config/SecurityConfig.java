@@ -24,8 +24,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()  // rutas públicas
-                        .requestMatchers("/api/v1/mail/**").permitAll()  // rutas públicas
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/mail/**", "/api/v1/ocr/**").permitAll()  // rutas públicas
+                        .requestMatchers("/api/v1/admin/**").permitAll()
+                        .requestMatchers("/api/v1/cliente/**").permitAll()
+                        .requestMatchers("/api/v1/repartidor/**").permitAll()
+                        .requestMatchers("/api/v1/common/**").permitAll()
+                        .requestMatchers("/api/v1/storage/**").permitAll()
                         .anyRequest().authenticated()             // lo demás requiere JWT
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

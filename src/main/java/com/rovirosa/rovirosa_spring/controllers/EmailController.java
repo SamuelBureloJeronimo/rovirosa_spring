@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.clases.CodigoVerificacion;
 import com.rovirosa.rovirosa_spring.services.EmailService;
-
-import jakarta.mail.MessagingException;
 
 @RestController
 @RequestMapping("/api/v1/mail")
@@ -64,9 +61,7 @@ public class EmailController {
             }
 
             // 3. Crear contenido HTML
-            String htmlContenido = "<h3>Tu código de verificación</h3>"
-                    + "<p>El código es: <b>" + codigo + "</b></p>"
-                    + "<p>Válido por 5 minutos.</p>";
+            String htmlContenido = "Tu código de verificación es: " + codigo + " - Válido por 5 minutos.";
 
             emailService.sendEmailWithHtml(to, "Código de verificación", htmlContenido);
             response.put("Código enviado a:", to);

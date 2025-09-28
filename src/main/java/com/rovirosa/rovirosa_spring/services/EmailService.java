@@ -7,10 +7,8 @@ import com.rovirosa.rovirosa_spring.repositories.UsuarioRepository;
 import com.rovirosa.rovirosa_spring.services.interfaces.IEmail;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 /**
  * Service implementation for sending emails using JavaMailSender.
@@ -41,14 +39,14 @@ public class EmailService implements IEmail {
      * @throws MessagingException if there is a failure in the email sending process
      */
     @Override
-    public void sendEmailWithHtml(String to, String subjet, String htmlContenido) throws MessagingException
+    public void sendEmailWithHtml(String to, String subject, String text) throws MessagingException
     {
-        MimeMessage mensaje = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mensaje, true, "UTF-8");
-        helper.setTo(to);
-        helper.setSubject(subjet);
-        helper.setText(htmlContenido, true);
-        helper.setFrom("samuelbj0608@gmail.com");
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("samuelbj0608@gmail.com");
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        mailSender.send(message);
     }
 
     @Override

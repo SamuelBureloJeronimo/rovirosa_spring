@@ -127,7 +127,7 @@ public class OcrController {
             result.put("nombre", nombre);
 
             System.out.println(result);
-            if (curp.isEmpty() || nombre.isEmpty() || apellidoM.isEmpty() || apellidoP.isEmpty() ) {
+            if (curp.isEmpty() && nombre.isEmpty() && apellidoM.isEmpty() && apellidoP.isEmpty() && fechaNacimiento.isEmpty()) {
                 return (ResponseEntity<?>) ResponseEntity.badRequest();
             }
 
