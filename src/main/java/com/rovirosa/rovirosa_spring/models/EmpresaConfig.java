@@ -1,7 +1,6 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -11,11 +10,20 @@ public class EmpresaConfig implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "rfc", length = 20, nullable = false)
+    private String rfc;
 
-    @Column(name = "max_prod", nullable = false)
-    private Integer maxProd;
+    @Column(name = "nombre", length = 50, nullable = false)
+    private String nombre;
+
+    @Column(name = "logo", length = 255, nullable = false)
+    private String logo;
+
+    @Column(name = "descrip", length = 255, nullable = false)
+    private String descrip;
+
+    @Column(name = "monto_min", nullable = false)
+    private Integer montoMin;
 
     @Column(name = "email_app", length = 150)
     private String emailApp;
@@ -28,28 +36,56 @@ public class EmpresaConfig implements Serializable {
     }
 
     // Constructor con parámetros
-    public EmpresaConfig(Integer id, Integer maxProd, String emailApp, String codigoApp) {
-        this.id = id;
-        this.maxProd = maxProd;
+    public EmpresaConfig(String rfc, String nombre, String logo, String descrip,
+                         Integer montoMin, String emailApp, String codigoApp) {
+        this.rfc = rfc;
+        this.nombre = nombre;
+        this.logo = logo;
+        this.descrip = descrip;
+        this.montoMin = montoMin;
         this.emailApp = emailApp;
         this.codigoApp = codigoApp;
     }
 
     // Getters y Setters
-    public Integer getId() {
-        return id;
+    public String getRfc() {
+        return rfc;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
     }
 
-    public Integer getMaxProd() {
-        return maxProd;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setMaxProd(Integer maxProd) {
-        this.maxProd = maxProd;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getDescrip() {
+        return descrip;
+    }
+
+    public void setDescrip(String descrip) {
+        this.descrip = descrip;
+    }
+
+    public Integer getMontoMin() {
+        return montoMin;
+    }
+
+    public void setMontoMin(Integer montoMin) {
+        this.montoMin = montoMin;
     }
 
     public String getEmailApp() {

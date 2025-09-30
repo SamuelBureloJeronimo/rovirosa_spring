@@ -1,12 +1,9 @@
 package com.rovirosa.rovirosa_spring.controllers;
 
 import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.models.Categoria;
-import com.rovirosa.rovirosa_spring.models.Cliente;
+import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
 import com.rovirosa.rovirosa_spring.models.Marca;
 import com.rovirosa.rovirosa_spring.models.Producto;
 import com.rovirosa.rovirosa_spring.services.AdminService;
 import com.rovirosa.rovirosa_spring.services.StorageService;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -31,10 +30,17 @@ public class AdminController extends CommonController {
     @Autowired
     private StorageService storageService;
 
-    @GetMapping("/get-clients")
-    public List<Cliente> getAllClients() {
-        return adminServ.getAll();
+    @GetMapping("/get-config")
+    public ResponseEntity<HashMap<String,EmpresaConfig>>  getConfig() {
+        HashMap<String,EmpresaConfig> response = new HashMap<>();
+        EmpresaConfig config = adminServ.getConfig();
+        if(config == null)
+            return ResponseEntity.status(404).body(response);
+        response.put("success", config);
+        return ResponseEntity.status(200).body(response);
     }
+    
+
 
     @PostMapping("/new-product")
     public ResponseEntity<HashMap<String,Producto>> newProduct(@RequestPart Producto producto, @RequestPart("imagen") MultipartFile imagen) {
