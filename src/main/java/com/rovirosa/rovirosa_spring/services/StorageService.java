@@ -44,65 +44,114 @@ public class StorageService implements IStorage {
     }
 
     @Override
-    public String store(MultipartFile file, String prefix) {
+    public String store(MultipartFile file, String prefix, String name) {
         try {
-            if (file.isEmpty())
-                throw new IllegalArgumentException("Cannot store empty file");
+            validateFile(file);
 
-            String originalName = file.getOriginalFilename();
-            if (originalName == null) {
-                throw new IllegalArgumentException("File original filename is null");
-            }
-
-            String filename = UUID.randomUUID().toString() + ".jpg"; // 🔥 forzamos JPG al comprimir
-            Path destinationFile = rootLocation.resolve(prefix+Paths.get(filename)).normalize().toAbsolutePath();
+            String filename = name;
+            Path destinationFile = buildDestinationPath(filename, prefix);
 
             if (file.getSize() > 100 * 1024) {
-                // Leer imagen original
-                BufferedImage originalImage = ImageIO.read(file.getInputStream());
-                if (originalImage == null) {
-                    throw new IllegalArgumentException("El archivo no es una imagen válida");
-                }
-
-                // 🔥 Convertir a RGB (quita canal alpha si existe)
-                BufferedImage rgbImage = new BufferedImage(
-                        originalImage.getWidth(),
-                        originalImage.getHeight(),
-                        BufferedImage.TYPE_INT_RGB);
-                rgbImage.createGraphics().drawImage(originalImage, 0, 0, java.awt.Color.WHITE, null);
-
-                // Guardar como JPG comprimido
-                try (OutputStream os = Files.newOutputStream(destinationFile)) {
-                    Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
-                    if (!writers.hasNext())
-                        throw new IllegalStateException("No writers found for jpg");
-
-                    ImageWriter writer = writers.next();
-                    try (ImageOutputStream ios = ImageIO.createImageOutputStream(os)) {
-                        writer.setOutput(ios);
-
-                        ImageWriteParam param = writer.getDefaultWriteParam();
-                        if (param.canWriteCompressed()) {
-                            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                            param.setCompressionQuality(0.6f); // calidad ~60%
-                        }
-
-                        writer.write(null, new IIOImage(rgbImage, null, null), param);
-                    }
-                    writer.dispose();
-                }
-
+                compressAndSaveImage(file, destinationFile);
             } else {
-                // Guardar directo si es pequeño
-                try (InputStream inputStream = file.getInputStream()) {
-                    Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-                }
+                saveFileDirectly(file, destinationFile);
             }
 
             return filename;
 
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file ", e);
+            throw new RuntimeException("Failed to store file", e);
+        }
+    }
+
+    @Override
+    public String store(MultipartFile file, String prefix) {
+        try {
+            validateFile(file);
+
+            String filename = generateFileName();
+            Path destinationFile = buildDestinationPath(filename, prefix);
+
+            if (file.getSize() > 100 * 1024) {
+                compressAndSaveImage(file, destinationFile);
+            } else {
+                saveFileDirectly(file, destinationFile);
+            }
+
+            return filename;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file", e);
+        }
+    }
+
+    /*
+     * ============================
+     * Métodos privados de apoyo
+     * ============================
+     */
+
+    private void validateFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Cannot store empty file");
+        }
+
+        if (file.getOriginalFilename() == null) {
+            throw new IllegalArgumentException("File original filename is null");
+        }
+    }
+
+    private String generateFileName() {
+        // 🔥 Siempre guardamos como JPG
+        return UUID.randomUUID().toString() + ".jpg";
+    }
+
+    private Path buildDestinationPath(String filename, String prefix) {
+        return rootLocation
+                .resolve(prefix + Paths.get(filename))
+                .normalize()
+                .toAbsolutePath();
+    }
+
+    private void compressAndSaveImage(MultipartFile file, Path destinationFile) throws IOException {
+        BufferedImage originalImage = ImageIO.read(file.getInputStream());
+        if (originalImage == null) {
+            throw new IllegalArgumentException("El archivo no es una imagen válida");
+        }
+
+        // 🔥 Convertir a RGB (quita canal alpha si existe)
+        BufferedImage rgbImage = new BufferedImage(
+                originalImage.getWidth(),
+                originalImage.getHeight(),
+                BufferedImage.TYPE_INT_RGB);
+        rgbImage.createGraphics().drawImage(originalImage, 0, 0, java.awt.Color.WHITE, null);
+
+        // Guardar como JPG comprimido
+        try (OutputStream os = Files.newOutputStream(destinationFile)) {
+            Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+            if (!writers.hasNext()) {
+                throw new IllegalStateException("No writers found for jpg");
+            }
+
+            ImageWriter writer = writers.next();
+            try (ImageOutputStream ios = ImageIO.createImageOutputStream(os)) {
+                writer.setOutput(ios);
+
+                ImageWriteParam param = writer.getDefaultWriteParam();
+                if (param.canWriteCompressed()) {
+                    param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                    param.setCompressionQuality(0.6f); // calidad ~60%
+                }
+
+                writer.write(null, new IIOImage(rgbImage, null, null), param);
+            }
+            writer.dispose();
+        }
+    }
+
+    private void saveFileDirectly(MultipartFile file, Path destinationFile) throws IOException {
+        try (InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
@@ -111,7 +160,7 @@ public class StorageService implements IStorage {
 
         try {
             System.out.println("rootLocation: " + rootLocation.toString());
-            Path file = rootLocation.resolve(prefix+filename);
+            Path file = rootLocation.resolve(prefix + filename);
             System.out.println("Buscando archivo en: " + file.toAbsolutePath());
             Resource resource = new UrlResource((file.toUri()));
 

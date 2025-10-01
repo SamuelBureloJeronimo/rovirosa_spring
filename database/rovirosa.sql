@@ -285,7 +285,7 @@ CREATE TABLE `direcciones` (
   `longitud` decimal(11,8) NOT NULL DEFAULT '0.00000000',
   `referencia` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,7 +294,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (6,17.76213824,-92.60400196,'Mi casa es color azul con blanco y portones rojos afuera.'),(7,17.75486973,-92.60352936,'Casa color verde y blanco al fondo del callejón. Hay una mata de mango enfrente.');
+INSERT INTO `direcciones` VALUES (6,17.76213824,-92.60400196,'Mi casa es color azul con blanco y portones rojos afuera.'),(7,17.75486973,-92.60352936,'Casa color verde y blanco al fondo del callejón. Hay una mata de mango enfrente.'),(8,17.74721464,-92.60990182,'');
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +323,7 @@ CREATE TABLE `empresa_config` (
 
 LOCK TABLES `empresa_config` WRITE;
 /*!40000 ALTER TABLE `empresa_config` DISABLE KEYS */;
-INSERT INTO `empresa_config` VALUES ('DRO700527V91','Rovirosa','aa703199-0d4d-4b0d-b02d-8978437cdd9e.jpg','logo.jpg',150,NULL,NULL);
+INSERT INTO `empresa_config` VALUES ('DRO700527V91','Rovirosa','f1a4d39d-b08f-4926-9779-c0346069fdef.jpg','Ser la mejor empresa concesionaria en la provisión de los productos más vanguardistas y de alta calidad de Grupo Modelo.',150,'samuelbj0608@gmail.com','2343243j43n43dfdf');
 /*!40000 ALTER TABLE `empresa_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -460,7 +460,7 @@ CREATE TABLE `productos` (
   PRIMARY KEY (`id`),
   KEY `FK_productos_marcas` (`marca_id`),
   CONSTRAINT `FK_productos_marcas` FOREIGN KEY (`marca_id`) REFERENCES `marcas` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -469,7 +469,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,3,'productos/a291ed0e-b3ad-4cdc-acbe-a8827c17abdf.jpg','Cerveza Modelo 1/2 Corona',23.80,250,0),(2,3,'productos/0baa68a9-5649-4801-872d-8e1fcee6d0eb.jpg','Cerveza Corona 473 ml 4 PZS',92.89,100,0),(3,10,'productos/6e84a880-6676-42c9-a229-c36c23d6b467.jpg','Totopos Del Hogar 280 gr.',30.50,100,0),(4,3,'productos/27422288-5bd5-4e26-8c56-a49281bc002f.jpg','Cerveza clara Coronita Extra 24 botellas de 210 ml c/u',239.00,20,0),(5,8,'productos/df70d3b4-6bf5-4f97-9b5b-5100fa3a6cc2.jpg','Pack de cerveza Victoria ambar con 24 botellas de 210 ml c/u',239.00,25,0),(6,12,'productos/e3719da3-2e48-4e9e-8255-f0f1ec5254bd.jpg','Cerveza clara Barrilito 6 botellas de 325 ml c/u',74.00,30,0),(7,13,'productos/81f733ff-9b8c-4556-9c9b-82d4ff88f053.jpg','Refresco Pepsi regular 2.5L',33.00,20,0),(8,14,'productos/bc28e764-a74b-415d-a58e-330a2681c6ea.jpg','Refresco Mirinda sabor naranja botella de 2.5L',34.00,39,0);
+INSERT INTO `productos` VALUES (1,3,'productos/a291ed0e-b3ad-4cdc-acbe-a8827c17abdf.jpg','Cerveza Modelo 1/2 Corona',23.80,250,0),(2,3,'productos/0baa68a9-5649-4801-872d-8e1fcee6d0eb.jpg','Cerveza Corona 473 ml 4 PZS',92.89,100,0),(3,10,'productos/6e84a880-6676-42c9-a229-c36c23d6b467.jpg','Totopos Del Hogar 280 gr.',30.50,100,0),(4,3,'productos/27422288-5bd5-4e26-8c56-a49281bc002f.jpg','Cerveza clara Coronita Extra 24 botellas de 210 ml c/u',239.00,20,0),(5,8,'productos/df70d3b4-6bf5-4f97-9b5b-5100fa3a6cc2.jpg','Pack de cerveza Victoria ambar con 24 botellas de 210 ml c/u',239.00,25,0),(6,12,'productos/e3719da3-2e48-4e9e-8255-f0f1ec5254bd.jpg','Cerveza clara Barrilito 6 botellas de 325 ml c/u',74.00,30,0),(7,13,'productos/81f733ff-9b8c-4556-9c9b-82d4ff88f053.jpg','Refresco Pepsi regular 2.5L',33.00,20,0),(8,14,'productos/bc28e764-a74b-415d-a58e-330a2681c6ea.jpg','Refresco Mirinda sabor naranja botella de 2.5L',34.00,39,0),(9,14,'productos/0b776c07-a712-457b-8337-141b8dea97ef.jpg','rtwrwet',34545.00,2,0);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -491,7 +491,7 @@ CREATE TABLE `puntos_distribucion` (
   KEY `FK_puntos_distribucion_empresa_config` (`config_rfc`),
   CONSTRAINT `FK_puntos_distribucion_direcciones` FOREIGN KEY (`direc_id`) REFERENCES `direcciones` (`id`),
   CONSTRAINT `FK_puntos_distribucion_empresa_config` FOREIGN KEY (`config_rfc`) REFERENCES `empresa_config` (`rfc`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -500,6 +500,7 @@ CREATE TABLE `puntos_distribucion` (
 
 LOCK TABLES `puntos_distribucion` WRITE;
 /*!40000 ALTER TABLE `puntos_distribucion` DISABLE KEYS */;
+INSERT INTO `puntos_distribucion` VALUES (1,8,'DRO700527V91','habilitado','');
 /*!40000 ALTER TABLE `puntos_distribucion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,7 +588,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (9,17,'admin@gmail.com','admin','activo','2025-09-27 17:09:49','ADMIN'),(10,18,'santorosario0608@gmail.com','cliente141592','activo','2025-09-28 20:38:35','CLIENTE');
+INSERT INTO `usuarios` VALUES (9,17,'admin@gmail.com','admin','activo','2025-09-27 17:09:49','ADMIN'),(10,18,'cliente@gmail.com','cliente','activo','2025-09-28 20:38:35','CLIENTE');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -634,4 +635,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-29 20:12:03
+-- Dump completed on 2025-09-30 21:12:46

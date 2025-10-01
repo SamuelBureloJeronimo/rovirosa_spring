@@ -9,7 +9,7 @@ public interface IStorage {
     void init() throws IOException;
 
     String store(MultipartFile file, String prefix);
-
+    String store(MultipartFile file, String prefix, String name);
     Resource loadAsResource(String filename, String prefix);
 
     void delete(String filename);

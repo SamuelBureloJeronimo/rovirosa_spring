@@ -1,5 +1,7 @@
 package com.rovirosa.rovirosa_spring.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,10 +9,12 @@ import com.rovirosa.rovirosa_spring.models.Categoria;
 import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
 import com.rovirosa.rovirosa_spring.models.Marca;
 import com.rovirosa.rovirosa_spring.models.Producto;
+import com.rovirosa.rovirosa_spring.models.PuntoDistribucion;
 import com.rovirosa.rovirosa_spring.repositories.CategoriaRepository;
 import com.rovirosa.rovirosa_spring.repositories.EmpresaConfigRepository;
 import com.rovirosa.rovirosa_spring.repositories.MarcaRepository;
 import com.rovirosa.rovirosa_spring.repositories.ProductoRepository;
+import com.rovirosa.rovirosa_spring.repositories.PuntoDistribucionRepository;
 import com.rovirosa.rovirosa_spring.services.interfaces.IAdmin;
 
 @Service
@@ -24,6 +28,8 @@ public class AdminService extends CommonService implements IAdmin {
     private ProductoRepository prodRep;
     @Autowired
     private EmpresaConfigRepository configRep;
+    @Autowired
+    private PuntoDistribucionRepository puntoRep;
 
     @Override
     public Marca newBrand(Marca marca) {
@@ -48,5 +54,10 @@ public class AdminService extends CommonService implements IAdmin {
     @Override
     public EmpresaConfig updateConfig(EmpresaConfig config) {
         return configRep.save(config);
+    }
+
+    @Override
+    public List<PuntoDistribucion> getPuntos() {
+        return puntoRep.findAll();
     }
 }
