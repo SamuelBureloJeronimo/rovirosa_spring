@@ -1,6 +1,7 @@
 package com.rovirosa.rovirosa_spring.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.models.Cliente;
+import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 import com.rovirosa.rovirosa_spring.services.AuthService;
 import com.rovirosa.rovirosa_spring.services.StorageService;
@@ -69,6 +71,18 @@ public class AuthController {
         res.put("error", "Credenciales inválidas");
         return ResponseEntity.status(401).body(res);
     }
+
+    @GetMapping("/get-coords")
+    public ResponseEntity<HashMap<String, List<String>>> getCoords() {
+        HashMap<String, List<String>> response = new HashMap<>();
+        List<String> direcciones = authServ.getCoords();
+        if (direcciones == null) {
+            return ResponseEntity.status(404).body(response);
+        }
+        response.put("coords", direcciones);
+        return ResponseEntity.status(200).body(response);
+    }
+    
 
     @PostMapping("/register")
     public ResponseEntity<HashMap<String, String>> registerClient(

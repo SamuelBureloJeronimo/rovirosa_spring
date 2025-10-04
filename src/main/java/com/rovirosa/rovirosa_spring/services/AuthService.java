@@ -1,13 +1,17 @@
 package com.rovirosa.rovirosa_spring.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rovirosa.rovirosa_spring.models.Cliente;
+import com.rovirosa.rovirosa_spring.models.PuntoVenta;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 import com.rovirosa.rovirosa_spring.repositories.ClienteRepository;
 import com.rovirosa.rovirosa_spring.repositories.DireccionRepository;
 import com.rovirosa.rovirosa_spring.repositories.PersonaRepository;
+import com.rovirosa.rovirosa_spring.repositories.PuntoVentaRepository;
 import com.rovirosa.rovirosa_spring.repositories.UsuarioRepository;
 import com.rovirosa.rovirosa_spring.services.interfaces.IAuth;
 import com.rovirosa.rovirosa_spring.utils.JwtUtil;
@@ -27,6 +31,8 @@ public class AuthService implements IAuth {
     private DireccionRepository dirRep;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private PuntoVentaRepository puntoRep;
 
     @Override
     public Usuario login(String user, String password) {
@@ -89,6 +95,13 @@ public class AuthService implements IAuth {
     public Boolean existTel(String tel) {
         // Busca por Telefono
         return this.userRep.existsByPersona_Tel(tel);
+    }
+
+    @Override
+    public List<String> getCoords() {
+        List<PuntoVenta> puntos = puntoRep.findAll();
+        return puntos.stream().map(PuntoVenta::getZonaPermitida).toList();
+
     }
 
 }

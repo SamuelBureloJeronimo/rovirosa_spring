@@ -32,20 +32,25 @@ public class Cliente implements Serializable {
     @Column(nullable = false, length = 50)
     private String ineBack;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dir_id", nullable = false)
     private Direccion direccion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pv_id", nullable = true)
+    private PuntoVenta puntoVenta;
 
     // Constructor vacío
     public Cliente() {
     }
 
-    public Cliente(Integer id, Usuario usuario, String ineFront, String ineBack, Direccion direccion) {
+    public Cliente(Integer id, Usuario usuario, String ineFront, String ineBack, Direccion direccion, PuntoVenta puntoVenta) {
         this.id = id;
         this.usuario = usuario;
         this.ineFront = ineFront;
         this.ineBack = ineBack;
         this.direccion = direccion;
+        this.puntoVenta = puntoVenta;
     }
 
     public Integer getId() {
@@ -86,6 +91,14 @@ public class Cliente implements Serializable {
 
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
+    }
+
+    public PuntoVenta getPuntoVenta() {
+        return puntoVenta;
+    }
+
+    public void setPuntoVenta(PuntoVenta puntoVenta) {
+        this.puntoVenta = puntoVenta;
     }
 
     @Override

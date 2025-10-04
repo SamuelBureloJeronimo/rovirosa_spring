@@ -13,8 +13,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "puntos_distribucion")
-public class PuntoDistribucion implements Serializable {
+@Table(name = "puntos_venta")
+public class PuntoVenta implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,14 +33,17 @@ public class PuntoDistribucion implements Serializable {
     @Column(name = "estado")
     private String estado;
 
+    @Column(name = "zona_permitida", nullable = true)
+    private String zonaPermitida;
+
     @Column(name = "descrip", length = 255)
     private String descrip;
 
     // Constructor vacío
-    public PuntoDistribucion() {}
+    public PuntoVenta() {}
 
     // Constructor con parametros
-    public PuntoDistribucion(Integer id, Direccion direccion, EmpresaConfig config, String estado,
+    public PuntoVenta(Integer id, Direccion direccion, EmpresaConfig config, String estado,
             String descrip) {
         this.id = id;
         this.direccion = direccion;
@@ -87,6 +90,14 @@ public class PuntoDistribucion implements Serializable {
 
     public void setDescrip(String descrip) {
         this.descrip = descrip;
+    }
+
+    public String getZonaPermitida() {
+        return zonaPermitida;
+    }
+
+    public void setZonaPermitida(String zonaPermitida) {
+        this.zonaPermitida = zonaPermitida;
     }
 
     

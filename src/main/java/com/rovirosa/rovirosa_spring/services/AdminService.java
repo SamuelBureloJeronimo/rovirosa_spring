@@ -6,15 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rovirosa.rovirosa_spring.models.Categoria;
+import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
 import com.rovirosa.rovirosa_spring.models.Marca;
 import com.rovirosa.rovirosa_spring.models.Producto;
-import com.rovirosa.rovirosa_spring.models.PuntoDistribucion;
+import com.rovirosa.rovirosa_spring.models.PuntoVenta;
 import com.rovirosa.rovirosa_spring.repositories.CategoriaRepository;
+import com.rovirosa.rovirosa_spring.repositories.DireccionRepository;
 import com.rovirosa.rovirosa_spring.repositories.EmpresaConfigRepository;
 import com.rovirosa.rovirosa_spring.repositories.MarcaRepository;
 import com.rovirosa.rovirosa_spring.repositories.ProductoRepository;
-import com.rovirosa.rovirosa_spring.repositories.PuntoDistribucionRepository;
+import com.rovirosa.rovirosa_spring.repositories.PuntoVentaRepository;
 import com.rovirosa.rovirosa_spring.services.interfaces.IAdmin;
 
 @Service
@@ -29,7 +31,11 @@ public class AdminService extends CommonService implements IAdmin {
     @Autowired
     private EmpresaConfigRepository configRep;
     @Autowired
-    private PuntoDistribucionRepository puntoRep;
+    private PuntoVentaRepository puntoRep;
+    @Autowired
+    private DireccionRepository direccionRep;
+    @Autowired
+    private StorageService storageService;
 
     @Override
     public Marca newBrand(Marca marca) {
@@ -57,7 +63,47 @@ public class AdminService extends CommonService implements IAdmin {
     }
 
     @Override
-    public List<PuntoDistribucion> getPuntos() {
+    public List<PuntoVenta> getPuntos() {
         return puntoRep.findAll();
+    }
+
+    @Override
+    public PuntoVenta updatePunto(PuntoVenta punto) {
+        return puntoRep.save(punto);
+    }
+
+    @Override
+    public PuntoVenta getPunto(Integer id) {
+        return puntoRep.findById(id).orElse(null);
+    }
+
+    @Override
+    public Direccion getDireccion(Integer id) {
+        return direccionRep.findById(id).orElse(null);
+    }
+
+    @Override
+    public Direccion updateDireccion(Direccion direccion) {
+        return direccionRep.save(direccion);
+    }
+
+    @Override
+    public void deleteProduct(Integer id) {
+        prodRep.findById(id).ifPresent(producto -> {
+            // Eliminar la imagen del producto del almacenamiento
+            storageService.delete(producto.getImagen());
+            // Eliminar el producto de la base de datos
+            prodRep.delete(producto);
+        });
+    }
+
+    @Override
+    public void updateProduct(Producto prod) {
+        prodRep.save(prod);
+    }
+
+    @Override
+    public Boolean updateZone(Integer id, String zone) {
+        return puntoRep.updateZona(id, zone) > 0;
     }
 }

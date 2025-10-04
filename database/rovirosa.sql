@@ -484,6 +484,7 @@ CREATE TABLE `puntos_distribucion` (
   `id` int NOT NULL AUTO_INCREMENT,
   `direc_id` int NOT NULL,
   `config_rfc` varchar(20) NOT NULL,
+  `zona_permitida` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `estado` enum('habilitado','deshabilitado') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'habilitado',
   `descrip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -500,7 +501,7 @@ CREATE TABLE `puntos_distribucion` (
 
 LOCK TABLES `puntos_distribucion` WRITE;
 /*!40000 ALTER TABLE `puntos_distribucion` DISABLE KEYS */;
-INSERT INTO `puntos_distribucion` VALUES (1,8,'DRO700527V91','habilitado','');
+INSERT INTO `puntos_distribucion` VALUES (1,8,'DRO700527V91','','habilitado','');
 /*!40000 ALTER TABLE `puntos_distribucion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -635,4 +636,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-30 21:12:46
+-- Dump completed on 2025-10-01  9:13:45

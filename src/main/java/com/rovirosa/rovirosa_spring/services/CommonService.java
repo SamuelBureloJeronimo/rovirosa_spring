@@ -50,4 +50,9 @@ public class CommonService implements ICommon {
         String logo = config.getLogo();
         return new AppInfoDTO(appName, logo);
     }
+
+    @Override
+    public Producto getProducto(Integer id) {
+        return prodRep.findById(id).orElse(null);
+    }
 }

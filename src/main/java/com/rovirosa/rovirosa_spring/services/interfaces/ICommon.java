@@ -12,4 +12,5 @@ public interface ICommon {
     public AppInfoDTO getInfoApp();
     public List<Categoria> getCategorias();
     public List<Producto> getProductos();
+    public Producto getProducto(Integer id);
 }

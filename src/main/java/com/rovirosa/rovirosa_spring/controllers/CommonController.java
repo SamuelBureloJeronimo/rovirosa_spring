@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +36,11 @@ public class CommonController {
     @GetMapping("/get-products")
     public List<Producto> getProductos() {
         return commonServ.getProductos();
+    }
+
+    @GetMapping("/get-product/{id}")
+    public Producto getProducto(@PathVariable Integer id) {
+        return commonServ.getProducto(id);
     }
 
     @GetMapping("/get-categs")
