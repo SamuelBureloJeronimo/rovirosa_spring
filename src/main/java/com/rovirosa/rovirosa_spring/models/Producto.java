@@ -27,28 +27,18 @@ public class Producto implements Serializable {
     @Column(name = "precio", nullable = false)
     private Double precio;
 
-    @Column(name = "stock", nullable = false)
-    private Integer stock;
-
-    @Column(name = "vendidos", nullable = false)
-    private Integer vendidos = 0;
-
-
 
     // Constructor vacío
     public Producto() {
     }
 
     // Constructor con parámetros
-    public Producto(Integer id, Marca marca, String imagen, String nombre, Double precio,
-            Integer stock, Integer vendidos) {
+    public Producto(Integer id, Marca marca, String imagen, String nombre, Double precio) {
         this.id = id;
         this.marca = marca;
         this.imagen = imagen;
         this.nombre = nombre;
         this.precio = precio;
-        this.stock = stock;
-        this.vendidos = vendidos;
     }
 
     public Integer getId() {
@@ -90,22 +80,5 @@ public class Producto implements Serializable {
     public void setPrecio(Double precio) {
         this.precio = precio;
     }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public Integer getVendidos() {
-        return vendidos;
-    }
-
-    public void setVendidos(Integer vendidos) {
-        this.vendidos = vendidos;
-    }
-
         
 }

@@ -15,25 +15,25 @@ public class Direccion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, precision = 10, scale = 8)
-    private BigDecimal latitud;
+    @Column(name = "lat", nullable = false, precision = 10, scale = 8)
+    private BigDecimal lat;
 
-    @Column(nullable = false, precision = 11, scale = 8)
-    private BigDecimal longitud;
+    @Column(name = "lng", nullable = false, precision = 11, scale = 8)
+    private BigDecimal lng;
 
-    @Column(nullable = false, length = 255)
-    private String referencia;
+    @Column(name = "ref", nullable = false, length = 255)
+    private String ref;
 
     // Constructor vacío
     public Direccion() {
     }
 
     // Constructor con parámetros
-    public Direccion(Integer id, BigDecimal latitud, BigDecimal longitud, String referencia) {
+    public Direccion(Integer id, BigDecimal lat, BigDecimal lng, String ref) {
         this.id = id;
-        this.latitud = latitud;
-        this.longitud = longitud;
-        this.referencia = referencia;
+        this.lat = lat;
+        this.lng = lng;
+        this.ref = ref;
     }
 
     // Getters y Setters
@@ -45,27 +45,27 @@ public class Direccion implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getLatitud() {
-        return latitud;
+    public BigDecimal getLat() {
+        return lat;
     }
 
-    public void setLatitud(BigDecimal latitud) {
-        this.latitud = latitud;
+    public void setLat(BigDecimal latitud) {
+        this.lat = latitud;
     }
 
-    public BigDecimal getLongitud() {
-        return longitud;
+    public BigDecimal getLng() {
+        return lng;
     }
 
-    public void setLongitud(BigDecimal longitud) {
-        this.longitud = longitud;
+    public void setLng(BigDecimal longitud) {
+        this.lng = longitud;
     }
 
-    public String getReferencia() {
-        return referencia;
+    public String getRef() {
+        return ref;
     }
 
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
+    public void setRef(String referencia) {
+        this.ref = referencia;
     }
 }

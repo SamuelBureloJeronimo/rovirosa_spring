@@ -1,0 +1,445 @@
+Enum "descuentos_config_tipo_enum" {
+  "porcentaje"
+  "fijo"
+}
+
+Enum "descuentos_config_objetivo_enum" {
+  "producto"
+  "categoria"
+  "marca"
+}
+
+Enum "horarios_laborales_dia_semana_enum" {
+  "lunes"
+  "martes"
+  "miercoles"
+  "jueves"
+  "viernes"
+  "sabado"
+  "domingo"
+}
+
+Enum "horarios_laborales_estado_enum" {
+  "abierto"
+  "cerrado"
+}
+
+Enum "incidencias_tipo_enum" {
+  "retraso"
+  "desvio_ruta"
+  "falla_vehiculo"
+  "choque"
+  "robo"
+  "error_direccion"
+}
+
+Enum "incidencias_estado_enum" {
+  "pendiente"
+  "en_revision"
+  "resuelto"
+  "cancelado"
+}
+
+Enum "pagos_metodo_enum" {
+  "efectivo"
+  "transferencia"
+  "terminal"
+  "link_mp"
+}
+
+Enum "pagos_estado_enum" {
+  "pendiente"
+  "pagado"
+  "rechazado"
+}
+
+Enum "personas_sexo_enum" {
+  "MASCULINO"
+  "FEMENINO"
+}
+
+Enum "puntos_venta_estado_enum" {
+  "habilitado"
+  "deshabilitado"
+}
+
+Enum "repartidores_estado_enum" {
+  "en_espera"
+  "cargando"
+  "en_ruta"
+  "descansando"
+}
+
+Enum "rutas_estado_enum" {
+  "pendiente"
+  "en_ruta"
+  "finalizada"
+}
+
+Enum "usuarios_estado_enum" {
+  "activo"
+  "suspendido"
+}
+
+Enum "usuarios_rol_enum" {
+  "ADMIN"
+  "GERENTE"
+  "CLIENTE"
+  "REPARTIDOR"
+}
+
+Enum "vehiculos_tipo_enum" {
+  "moto"
+  "auto"
+  "camioneta"
+  "bicicleta"
+}
+
+Table "catalogo_pv" {
+  "id" int [pk, not null, increment]
+  "prd_id" int [not null, note: 'ID del producto']
+  "pv_id" int [not null, note: 'ID del punto de venta']
+  "stock" int [not null, note: 'Cantidad disponible en el punto de venta']
+  "vendidos" int [not null, default: 0, note: 'Cantidad de productos vendidos']
+}
+
+Table "categorias" {
+  "id" int [pk, not null, increment]
+  "nombre" varchar(50) [not null]
+}
+
+Table "chat_venta" {
+  "id" int [pk, not null, increment]
+  "vnta_id" int [not null, note: 'ID de la venta']
+  "user_id" int [not null, note: 'ID del usuario que envía el mensaje (cliente o repartidor)']
+  "mensaje" varchar(255) [not null, note: 'Mensaje de texto']
+  "enviado" timestamp [not null, default: `now()`, note: 'Fecha y hora de envío del mensaje']
+  "archivo" varchar(50) [note: 'Nombre del archivo si se envió una imagen o documento']
+}
+
+Table "clientes" {
+  "id" int [pk, not null, increment]
+  "user_id" int [not null, note: 'ID del usuario']
+  "dir_id" int [not null, note: 'ID de la dirección']
+  "pv_id" int [not null, note: 'ID del punto de venta']
+  "ine_front" varchar(50) [not null, note: 'INE frontal']
+  "ine_back" varchar(50) [not null, note: 'INE posterior']
+  "stricks" int [not null, default: 0, note: 'Número de stricks (máximo 3)']
+  "p_cancel" int [not null, default: 0, note: 'Número de cancelaciones (máximo 3 al mes)']
+  "last_cancel" date [note: 'Fecha del último pedido cancelado']
+}
+
+Table "descuento_categ" {
+  "id" int [pk, not null, increment]
+  "categ_id" int [not null, note: 'ID de la categoría']
+  "config_id" int [not null, note: 'ID de la configuración del descuento']
+}
+
+Table "descuento_marca" {
+  "id" int [pk, not null, increment]
+  "marca_id" int [note: 'ID de la marca']
+  "config_id" int [note: 'ID de la configuración del descuento']
+}
+
+Table "descuentos_config" {
+  "id" int [pk, not null, increment]
+  "tipo" descuentos_config_tipo_enum [not null, note: '1 = Porcentaje, 2 = Monto Fijo']
+  "valor" double [not null, note: 'Valor del descuento (0.10 = 10% o 50 = $50)']
+  "objetivo" descuentos_config_objetivo_enum [not null, note: '1 = Producto, 2 = Categoria']
+  "fech_in" datetime [not null, note: 'Fecha de inicio del descuento']
+  "fech_fin" datetime [note: 'Fecha de fin del descuento']
+  "banner" varchar(100) [note: 'Si no sube un banner no se muestra en la pantalla de inicio']
+}
+
+Table "descuentos_producto" {
+  "id" int [pk, not null, increment]
+  "prd_id" int [not null, note: 'ID del producto']
+  "config_id" int [not null, note: 'ID de la configuración del descuento']
+}
+
+Table "detalles_venta" {
+  "id" int [pk, not null, increment]
+  "vnta_id" int [not null, note: 'ID de la venta']
+  "prd_id" int [not null, note: 'ID del producto']
+  "cant_in" int [not null, note: 'Cantidad inicial']
+  "cant_fin" int [note: 'Cantidad final (en caso de que el cliente no pague todo se ajusta la cantidad)']
+  "precio_unit" decimal(10,2) [not null, note: 'Precio unitario al momento de la venta']
+  "desc_unit" decimal(10,2) [not null, note: 'Descuento aplicado por unidad en decimal (0.10) = 10%']
+}
+
+Table "direcciones" {
+  "id" int [pk, not null, increment]
+  "lat" decimal(10,8) [not null, note: 'Latitud de la dirección']
+  "lng" decimal(11,8) [not null, note: 'Longitud de la dirección']
+  "ref" varchar(255) [not null, note: 'Referencia de la dirección']
+}
+
+Table "empresa_config" {
+  "rfc" varchar(20) [pk, not null, note: 'RFC de la empresa']
+  "nombre" varchar(50) [not null, note: 'Nombre o razón social de la empresa']
+  "logo" varchar(255) [not null, note: 'Logo de la empresa']
+  "descrip" varchar(255) [note: 'Descripción de la empresa']
+  "monto_min" int [not null, default: 150, note: 'Monto mínimo para todos los puntos de venta']
+  "email_app" varchar(100) [note: 'Email de la aplicación']
+  "codigo_app" varchar(25) [note: 'Código de la aplicación (lrhm upio jpnh tvpv)']
+}
+
+Table "estados_envio" {
+  "id" int [pk, not null, increment]
+  "vnta_id" int [not null, note: 'ID de la venta']
+  "estado" int [not null, default: 1, note: '1 = Pendiente, 2 = En preparación, 3 = En ruta, 4 = Entregado, 5 = Cancelado']
+  "fecha" timestamp [not null, default: `now()`, note: 'Fecha y hora del cambio de estado']
+
+  Indexes {
+    vnta_id [type: btree, name: "vnta_id"]
+  }
+}
+
+Table "gerente_pv" {
+  "id" int [pk, not null, increment]
+  "user_id" int [not null]
+  "pv_id" int [not null]
+  "activo" tinyint(1) [default: 1]
+
+  Indexes {
+    pv_id [type: btree, name: "pv_id"]
+    user_id [type: btree, name: "user_id"]
+  }
+}
+
+Table "horarios_laborales" {
+  "id" int [pk, not null, increment]
+  "pv_id" int [not null, note: 'ID del punto de venta']
+  "dia_semana" horarios_laborales_dia_semana_enum [not null]
+  "h_apertura" time [not null]
+  "h_cierre" time [not null]
+  "estado" horarios_laborales_estado_enum [not null, default: 'abierto']
+}
+
+Table "incidencias" {
+  "id" int [pk, not null, increment]
+  "ruta_id" int [not null]
+  "rep_id" int [not null]
+  "tipo" incidencias_tipo_enum [not null]
+  "descrip" text
+  "fecha" timestamp [default: `CURRENT_TIMESTAMP`]
+  "lat" decimal(10,6)
+  "lng" decimal(10,6)
+  "estado" incidencias_estado_enum [default: 'pendiente']
+
+  Indexes {
+    rep_id [type: btree, name: "rep_id"]
+    ruta_id [type: btree, name: "ruta_id"]
+  }
+}
+
+Table "marcas" {
+  "id" int [pk, not null, increment]
+  "categ_id" int [not null]
+  "nombre" varchar(50) [not null]
+  "logo" varchar(100) [not null]
+}
+
+Table "notificaciones" {
+  "id" int [pk, not null, increment]
+  "user_id" int [not null, note: 'ID del usuario al que se le envía la notificación']
+  "titulo" varchar(50) [not null, note: 'Título de la notificación']
+  "subtitulo" varchar(150) [not null, note: 'Subtitulo de la notificación']
+}
+
+Table "pagos" {
+  "id" int [pk, not null, increment]
+  "metodo" pagos_metodo_enum [not null, note: 'Método de pago']
+  "monto" decimal(10,2) [not null, note: 'Monto total a pagar']
+  "paga_con" decimal(10,2) [note: 'Monto con el que paga el cliente (solo en efectivo)']
+  "fecha" timestamp [note: 'Fecha y hora del pago']
+  "compr" varchar(100) [note: 'Descripción de la compra']
+  "estado" pagos_estado_enum [not null, default: 'pendiente']
+}
+
+Table "personas" {
+  "id" int [pk, not null, increment]
+  "curp" varchar(18) [unique, not null]
+  "tel" varchar(50) [unique, not null]
+  "nombre" varchar(50) [not null]
+  "app" varchar(50) [not null]
+  "apm" varchar(50) [not null]
+  "fech_nac" date [not null]
+  "sexo" personas_sexo_enum [not null]
+}
+
+Table "productos" {
+  "id" int [pk, not null, increment]
+  "marca_id" int [not null, note: 'ID de la marca']
+  "imagen" varchar(100) [not null, note: 'Imagen del producto']
+  "nombre" varchar(100) [not null, note: 'Nombre del producto']
+  "precio" decimal(10,2) [not null, note: 'Precio del producto']
+}
+
+Table "puntos_venta" {
+  "id" int [pk, not null, increment]
+  "direc_id" int [not null, note: 'ID de la dirección']
+  "config_rfc" varchar(20) [not null, note: 'RFC de la empresa']
+  "zona_permitida" text [not null, note: 'Zona permitida en formato JSON [{"lat":0,"lng":0},{"lat":0,"lng":0}]']
+  "estado" puntos_venta_estado_enum [not null, default: 'habilitado']
+  "descrip" varchar(255) [note: 'Descripción del punto de venta']
+}
+
+Table "repart_asign" {
+  "id" int [pk, not null, increment]
+  "rep_id" int [not null, note: 'ID del repartidor']
+  "pv_id" int [not null, note: 'ID del punto de venta']
+  "fecha_inicio" date [not null, note: 'Fecha en la que se inició la asignación']
+  "fecha_fin" date [note: 'Fecha en la que se terminó la asignación']
+  "activo" tinyint(1) [default: 1, note: '1 = Activo, 0 = Inactivo']
+
+  Indexes {
+    pv_id [type: btree, name: "pv_id"]
+    rep_id [type: btree, name: "repartidor_id"]
+  }
+}
+
+Table "repartidores" {
+  "id" int [pk, not null, increment]
+  "user_id" int [not null]
+  "veh_id" int
+  "lat" decimal(10,6)
+  "lng" decimal(10,6)
+  "disponible" tinyint(1) [default: 1]
+  "estado" repartidores_estado_enum [default: 'en_espera']
+  "hora_inicio" time
+  "hora_fin" time
+
+  Indexes {
+    user_id [type: btree, name: "user_id"]
+    veh_id [type: btree, name: "veh_id"]
+  }
+}
+
+Table "ruta_detalle" {
+  "id" int [pk, not null, increment]
+  "ruta_id" int [not null, note: 'ID de la ruta']
+  "venta_id" int [not null, note: 'ID de la venta']
+  "lat" decimal(11,8) [not null, note: 'Latitud del punto de entrega']
+  "lng" decimal(11,8) [not null, note: 'Longitud del punto de entrega']
+
+  Indexes {
+    ruta_id [type: btree, name: "ruta_id"]
+    venta_id [type: btree, name: "venta_id"]
+  }
+}
+
+Table "rutas" {
+  "id" int [pk, not null, increment]
+  "rep_id" int [not null, note: 'ID del repartidor']
+  "fech_in" timestamp [not null, default: `now()`, note: 'Fecha de creación de la ruta']
+  "fech_fin" timestamp [not null, note: 'Fecha de fin de la ruta']
+  "estado" rutas_estado_enum [not null, default: 'pendiente']
+
+  Indexes {
+    rep_id [type: btree, name: "repartidor_id"]
+  }
+}
+
+Table "usuarios" {
+  "id" int [pk, not null, increment]
+  "per_id" int [not null]
+  "correo" varchar(100) [unique, not null]
+  "password" varchar(255) [not null]
+  "estado" usuarios_estado_enum [not null, default: 'activo', note: '0 = Activa, 1 = Suspendida']
+  "created" timestamp [not null, default: `now()`]
+  "rol" usuarios_rol_enum [not null, default: 'CLIENTE']
+}
+
+Table "vehiculos" {
+  "id" int [pk, not null, increment]
+  "placa" varchar(15) [unique, not null]
+  "marca" varchar(50) [not null]
+  "modelo" varchar(50) [not null]
+  "activo" tinyint(1) [default: 1]
+  "tipo" vehiculos_tipo_enum [not null]
+  "capacidad_kg" decimal(6,2) [not null, default: 0.00]
+  "volumen_m3" decimal(6,3) [not null, default: 0.000]
+  "factor_uso_max" decimal(4,2) [not null, default: 0.80, note: 'Porcentaje máximo de uso permitido']
+}
+
+Table "ventas" {
+  "id" int [pk, not null, increment]
+  "cliente_id" int [note: 'ID del cliente']
+  "pago_id" int [not null, note: 'ID del pago']
+  "fecha_inic" timestamp [not null, default: `now()`, note: 'Fecha y hora de la creación de la venta']
+  "fecha_fin" timestamp [note: 'Fecha y hora de la finalización de la venta']
+  "calif" int [note: 'Calificación del usuario por la venta']
+}
+
+Ref "FK_catalogo_productos":"productos"."id" < "catalogo_pv"."prd_id" [update: cascade, delete: cascade]
+
+Ref "FK_catalogo_pv":"puntos_venta"."id" < "catalogo_pv"."pv_id" [update: cascade, delete: cascade]
+
+Ref "FK__ventas":"ventas"."id" < "chat_venta"."vnta_id" [update: cascade, delete: cascade]
+
+Ref "FK_chat_venta_usuarios":"usuarios"."id" < "chat_venta"."user_id" [update: cascade, delete: cascade]
+
+Ref "FK_clientes_direcciones":"direcciones"."id" < "clientes"."dir_id"
+
+Ref "FK_clientes_usuarios":"usuarios"."id" < "clientes"."user_id" [update: cascade, delete: cascade]
+
+Ref "FK_pv_cliente":"puntos_venta"."id" < "clientes"."pv_id" [delete: restrict]
+
+Ref "FK_descuento_categ_categorias":"categorias"."id" < "descuento_categ"."categ_id" [update: cascade, delete: cascade]
+
+Ref "FK_descuento_categ_descuentos_config":"descuentos_config"."id" < "descuento_categ"."config_id" [update: cascade, delete: cascade]
+
+Ref "FK_descuento_marca_descuentos_config":"descuentos_config"."id" < "descuento_marca"."config_id" [update: cascade, delete: cascade]
+
+Ref "FK_descuento_marca_descuentos_config_2":"descuentos_config"."id" < "descuento_marca"."marca_id" [update: cascade, delete: cascade]
+
+Ref "FK_descuentos_producto_productos":"productos"."id" < "descuentos_producto"."prd_id" [update: cascade, delete: cascade]
+
+Ref "FK_descuentos_producto_descuentos_config":"descuentos_config"."id" < "descuentos_producto"."config_id" [update: cascade, delete: cascade]
+
+Ref "FK_detalles_venta_producto":"productos"."id" < "detalles_venta"."prd_id" [update: cascade, delete: cascade]
+
+Ref "FK_detalles_venta_ventas":"ventas"."id" < "detalles_venta"."vnta_id" [update: cascade, delete: cascade]
+
+Ref "detalles_envio_ibfk_1":"ventas"."id" < "estados_envio"."vnta_id" [delete: cascade]
+
+Ref "gerente_pv_ibfk_2":"puntos_venta"."id" < "gerente_pv"."pv_id" [update: cascade, delete: cascade]
+
+Ref "gerente_pv_ibfk_1":"usuarios"."id" < "gerente_pv"."user_id" [update: cascade, delete: cascade]
+
+Ref "FK_horarios_punto_venta":"puntos_venta"."id" < "horarios_laborales"."pv_id" [delete: cascade]
+
+Ref "incidencias_ibfk_2":"repartidores"."id" < "incidencias"."rep_id" [delete: cascade]
+
+Ref "incidencias_ibfk_1":"rutas"."id" < "incidencias"."ruta_id" [delete: cascade]
+
+Ref "FK_marcas_categoria":"categorias"."id" < "marcas"."categ_id" [update: cascade, delete: cascade]
+
+Ref "FK_notificaciones_usuarios":"usuarios"."id" < "notificaciones"."user_id" [update: cascade, delete: cascade]
+
+Ref "FK_productos_marcas":"marcas"."id" < "productos"."marca_id" [update: cascade, delete: restrict]
+
+Ref "FK_puntos_venta_empresa_config":"empresa_config"."rfc" < "puntos_venta"."config_rfc" [update: cascade, delete: restrict]
+
+Ref "FK_puntos_venta_direcciones":"direcciones"."id" < "puntos_venta"."direc_id"
+
+Ref "repartidor_asignacion_ibfk_1":"repartidores"."id" < "repart_asign"."rep_id"
+
+Ref "repartidor_asignacion_ibfk_2":"puntos_venta"."id" < "repart_asign"."pv_id"
+
+Ref "repartidores_ibfk_1":"usuarios"."id" < "repartidores"."user_id" [update: cascade, delete: cascade]
+
+Ref "repartidores_ibfk_2":"vehiculos"."id" < "repartidores"."veh_id" [update: cascade, delete: set null]
+
+Ref "ruta_detalle_ibfk_1":"rutas"."id" < "ruta_detalle"."ruta_id" [delete: cascade]
+
+Ref "ruta_detalle_ibfk_2":"ventas"."id" < "ruta_detalle"."venta_id" [delete: cascade]
+
+Ref "rutas_ibfk_1":"repartidores"."id" < "rutas"."rep_id"
+
+Ref "FK_usuarios_personas":"personas"."id" < "usuarios"."per_id" [update: cascade, delete: cascade]
+
+Ref "FK_ventas_pagos":"pagos"."id" < "ventas"."pago_id"
+
+Ref "FK_ventas_clientes":"clientes"."id" < "ventas"."cliente_id" [delete: restrict]

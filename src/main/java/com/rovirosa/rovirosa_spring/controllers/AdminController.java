@@ -61,8 +61,8 @@ public class AdminController extends CommonController {
         Direccion direccionRes = adminServ.getDireccion(id);
         if (direccionRes == null)
             return ResponseEntity.status(404).body(response);
-        direccionRes.setLatitud(lat);
-        direccionRes.setLongitud(lon);
+        direccionRes.setLat(lat);
+        direccionRes.setLng(lon);
         adminServ.updateDireccion(direccionRes);
         response.put("success", "Coordenadas actualizadas.");
         return ResponseEntity.status(200).body(response);

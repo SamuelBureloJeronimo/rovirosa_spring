@@ -22,34 +22,29 @@ public class PuntoVenta implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "direc_id", nullable = false)
     private Direccion direccion;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "config_rfc", nullable = false)
     private EmpresaConfig config;
-
-    @Column(name = "estado")
-    private String estado;
 
     @Column(name = "zona_permitida", nullable = true)
     private String zonaPermitida;
 
-    @Column(name = "descrip", length = 255)
-    private String descrip;
+    @Column(name = "estado")
+    private String estado;
 
     // Constructor vacío
     public PuntoVenta() {}
 
     // Constructor con parametros
-    public PuntoVenta(Integer id, Direccion direccion, EmpresaConfig config, String estado,
-            String descrip) {
+    public PuntoVenta(Integer id, Direccion direccion, EmpresaConfig config, String estado) {
         this.id = id;
         this.direccion = direccion;
         this.config = config;
         this.estado = estado;
-        this.descrip = descrip;
     }
 
     public Integer getId() {
@@ -82,14 +77,6 @@ public class PuntoVenta implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public String getDescrip() {
-        return descrip;
-    }
-
-    public void setDescrip(String descrip) {
-        this.descrip = descrip;
     }
 
     public String getZonaPermitida() {

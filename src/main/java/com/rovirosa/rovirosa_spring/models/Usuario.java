@@ -1,6 +1,7 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import jakarta.persistence.*;
 
@@ -26,6 +27,9 @@ public class Usuario implements Serializable {
 
     @Column(name = "estado", nullable = false, length = 255)
     private String estado = "activo";
+
+    @Column(name = "created", nullable = false, length = 50)
+    private Timestamp created;
 
     @Column(name = "rol", nullable = false, length = 20)
     private String rol = "CLIENTE";
