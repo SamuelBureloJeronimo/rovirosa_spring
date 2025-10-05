@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.43, for Linux (x86_64)
 --
--- Host: localhost    Database: rovirosa_db
+-- Host: localhost    Database: rovirosa
 -- ------------------------------------------------------
 -- Server version	8.0.43-0ubuntu0.24.04.2
 
@@ -136,7 +136,7 @@ LOCK TABLES `clientes` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `descuento_categ`
+-- Table structure for table `descuentos_categ`
 --
 
 DROP TABLE IF EXISTS `descuentos_categ`;
@@ -161,34 +161,6 @@ CREATE TABLE `descuentos_categ` (
 LOCK TABLES `descuentos_categ` WRITE;
 /*!40000 ALTER TABLE `descuentos_categ` DISABLE KEYS */;
 /*!40000 ALTER TABLE `descuentos_categ` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `descuentos_marca`
---
-
-DROP TABLE IF EXISTS `descuentos_marca`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `descuentos_marca` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `marca_id` int DEFAULT NULL COMMENT 'ID de la marca',
-  `config_id` int DEFAULT NULL COMMENT 'ID de la configuración del descuento',
-  PRIMARY KEY (`id`),
-  KEY `FK_descuento_marca_descuentos_config` (`config_id`),
-  KEY `FK_descuento_marca_descuentos_config_2` (`marca_id`),
-  CONSTRAINT `FK_descuento_marca_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_descuento_marca_descuentos_config_2` FOREIGN KEY (`marca_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `descuentos_marca`
---
-
-LOCK TABLES `descuentos_marca` WRITE;
-/*!40000 ALTER TABLE `descuentos_marca` DISABLE KEYS */;
-/*!40000 ALTER TABLE `descuentos_marca` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -217,6 +189,34 @@ CREATE TABLE `descuentos_config` (
 LOCK TABLES `descuentos_config` WRITE;
 /*!40000 ALTER TABLE `descuentos_config` DISABLE KEYS */;
 /*!40000 ALTER TABLE `descuentos_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `descuentos_marca`
+--
+
+DROP TABLE IF EXISTS `descuentos_marca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `descuentos_marca` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `marca_id` int DEFAULT NULL COMMENT 'ID de la marca',
+  `config_id` int DEFAULT NULL COMMENT 'ID de la configuración del descuento',
+  PRIMARY KEY (`id`),
+  KEY `FK_descuento_marca_descuentos_config` (`config_id`),
+  KEY `FK_descuento_marca_descuentos_config_2` (`marca_id`),
+  CONSTRAINT `FK_descuento_marca_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_descuento_marca_descuentos_config_2` FOREIGN KEY (`marca_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `descuentos_marca`
+--
+
+LOCK TABLES `descuentos_marca` WRITE;
+/*!40000 ALTER TABLE `descuentos_marca` DISABLE KEYS */;
+/*!40000 ALTER TABLE `descuentos_marca` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -360,13 +360,13 @@ LOCK TABLES `estados_envio` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `gerente_pv`
+-- Table structure for table `gerentes_pv`
 --
 
-DROP TABLE IF EXISTS `gerente_pv`;
+DROP TABLE IF EXISTS `gerentes_pv`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `gerente_pv` (
+CREATE TABLE `gerentes_pv` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `pv_id` int NOT NULL,
@@ -374,18 +374,18 @@ CREATE TABLE `gerente_pv` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `pv_id` (`pv_id`),
-  CONSTRAINT `gerente_pv_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `gerente_pv_ibfk_2` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `gerentes_pv_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `gerentes_pv_ibfk_2` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `gerente_pv`
+-- Dumping data for table `gerentes_pv`
 --
 
-LOCK TABLES `gerente_pv` WRITE;
-/*!40000 ALTER TABLE `gerente_pv` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gerente_pv` ENABLE KEYS */;
+LOCK TABLES `gerentes_pv` WRITE;
+/*!40000 ALTER TABLE `gerentes_pv` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gerentes_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -666,7 +666,6 @@ CREATE TABLE `repartidores` (
   `veh_id` int DEFAULT NULL,
   `lat` decimal(10,6) DEFAULT NULL,
   `lng` decimal(10,6) DEFAULT NULL,
-  `disponible` tinyint(1) DEFAULT '1',
   `estado` enum('en_espera','cargando','en_ruta','descansando') DEFAULT 'en_espera',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
@@ -686,36 +685,6 @@ LOCK TABLES `repartidores` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ruta_detalle`
---
-
-DROP TABLE IF EXISTS `ruta_detalle`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ruta_detalle` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `ruta_id` int NOT NULL COMMENT 'ID de la ruta',
-  `venta_id` int NOT NULL COMMENT 'ID de la venta',
-  `lat` decimal(11,8) NOT NULL COMMENT 'Latitud del punto de entrega',
-  `lng` decimal(11,8) NOT NULL COMMENT 'Longitud del punto de entrega',
-  PRIMARY KEY (`id`),
-  KEY `ruta_id` (`ruta_id`),
-  KEY `venta_id` (`venta_id`),
-  CONSTRAINT `ruta_detalle_ibfk_1` FOREIGN KEY (`ruta_id`) REFERENCES `rutas` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `ruta_detalle_ibfk_2` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ruta_detalle`
---
-
-LOCK TABLES `ruta_detalle` WRITE;
-/*!40000 ALTER TABLE `ruta_detalle` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ruta_detalle` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `rutas`
 --
 
@@ -726,7 +695,7 @@ CREATE TABLE `rutas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rep_id` int NOT NULL COMMENT 'ID del repartidor',
   `fech_in` timestamp NOT NULL DEFAULT (now()) COMMENT 'Fecha de creación de la ruta',
-  `fech_fin` timestamp NOT NULL COMMENT 'Fecha de fin de la ruta',
+  `fech_fin` timestamp NULL DEFAULT NULL COMMENT 'Fecha de fin de la ruta',
   `estado` enum('pendiente','en_ruta','finalizada') NOT NULL DEFAULT 'pendiente',
   PRIMARY KEY (`id`),
   KEY `repartidor_id` (`rep_id`),
@@ -741,6 +710,36 @@ CREATE TABLE `rutas` (
 LOCK TABLES `rutas` WRITE;
 /*!40000 ALTER TABLE `rutas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `rutas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rutas_detalle`
+--
+
+DROP TABLE IF EXISTS `rutas_detalle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rutas_detalle` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ruta_id` int NOT NULL COMMENT 'ID de la ruta',
+  `venta_id` int NOT NULL COMMENT 'ID de la venta',
+  `lat` decimal(11,8) NOT NULL COMMENT 'Latitud del punto de entrega',
+  `lng` decimal(11,8) NOT NULL COMMENT 'Longitud del punto de entrega',
+  PRIMARY KEY (`id`),
+  KEY `ruta_id` (`ruta_id`),
+  KEY `venta_id` (`venta_id`),
+  CONSTRAINT `ruta_detalle_ibfk_1` FOREIGN KEY (`ruta_id`) REFERENCES `rutas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ruta_detalle_ibfk_2` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rutas_detalle`
+--
+
+LOCK TABLES `rutas_detalle` WRITE;
+/*!40000 ALTER TABLE `rutas_detalle` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rutas_detalle` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -845,4 +844,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-04 19:44:23
+-- Dump completed on 2025-10-05 12:50:44
