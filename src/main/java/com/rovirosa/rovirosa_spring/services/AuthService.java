@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rovirosa.rovirosa_spring.models.Cliente;
+import com.rovirosa.rovirosa_spring.models.Direccion;
+import com.rovirosa.rovirosa_spring.models.Persona;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 import com.rovirosa.rovirosa_spring.repositories.ClienteRepository;
@@ -36,18 +38,25 @@ public class AuthService implements IAuth {
 
     @Override
     public Usuario login(String user, String password) {
+        System.out.println("user: " + user + ", pass: " + password);
         // Buscar por correo y contraseña
+        System.out.println("Buscando por correo...");
         Usuario us = this.userRep.findByPasswordAndCorreo(password, user);
+        System.out.println("Usuario encontrado: " + us);
         if (us != null)
             return us;
 
         // Si no encuentra busca por curp
+        System.out.println("Buscando por CURP...");
         us = this.userRep.findByPasswordAndPersona_Curp(password, user);
+        System.out.println("Usuario encontrado por CURP: " + us);
         if (us != null)
             return us;
 
         // Si no encuentra busca por Telefono
+        System.out.println("Buscando por Teléfono...");
         us = this.userRep.findByPasswordAndPersona_Tel(password, user);
+        System.out.println("Usuario encontrado por Teléfono: " + us);
         if (us != null)
             return us;
 
@@ -57,8 +66,10 @@ public class AuthService implements IAuth {
     @Transactional
     @Override
     public String register(Cliente cliente) {
-        personRep.save(cliente.getUsuario().getPersona());
-        dirRep.save(cliente.getDireccion());
+        Persona persona = personRep.save(cliente.getUsuario().getPersona());
+        cliente.getUsuario().setPersona(persona);
+        Direccion direccion = dirRep.save(cliente.getDireccion());
+        cliente.setDireccion(direccion);
         userRep.save(cliente.getUsuario());
         clientRep.save(cliente);
 
@@ -99,8 +110,8 @@ public class AuthService implements IAuth {
 
     @Override
     public List<String> getCoords() {
-        List<PuntoVenta> puntos = puntoRep.findAll();
-        return puntos.stream().map(PuntoVenta::getZonaPermitida).toList();
+        List<PuntoVenta> puntos = puntoRep.findAll().isEmpty() ? null : puntoRep.findAll();
+        return puntos != null ? puntos.stream().map(PuntoVenta::getZonaPermitida).toList() : null;
 
     }
 

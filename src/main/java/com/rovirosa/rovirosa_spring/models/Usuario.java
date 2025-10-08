@@ -3,10 +3,13 @@ package com.rovirosa.rovirosa_spring.models;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -16,7 +19,7 @@ public class Usuario implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "persona_id", nullable = false)
+    @JoinColumn(name = "per_id", nullable = false)
     private Persona persona;
 
     @Column(name = "correo", nullable = false, length = 100, unique = true)

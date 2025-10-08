@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.models.Categoria;
 import com.rovirosa.rovirosa_spring.models.Direccion;
@@ -38,8 +40,13 @@ public class AdminService extends CommonService implements IAdmin {
     private StorageService storageService;
 
     @Override
-    public Marca newBrand(Marca marca) {
-        return marcaRep.save(marca);
+    public Marca newBrand(Marca marca, MultipartFile logo) {
+        marca.setLogo("marcas/"+storageService.generateFileName());
+        Marca m = marcaRep.save(marca);
+        if (m.getId() != null)
+            storageService.store(logo, "", m.getLogo());
+        return m;
+
     }
 
     @Override
@@ -103,6 +110,7 @@ public class AdminService extends CommonService implements IAdmin {
     }
 
     @Override
+    @Transactional
     public Boolean updateZone(Integer id, String zone) {
         return puntoRep.updateZona(id, zone) > 0;
     }

@@ -2,6 +2,8 @@ package com.rovirosa.rovirosa_spring.services.interfaces;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.rovirosa.rovirosa_spring.models.Categoria;
 import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
@@ -11,7 +13,7 @@ import com.rovirosa.rovirosa_spring.models.PuntoVenta;
 
 public interface IAdmin {
 
-    public Marca newBrand(Marca marca);
+    public Marca newBrand(Marca marca, MultipartFile logo);
     public EmpresaConfig getConfig();
     public Direccion getDireccion(Integer id);
     public Direccion updateDireccion(Direccion direccion);

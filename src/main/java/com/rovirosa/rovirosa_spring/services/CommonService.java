@@ -45,7 +45,10 @@ public class CommonService implements ICommon {
 
     @Override
     public AppInfoDTO getInfoApp() {
-        EmpresaConfig config = configRep.findAll().getFirst();
+        EmpresaConfig config = configRep.findAll().isEmpty() ? null : configRep.findAll().get(0);
+        if (config == null) {
+            return new AppInfoDTO("Rovirosa", "default-logo.jpg");
+        }
         String appName = config.getNombre();
         String logo = config.getLogo();
         return new AppInfoDTO(appName, logo);

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.models.Cliente;
-import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 import com.rovirosa.rovirosa_spring.services.AuthService;
 import com.rovirosa.rovirosa_spring.services.StorageService;
@@ -59,6 +58,7 @@ public class AuthController {
     public ResponseEntity<HashMap<String, String>> login(@RequestParam String user, @RequestParam String password) {
         Usuario us = authServ.login(user, password);
         HashMap<String, String> res = new HashMap<>();
+        System.out.println(us);
         if (us != null) {
             if (us.getEstado().equals("suspendido")) {
                 res.put("msg", "Tu cuenta ha sido suspendida por mal uso de la aplicación.");

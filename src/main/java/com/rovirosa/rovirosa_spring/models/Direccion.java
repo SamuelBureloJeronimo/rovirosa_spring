@@ -3,10 +3,13 @@ package com.rovirosa.rovirosa_spring.models;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "direcciones")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Direccion implements Serializable {
 
     private static final long serialVersionUID = 1L;

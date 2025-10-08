@@ -39,10 +39,11 @@ public class AdminController extends CommonController {
     @Autowired
     private StorageService storageService;
 
-    @PostMapping("/update-avalible-zone")
+    @PutMapping("/update-avalible-zone")
     public ResponseEntity<HashMap<String, String>> 
     updatePunto(@RequestParam Integer id, @RequestParam String zone) 
     {
+        System.out.println("ID: "+id+" - ZONA: "+zone);
         HashMap<String, String> response = new HashMap<>();
         Boolean rowAffected = adminServ.updateZone(id, zone);
 
@@ -187,8 +188,7 @@ public class AdminController extends CommonController {
         Categoria categ = new Categoria();
         categ.setId(categ_id);
         marca.setCategoria(categ);
-        marca.setLogo("marcas/" + storageService.store(logo, "marcas/"));
-        Marca marcaReg = adminServ.newBrand(marca);
+        Marca marcaReg = adminServ.newBrand(marca, logo);
         response.put("success", marcaReg);
         return ResponseEntity.status(200).body(response);
     }

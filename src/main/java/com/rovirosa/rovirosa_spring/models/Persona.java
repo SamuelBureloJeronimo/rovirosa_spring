@@ -3,10 +3,13 @@ package com.rovirosa.rovirosa_spring.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "personas")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Persona implements Serializable {
 
     private static final long serialVersionUID = 1L;

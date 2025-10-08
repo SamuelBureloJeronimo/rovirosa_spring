@@ -1,10 +1,14 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "empresa_config")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EmpresaConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;

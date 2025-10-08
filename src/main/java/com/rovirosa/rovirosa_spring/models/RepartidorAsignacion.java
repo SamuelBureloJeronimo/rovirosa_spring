@@ -3,6 +3,8 @@ package com.rovirosa.rovirosa_spring.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "repart_asign")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RepartidorAsignacion implements Serializable {
 
     private static final long serialVersionUID = 1L;

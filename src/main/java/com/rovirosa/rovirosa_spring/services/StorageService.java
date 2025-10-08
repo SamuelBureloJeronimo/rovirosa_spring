@@ -46,8 +46,9 @@ public class StorageService implements IStorage {
     @Override
     public String store(MultipartFile file, String prefix, String name) {
         try {
-            validateFile(file);
 
+            validateFile(file);
+            
             String filename = name;
             Path destinationFile = buildDestinationPath(filename, prefix);
 
@@ -58,7 +59,6 @@ public class StorageService implements IStorage {
             }
 
             return filename;
-
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file", e);
         }
@@ -101,7 +101,7 @@ public class StorageService implements IStorage {
         }
     }
 
-    private String generateFileName() {
+    public String generateFileName() {
         // 🔥 Siempre guardamos como JPG
         return UUID.randomUUID().toString() + ".jpg";
     }

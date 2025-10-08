@@ -2,6 +2,8 @@ package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "marcas")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Marca implements Serializable {
 
     private static final long serialVersionUID = 1L;

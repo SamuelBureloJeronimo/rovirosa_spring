@@ -12,7 +12,7 @@ import com.rovirosa.rovirosa_spring.models.Direccion;
 public interface DireccionRepository extends JpaRepository<Direccion, Integer> {
 
     @Modifying
-    @Query("UPDATE Direccion d SET d.latitud = :latitud, d.longitud = :longitud WHERE d.id = :id")
-    int updateCoordenadas(@Param("id") Integer id, @Param("latitud") BigDecimal latitud, @Param("longitud") BigDecimal longitud);
-    
+    @Query("UPDATE Direccion d SET d.lat = :lat, d.lng = :lng WHERE d.id = :id")
+    int updateCoordenadas(@Param("id") Integer id, @Param("lat") BigDecimal lat, @Param("lng") BigDecimal lng);
+
 }
