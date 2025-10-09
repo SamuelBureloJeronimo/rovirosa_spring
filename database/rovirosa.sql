@@ -33,7 +33,7 @@ CREATE TABLE `catalogo_pv` (
   KEY `FK_catalogo_pv` (`pv_id`),
   CONSTRAINT `FK_catalogo_productos` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_catalogo_pv` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `catalogo_pv` (
 
 LOCK TABLES `catalogo_pv` WRITE;
 /*!40000 ALTER TABLE `catalogo_pv` DISABLE KEYS */;
+INSERT INTO `catalogo_pv` VALUES (1,1,1,34,0),(2,2,1,23,0),(3,3,1,40,0);
 /*!40000 ALTER TABLE `catalogo_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -596,7 +597,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,3,'productos/a291ed0e-b3ad-4cdc-acbe-a8827c17abdf.jpg','Cerveza Modelo 1/2 Corona',23.80,1,1),(2,3,'productos/0baa68a9-5649-4801-872d-8e1fcee6d0eb.jpg','Cerveza Corona 473 ml 4 PZS',92.89,1,1),(3,10,'productos/6e84a880-6676-42c9-a229-c36c23d6b467.jpg','Totopos Del Hogar 280 gr.',30.50,1,1),(4,3,'productos/27422288-5bd5-4e26-8c56-a49281bc002f.jpg','Cerveza clara Coronita Extra 24 botellas de 210 ml c/u',239.00,1,1),(5,8,'productos/df70d3b4-6bf5-4f97-9b5b-5100fa3a6cc2.jpg','Pack de cerveza Victoria ambar con 24 botellas de 210 ml c/u',239.00,1,1),(6,12,'productos/e3719da3-2e48-4e9e-8255-f0f1ec5254bd.jpg','Cerveza clara Barrilito 6 botellas de 325 ml c/u',74.00,1,1),(7,13,'productos/81f733ff-9b8c-4556-9c9b-82d4ff88f053.jpg','Refresco Pepsi regular 2.5L',33.00,1,1),(8,14,'productos/bc28e764-a74b-415d-a58e-330a2681c6ea.jpg','Refresco Mirinda sabor naranja botella de 2.5L',34.00,1,1),(9,14,'productos/0b776c07-a712-457b-8337-141b8dea97ef.jpg','rtwrwet',34545.00,1,1);
+INSERT INTO `productos` VALUES (1,3,'productos/a291ed0e-b3ad-4cdc-acbe-a8827c17abdf.jpg','Cerveza Modelo 1/2 Corona',23.80,1.00,1.000),(2,3,'productos/0baa68a9-5649-4801-872d-8e1fcee6d0eb.jpg','Cerveza Corona 473 ml 4 PZS',92.89,1.00,1.000),(3,10,'productos/6e84a880-6676-42c9-a229-c36c23d6b467.jpg','Totopos Del Hogar 280 gr.',30.50,1.00,1.000),(4,3,'productos/27422288-5bd5-4e26-8c56-a49281bc002f.jpg','Cerveza clara Coronita Extra 24 botellas de 210 ml c/u',239.00,1.00,1.000),(5,8,'productos/df70d3b4-6bf5-4f97-9b5b-5100fa3a6cc2.jpg','Pack de cerveza Victoria ambar con 24 botellas de 210 ml c/u',239.00,1.00,1.000),(6,12,'productos/e3719da3-2e48-4e9e-8255-f0f1ec5254bd.jpg','Cerveza clara Barrilito 6 botellas de 325 ml c/u',74.00,1.00,1.000),(7,13,'productos/81f733ff-9b8c-4556-9c9b-82d4ff88f053.jpg','Refresco Pepsi regular 2.5L',33.00,1.00,1.000),(8,14,'productos/bc28e764-a74b-415d-a58e-330a2681c6ea.jpg','Refresco Mirinda sabor naranja botella de 2.5L',34.00,1.00,1.000),(9,14,'productos/0b776c07-a712-457b-8337-141b8dea97ef.jpg','rtwrwet',34545.00,1.00,1.000);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -627,7 +628,7 @@ CREATE TABLE `puntos_venta` (
 
 LOCK TABLES `puntos_venta` WRITE;
 /*!40000 ALTER TABLE `puntos_venta` DISABLE KEYS */;
-INSERT INTO `puntos_venta` VALUES (1,1,'DRO700527V91','[{\"lat\":17.743343415559103,\"lng\":-92.62033872419875},{\"lat\":17.753403183674283,\"lng\":-92.60526040990995},{\"lat\":17.760062495806025,\"lng\":-92.60687627420029},{\"lat\":17.76159903353849,\"lng\":-92.60496481426591},{\"lat\":17.757801381469186,\"lng\":-92.59774489924231},{\"lat\":17.757827022477436,\"lng\":-92.60020945233256},{\"lat\":17.749308191624962,\"lng\":-92.60617217339379},{\"lat\":17.747395101075504,\"lng\":-92.60693133436885},{\"lat\":17.74558681052853,\"lng\":-92.60912853787121},{\"lat\":17.74495172059465,\"lng\":-92.61209966170144},{\"lat\":17.742362070584235,\"lng\":-92.61928018639026},{\"lat\":17.742049140794354,\"lng\":-92.62281713444122},{\"lat\":17.74397580271168,\"lng\":-92.62329322680739},{\"lat\":17.746470021961947,\"lng\":-92.62285705820727},{\"lat\":17.746557356102514,\"lng\":-92.6211688431074}]','habilitado');
+INSERT INTO `puntos_venta` VALUES (1,1,'DRO700527V91','[{\"lat\":17.743343415559103,\"lng\":-92.62033872419875},{\"lat\":17.75631286786615,\"lng\":-92.60952260767267},{\"lat\":17.760062495806025,\"lng\":-92.60687627420029},{\"lat\":17.76159903353849,\"lng\":-92.60496481426591},{\"lat\":17.757801381469186,\"lng\":-92.59774489924231},{\"lat\":17.757827022477436,\"lng\":-92.60020945233256},{\"lat\":17.749308191624962,\"lng\":-92.60617217339379},{\"lat\":17.747395101075504,\"lng\":-92.60693133436885},{\"lat\":17.74558681052853,\"lng\":-92.60912853787121},{\"lat\":17.74495172059465,\"lng\":-92.61209966170144},{\"lat\":17.742362070584235,\"lng\":-92.61928018639026},{\"lat\":17.742049140794354,\"lng\":-92.62281713444122},{\"lat\":17.74397580271168,\"lng\":-92.62329322680739},{\"lat\":17.746470021961947,\"lng\":-92.62285705820727},{\"lat\":17.746557356102514,\"lng\":-92.6211688431074}]','habilitado');
 /*!40000 ALTER TABLE `puntos_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -854,4 +855,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-07 20:30:05
+-- Dump completed on 2025-10-09  7:08:49

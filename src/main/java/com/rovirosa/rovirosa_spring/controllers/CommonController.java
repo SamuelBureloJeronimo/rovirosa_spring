@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.AppInfoDTO;
+import com.rovirosa.rovirosa_spring.models.CatalogoPv;
 import com.rovirosa.rovirosa_spring.models.Categoria;
 import com.rovirosa.rovirosa_spring.models.Marca;
 import com.rovirosa.rovirosa_spring.models.Producto;
@@ -33,9 +34,19 @@ public class CommonController {
         return commonServ.getBrands();
     }
 
+    @GetMapping("/get-brands-by-categ/{id}")
+    public List<Marca> getBrandsByCategory(@PathVariable Integer id) {
+        return commonServ.getBrandsByCategory(id);
+    }
+
     @GetMapping("/get-products")
     public List<Producto> getProductos() {
         return commonServ.getProductos();
+    }
+
+    @GetMapping("/get-catalogo-pv/{id}")
+    public List<CatalogoPv> getCatalogoPv(@PathVariable Integer id) {
+        return commonServ.getCatalogoPv(id);
     }
 
     @GetMapping("/get-product/{id}")

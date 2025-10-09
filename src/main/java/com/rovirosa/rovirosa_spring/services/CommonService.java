@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rovirosa.rovirosa_spring.DTOs.AppInfoDTO;
+import com.rovirosa.rovirosa_spring.models.CatalogoPv;
 import com.rovirosa.rovirosa_spring.models.Categoria;
 import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
 import com.rovirosa.rovirosa_spring.models.Marca;
 import com.rovirosa.rovirosa_spring.models.Producto;
+import com.rovirosa.rovirosa_spring.repositories.CatalogoPvRepository;
 import com.rovirosa.rovirosa_spring.repositories.CategoriaRepository;
 import com.rovirosa.rovirosa_spring.repositories.EmpresaConfigRepository;
 import com.rovirosa.rovirosa_spring.repositories.MarcaRepository;
@@ -25,6 +27,8 @@ public class CommonService implements ICommon {
     private CategoriaRepository categRep;
     @Autowired
     private ProductoRepository prodRep;
+    @Autowired
+    private CatalogoPvRepository catalogoPvRep;
     @Autowired
     private EmpresaConfigRepository configRep; 
 
@@ -57,5 +61,15 @@ public class CommonService implements ICommon {
     @Override
     public Producto getProducto(Integer id) {
         return prodRep.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<CatalogoPv> getCatalogoPv(Integer id) {
+        return catalogoPvRep.findAll().stream().filter(c -> c.getPuntoVenta().getId().equals(id)).toList();
+    }
+
+    @Override
+    public List<Marca> getBrandsByCategory(Integer id) {
+        return marcaRep.findByCategoriaId(id);
     }
 }
