@@ -24,12 +24,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**", "/api/v1/mail/**", "/api/v1/ocr/**").permitAll()  // rutas públicas
-                        .requestMatchers("/api/v1/admin/**").permitAll()
-                        .requestMatchers("/api/v1/cliente/**").permitAll()
-                        .requestMatchers("/api/v1/repartidor/**").permitAll()
-                        .requestMatchers("/api/v1/common/**").permitAll()
-                        .requestMatchers("/api/v1/storage/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/public/**", "/api/ocr/**").permitAll()  // rutas públicas
+                        
+                        .requestMatchers("/api/usuario/**").hasAnyRole("CLIENTE","ADMIN","GERENTE","REPARTIDOR") // Todos los usuarios autenticados
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")  // solo ADMIN
+                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE") // solo CLIENTE
+                        .requestMatchers("/api/repartidor/**").hasRole("REPARTIDOR") // solo REPARTIDOR
+                        .requestMatchers("/api/gerente/**").hasRole("GERENTE") // solo GERENTE
                         .anyRequest().authenticated()             // lo demás requiere JWT
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

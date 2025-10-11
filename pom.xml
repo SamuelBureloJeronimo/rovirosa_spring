@@ -30,10 +30,12 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+		<!-- ✅ Validación con Jakarta (reemplazo moderno de javax.validation) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

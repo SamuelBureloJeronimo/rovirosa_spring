@@ -21,7 +21,7 @@ public interface IEmail {
      * @param htmlContenido the HTML content to be sent in the email body
      * @throws MessagingException if an error occurs while sending the email
      */
-    public void sendEmailWithHtml(String to, String subjet, String htmlContenido) throws MessagingException;
+    public void sendEmail(String to, String subjet, String htmlContenido) throws MessagingException;
 
     /**
      * Validates the given email address.

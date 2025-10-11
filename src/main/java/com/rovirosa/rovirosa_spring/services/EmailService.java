@@ -8,7 +8,7 @@ import com.rovirosa.rovirosa_spring.services.interfaces.IEmail;
 
 import jakarta.mail.MessagingException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
  * Service implementation for sending emails using JavaMailSender.
@@ -20,27 +20,21 @@ import org.springframework.mail.javamail.JavaMailSender;
 @Service
 public class EmailService implements IEmail {
 
-    /**
-     * The {@code mailSender} is an instance of {@link JavaMailSender} that is automatically
-     * injected by Spring's dependency injection mechanism. It is used to send emails
-     * from within the service.
-     */
-    @Autowired
-    private JavaMailSender mailSender;
     @Autowired
     private UsuarioRepository userRep;
 
-    /**
-     * Sends an email with HTML content to the specified recipient.
-     *
-     * @param to            the recipient's email address
-     * @param subjet        the subject of the email
-     * @param htmlContenido the HTML content to be sent in the email body
-     * @throws MessagingException if there is a failure in the email sending process
-     */
+
+    
     @Override
-    public void sendEmailWithHtml(String to, String subject, String text) throws MessagingException
+    public void sendEmail(String to, String subject, String text) throws MessagingException
     {
+
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("samuelbj0608@gmail.com");
+        mailSender.setPassword("xafj attx njcu mgqk");
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("samuelbj0608@gmail.com");
         message.setTo(to);

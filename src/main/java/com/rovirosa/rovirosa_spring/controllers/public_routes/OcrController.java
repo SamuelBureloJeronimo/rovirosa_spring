@@ -1,4 +1,4 @@
-package com.rovirosa.rovirosa_spring.controllers;
+package com.rovirosa.rovirosa_spring.controllers.public_routes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 @RestController
-@RequestMapping("/api/v1/ocr")
+@RequestMapping("/api/ocr")
 public class OcrController {
 
     @PostMapping("/ine")

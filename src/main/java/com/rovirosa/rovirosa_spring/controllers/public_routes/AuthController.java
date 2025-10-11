@@ -1,36 +1,122 @@
-package com.rovirosa.rovirosa_spring.controllers;
+package com.rovirosa.rovirosa_spring.controllers.public_routes;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginResponseDTO;
 import com.rovirosa.rovirosa_spring.clases.CodigoVerificacion;
+import com.rovirosa.rovirosa_spring.models.Cliente;
+import com.rovirosa.rovirosa_spring.services.AuthService;
 import com.rovirosa.rovirosa_spring.services.EmailService;
+import com.rovirosa.rovirosa_spring.services.StorageService;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/mail")
-public class EmailController {
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    @Autowired
+    private AuthService authServ;
+    @Autowired
+    private StorageService storageService;
+    @Autowired
+    private EmailService emailService;
+
+    @GetMapping("/test")
+    public ResponseEntity<Void> test() {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> 
+    login(@Valid @RequestBody LoginDTO loginDTO)
+    {
+        LoginResponseDTO res = authServ.login(loginDTO);
+        if (res == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ApiResponse<>(false, "Credenciales inválidas", null));
+        } else if(res.getEstado().equals("suspendido")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ApiResponse<>(false, "Usuario suspendido por mal uso de la aplicación.", null));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(true, "Login exitoso", res));
+    }
+
+    @GetMapping("/get-coords")
+    public ResponseEntity<HashMap<String, List<String>>> getCoords() {
+        HashMap<String, List<String>> response = new HashMap<>();
+        List<String> direcciones = authServ.getCoords();
+        if (direcciones == null) {
+            return ResponseEntity.status(404).body(response);
+        }
+        response.put("coords", direcciones);
+        return ResponseEntity.status(200).body(response);
+    }
+    
+
+    @PostMapping("/register")
+    public ResponseEntity<HashMap<String, String>> registerClient(
+            @RequestPart Cliente cliente,
+            @RequestPart("ine_front") MultipartFile ineFront,
+            @RequestPart("ine_back") MultipartFile ineBack) {
+        HashMap<String, String> reponse = new HashMap<>();
+
+        System.out.println(cliente);
+
+        cliente.setIneFront("ine/"+storageService.store(ineFront,"ine/"));
+        cliente.setIneBack("ine/"+storageService.store(ineBack,"ine/"));
+
+        String token = authServ.register(cliente);
+        reponse.put("token", token);
+        return ResponseEntity.status(200).body(reponse);
+    }
+
+    @GetMapping("/validate-curp/{curp}")
+    public ResponseEntity<HashMap<String, Boolean>> validate_curp(@PathVariable String curp) {
+        HashMap<String, Boolean> response = new HashMap<>();
+        Boolean exist = authServ.existCurp(curp);
+        response.put("existe", exist);
+        if (exist) {
+            return ResponseEntity.status(200).body(response);
+        } else {
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
+    @GetMapping("/validate-tel/{tel}")
+    public ResponseEntity<HashMap<String, Boolean>> validate_tel(@PathVariable String tel) {
+        HashMap<String, Boolean> response = new HashMap<>();
+        Boolean exist = authServ.existTel(tel);
+        response.put("existe", exist);
+        if (exist) {
+            return ResponseEntity.status(200).body(response);
+        } else {
+            return ResponseEntity.status(400).body(response);
+        }
+    }
 
     private final Map<String, CodigoVerificacion> codigoStorage = new ConcurrentHashMap<>();
 
-    /**
-     * Service for handling email-related operations.
-     * This service is automatically injected by Spring's dependency injection
-     * mechanism.
-     */
-    @Autowired
-    private EmailService emailService;
 
     /**
      * Handles POST requests to send an HTML email.
@@ -63,7 +149,7 @@ public class EmailController {
             // 3. Crear contenido HTML
             String htmlContenido = "Tu código de verificación es: " + codigo + " - Válido por 5 minutos.";
 
-            emailService.sendEmailWithHtml(to, "Código de verificación", htmlContenido);
+            emailService.sendEmail(to, "Código de verificación", htmlContenido);
             response.put("Código enviado a:", to);
             return ResponseEntity.ok().body(response);
         } catch (Exception e) {
