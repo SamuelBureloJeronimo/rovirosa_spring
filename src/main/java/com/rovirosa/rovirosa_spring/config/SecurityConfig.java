@@ -11,6 +11,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.rovirosa.rovirosa_spring.utils.JwtFilter;
 
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
+
 @Configuration
 public class SecurityConfig {
 
@@ -22,22 +28,54 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/public/**", "/api/ocr/**").permitAll()  // rutas públicas
-                        
-                        .requestMatchers("/api/usuario/**").hasAnyRole("CLIENTE","ADMIN","GERENTE","REPARTIDOR") // Todos los usuarios autenticados
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")  // solo ADMIN
-                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE") // solo CLIENTE
-                        .requestMatchers("/api/repartidor/**").hasRole("REPARTIDOR") // solo REPARTIDOR
-                        .requestMatchers("/api/gerente/**").hasRole("GERENTE") // solo GERENTE
-                        .anyRequest().authenticated()             // lo demás requiere JWT
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+        http
+            // 🔹 Habilitar CORS antes de los filtros
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+
+            // 🔹 Configurar rutas públicas y protegidas
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(
+                        "/api/auth/**",
+                        "/api/public/**",
+                        "/api/ocr/**",
+                        "/api/storage/**"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+            )
+
+            // 🔹 No usar sesión (porque JWT)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+            // 🔹 Añadir el filtro JWT antes del filtro de autenticación estándar
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
+    // 🔹 Configuración global de CORS
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Dominio de tu frontend
+        config.setAllowedOriginPatterns(List.of("*")); // Permitir todos los orígenes, cambiar en producción
+        // Métodos permitidos
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // Headers permitidos
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With"));
+        // Permitir credenciales (si usas cookies o Authorization headers)
+        config.setAllowCredentials(true);
+        // Tiempo de cache del preflight (opcional)
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
+    }
+
+    // 🔹 AuthenticationManager para usar en AuthService
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

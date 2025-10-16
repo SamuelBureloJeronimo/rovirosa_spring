@@ -12,7 +12,6 @@ public class ProductoUpdateDTO {
     private Double precio;
     private Double pesoKg;
     private Double volM3;
-    private String imagen; // opcional (ya almacenada o nueva ruta)
 
     // Getters y Setters
     public Integer getId() { return id; }
@@ -32,8 +31,5 @@ public class ProductoUpdateDTO {
 
     public Double getVolM3() { return volM3; }
     public void setVolM3(Double volM3) { this.volM3 = volM3; }
-
-    public String getImagen() { return imagen; }
-    public void setImagen(String imagen) { this.imagen = imagen; }
 }
 

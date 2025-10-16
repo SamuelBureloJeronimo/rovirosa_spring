@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
-import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginResponseDTO;
 import com.rovirosa.rovirosa_spring.clases.CodigoVerificacion;
 import com.rovirosa.rovirosa_spring.models.Cliente;
@@ -46,13 +47,14 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDTO>> 
-    login(@Valid @RequestBody LoginDTO loginDTO)
+    login(@Valid @RequestBody LoginPostDTO loginDTO)
     {
         LoginResponseDTO res = authServ.login(loginDTO);
         if (res == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                 new ApiResponse<>(false, "Credenciales inválidas", null));
         } else if(res.getEstado().equals("suspendido")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -129,8 +131,7 @@ public class AuthController {
      *         error occurred
      */
     @PostMapping("/send-code")
-    public ResponseEntity<HashMap<String, String>> enviarCodigo(@RequestParam String to) {
-        HashMap<String, String> response = new HashMap<>();
+    public ResponseEntity<ApiResponse<String>> enviarCodigo(@RequestParam String to) {
         try {
             // 1. Generar código aleatorio de 6 dígitos
             String codigo = String.format("%06d", new Random().nextInt(999999));
@@ -150,11 +151,13 @@ public class AuthController {
             String htmlContenido = "Tu código de verificación es: " + codigo + " - Válido por 5 minutos.";
 
             emailService.sendEmail(to, "Código de verificación", htmlContenido);
-            response.put("Código enviado a:", to);
-            return ResponseEntity.ok().body(response);
+            return ResponseEntity.ok().body(
+                new ApiResponse<>(true, "Código enviado exitosamente", to)
+            );
         } catch (Exception e) {
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(
+                new ApiResponse<>(false, "Error al enviar el código: " + e.getMessage(), null)
+            );
         }
     }
 

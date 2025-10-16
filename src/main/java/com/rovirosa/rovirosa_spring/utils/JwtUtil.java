@@ -15,7 +15,7 @@ public class JwtUtil {
     private final String SECRET_KEY = "MiClaveSecretaMuySeguraParaJWT123456789"; // mínimo 32 caracteres
     private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hora
 
-    private Key getSigningKey() {
+    public Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 

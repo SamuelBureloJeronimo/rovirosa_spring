@@ -22,6 +22,10 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "per_id", nullable = false)
     private Persona persona;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pv_id", nullable = false)
+    private PuntoVenta puntoVenta;
+
     @Column(name = "correo", nullable = false, length = 100, unique = true)
     private String correo;
 
@@ -42,9 +46,10 @@ public class Usuario implements Serializable {
     }
 
     // Constructor con parámetros
-    public Usuario(Integer id, Persona persona, String correo, String password, String estado, String rol) {
+    public Usuario(Integer id, Persona persona, PuntoVenta puntoVenta, String correo, String password, String estado, String rol) {
         this.id = id;
         this.persona = persona;
+        this.puntoVenta = puntoVenta;
         this.correo = correo;
         this.password = password;
         this.estado = estado;
@@ -66,6 +71,14 @@ public class Usuario implements Serializable {
 
     public void setPersona(Persona persona) {
         this.persona = persona;
+    }
+
+    public PuntoVenta getPuntoVenta() {
+        return puntoVenta;
+    }
+
+    public void setPuntoVenta(PuntoVenta puntoVenta) {
+        this.puntoVenta = puntoVenta;
     }
 
     public String getEstado() {

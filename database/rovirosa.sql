@@ -33,7 +33,7 @@ CREATE TABLE `catalogo_pv` (
   KEY `FK_catalogo_pv` (`pv_id`),
   CONSTRAINT `FK_catalogo_productos` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_catalogo_pv` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `catalogo_pv` (
 
 LOCK TABLES `catalogo_pv` WRITE;
 /*!40000 ALTER TABLE `catalogo_pv` DISABLE KEYS */;
-INSERT INTO `catalogo_pv` VALUES (1,1,1,34,0),(2,2,1,23,0),(3,3,1,40,0);
+INSERT INTO `catalogo_pv` VALUES (1,1,1,34,0),(2,2,1,23,0),(3,3,1,40,0),(4,4,1,20,0),(5,5,1,29,0),(6,6,1,9,0),(7,7,1,36,0),(8,8,1,65,0),(9,9,1,5,0);
 /*!40000 ALTER TABLE `catalogo_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +112,6 @@ CREATE TABLE `clientes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL COMMENT 'ID del usuario',
   `dir_id` int NOT NULL COMMENT 'ID de la dirección',
-  `pv_id` int NOT NULL COMMENT 'ID del punto de venta',
   `ine_front` varchar(50) NOT NULL COMMENT 'INE frontal',
   `ine_back` varchar(50) NOT NULL COMMENT 'INE posterior',
   `stricks` int NOT NULL DEFAULT '0' COMMENT 'Número de stricks (máximo 3)',
@@ -121,10 +120,8 @@ CREATE TABLE `clientes` (
   PRIMARY KEY (`id`),
   KEY `FK_clientes_direcciones` (`dir_id`),
   KEY `FK_clientes_usuarios` (`user_id`),
-  KEY `FK_pv_cliente` (`pv_id`),
   CONSTRAINT `FK_clientes_direcciones` FOREIGN KEY (`dir_id`) REFERENCES `direcciones` (`id`),
-  CONSTRAINT `FK_clientes_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_pv_cliente` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE RESTRICT
+  CONSTRAINT `FK_clientes_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -294,7 +291,7 @@ CREATE TABLE `direcciones` (
   `lng` decimal(11,8) NOT NULL COMMENT 'Longitud de la dirección',
   `ref` varchar(255) NOT NULL COMMENT 'Referencia de la dirección',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,7 +329,7 @@ CREATE TABLE `empresa_config` (
 
 LOCK TABLES `empresa_config` WRITE;
 /*!40000 ALTER TABLE `empresa_config` DISABLE KEYS */;
-INSERT INTO `empresa_config` VALUES ('DRO700527V91','Corchito','f1a4d39d-b08f-4926-9779-c0346069fdef.jpg','Ser la mejor empresa concesionaria en la provisión de los productos más vanguardistas y de alta calidad de Grupo Modelo.',150,'samuelbj0608@gmail.com','2343243j43n43dfdf');
+INSERT INTO `empresa_config` VALUES ('DRO700527V91','Corchito','f1a4d39d-b08f-4926-9779-c0346069fdef.jpg','Ser la mejor empresa concesionaria en la provisión de los productos más vanguardistas y de alta calidad de Grupo Modelo.',150,'samuelbj0608@gmail.com','2343243j43n4');
 /*!40000 ALTER TABLE `empresa_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -557,7 +554,7 @@ CREATE TABLE `personas` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `curp` (`curp`),
   UNIQUE KEY `tel` (`tel`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -610,6 +607,7 @@ DROP TABLE IF EXISTS `puntos_venta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `puntos_venta` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL COMMENT 'Nombre del punto de venta, puede ser la dirección o un nombre comercial',
   `direc_id` int NOT NULL COMMENT 'ID de la dirección',
   `config_rfc` varchar(20) NOT NULL COMMENT 'RFC de la empresa',
   `zona_permitida` text NOT NULL COMMENT 'Zona permitida en formato JSON [{"lat":0,"lng":0},{"lat":0,"lng":0}]',
@@ -628,7 +626,7 @@ CREATE TABLE `puntos_venta` (
 
 LOCK TABLES `puntos_venta` WRITE;
 /*!40000 ALTER TABLE `puntos_venta` DISABLE KEYS */;
-INSERT INTO `puntos_venta` VALUES (1,1,'DRO700527V91','[{\"lat\":17.743343415559103,\"lng\":-92.62033872419875},{\"lat\":17.75631286786615,\"lng\":-92.60952260767267},{\"lat\":17.760062495806025,\"lng\":-92.60687627420029},{\"lat\":17.76159903353849,\"lng\":-92.60496481426591},{\"lat\":17.757801381469186,\"lng\":-92.59774489924231},{\"lat\":17.757827022477436,\"lng\":-92.60020945233256},{\"lat\":17.749308191624962,\"lng\":-92.60617217339379},{\"lat\":17.747395101075504,\"lng\":-92.60693133436885},{\"lat\":17.74558681052853,\"lng\":-92.60912853787121},{\"lat\":17.74495172059465,\"lng\":-92.61209966170144},{\"lat\":17.742362070584235,\"lng\":-92.61928018639026},{\"lat\":17.742049140794354,\"lng\":-92.62281713444122},{\"lat\":17.74397580271168,\"lng\":-92.62329322680739},{\"lat\":17.746470021961947,\"lng\":-92.62285705820727},{\"lat\":17.746557356102514,\"lng\":-92.6211688431074}]','habilitado');
+INSERT INTO `puntos_venta` VALUES (1,'',1,'DRO700527V91','[{\"lat\":17.743343415559103,\"lng\":-92.62033872419875},{\"lat\":17.747779232366643,\"lng\":-92.61099444071475},{\"lat\":17.750141725755075,\"lng\":-92.607562365531},{\"lat\":17.75206581895698,\"lng\":-92.60611459664364},{\"lat\":17.754284795041023,\"lng\":-92.60617159547151},{\"lat\":17.760062495806025,\"lng\":-92.60687627420029},{\"lat\":17.76159903353849,\"lng\":-92.60496481426591},{\"lat\":17.757801381469186,\"lng\":-92.59774489924231},{\"lat\":17.757827022477436,\"lng\":-92.60020945233256},{\"lat\":17.749308191624962,\"lng\":-92.60617217339379},{\"lat\":17.747395101075504,\"lng\":-92.60693133436885},{\"lat\":17.745921039582264,\"lng\":-92.60923889119258},{\"lat\":17.74495172059465,\"lng\":-92.61209966170144},{\"lat\":17.742362070584235,\"lng\":-92.61928018639026},{\"lat\":17.742049140794354,\"lng\":-92.62281713444122},{\"lat\":17.74397580271168,\"lng\":-92.62329322680739},{\"lat\":17.746470021961947,\"lng\":-92.62285705820727},{\"lat\":17.746557356102514,\"lng\":-92.6211688431074}]','habilitado');
 /*!40000 ALTER TABLE `puntos_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -762,6 +760,7 @@ DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `id` int NOT NULL AUTO_INCREMENT,
   `per_id` int NOT NULL,
+  `pv_id` int DEFAULT NULL COMMENT 'ID del punto de venta (Para los gerentes representa el punto de venta que administran, para los clientes el punto de venta predeterminado y para los repartidores el punto de venta al que están asignados)',
   `correo` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `estado` enum('activo','suspendido') NOT NULL DEFAULT 'activo' COMMENT '0 = Activa, 1 = Suspendida',
@@ -770,7 +769,9 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `correo` (`correo`),
   KEY `FK_usuarios_personas` (`per_id`),
-  CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`per_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `FK_usuarios_puntos_venta` (`pv_id`),
+  CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`per_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_usuarios_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -780,7 +781,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (9,17,'admin@gmail.com','admin','activo','2025-09-27 23:09:49','ADMIN');
+INSERT INTO `usuarios` VALUES (9,17,1,'admin@gmail.com','admin','activo','2025-09-27 23:09:49','ADMIN');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -855,4 +856,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-09  7:08:49
+-- Dump completed on 2025-10-12 18:34:09

@@ -2,7 +2,7 @@ package com.rovirosa.rovirosa_spring.DTOs.Auth.Login;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class LoginDTO {
+public class LoginPostDTO {
 
     @NotBlank(message = "El usuario es obligatorio")
     private String username;
@@ -10,7 +10,7 @@ public class LoginDTO {
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
 
-    public LoginDTO(String username, String password) {
+    public LoginPostDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

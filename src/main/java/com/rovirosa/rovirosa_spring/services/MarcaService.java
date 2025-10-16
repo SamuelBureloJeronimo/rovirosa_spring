@@ -26,7 +26,7 @@ public class MarcaService {
     }
 
     
-    public List<Marca> getBrands() {
+    public List<Marca> getMarcas() {
         return this.marcaRep.findAll();
     }
 

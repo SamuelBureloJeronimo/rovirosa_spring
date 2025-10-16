@@ -11,12 +11,6 @@ public class DireccionService {
 
     @Autowired
     private DireccionRepository direccionRep;
-
-    
-    public Direccion getDireccion(Integer id) {
-        return direccionRep.findById(id).orElse(null);
-    }
-
     
     public Direccion updateDireccion(Direccion direccion) {
         return direccionRep.save(direccion);

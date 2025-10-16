@@ -1,9 +1,13 @@
 package com.rovirosa.rovirosa_spring.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoQueryDTO;
 import com.rovirosa.rovirosa_spring.models.CatalogoPv;
 
 public interface CatalogoPvRepository extends JpaRepository<CatalogoPv, Integer> {
-    // Aquí puedes definir métodos personalizados de consulta si es necesario
+
+    List<CatalogoQueryDTO> findByPuntoVenta_IdAndProducto_Marca_Id(Integer id, Integer marcaId);
 }

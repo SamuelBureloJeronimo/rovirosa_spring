@@ -24,6 +24,10 @@ public class ProductoService {
     @Autowired
     private StorageService storageService;
 
+    public Producto getProductById(Integer id) {
+        return productoRepo.findById(id).orElse(null);
+    }
+
     // Crear producto
     public ProductoResponseDTO create(ProductoCreateDTO dto, MultipartFile imagen) {
         Marca marca = marcaRepo.findById(dto.getMarcaId())

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginResponseDTO;
 import com.rovirosa.rovirosa_spring.models.Cliente;
@@ -38,7 +38,7 @@ public class AuthService {
     @Autowired
     private PuntoVentaRepository puntoRep;
 
-    public LoginResponseDTO login(LoginDTO loginDTO) {
+    public LoginResponseDTO login(LoginPostDTO loginDTO) {
         
         String user = loginDTO.getUsername();
         String password = loginDTO.getPassword();
