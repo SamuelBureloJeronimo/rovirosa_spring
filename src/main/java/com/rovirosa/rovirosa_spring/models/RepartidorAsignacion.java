@@ -32,9 +32,9 @@ public class RepartidorAsignacion implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pv_id", referencedColumnName = "id")
-    private PuntoVenta pv;
+    private PuntoVenta puntoVenta;
 
-    @Column(name = "fecha_in", nullable = false)
+    @Column(name = "fecha_inicio", nullable = false)
     private LocalDate fechaIn;
 
     @Column(name = "fecha_fin")
@@ -47,10 +47,10 @@ public class RepartidorAsignacion implements Serializable {
     public RepartidorAsignacion() {}
 
     // Constructor con parámetros
-    public RepartidorAsignacion(Integer id, Repartidor rep, PuntoVenta pv, LocalDate fechaIn, LocalDate fechaFin, Boolean activo) {
+    public RepartidorAsignacion(Integer id, Repartidor rep, PuntoVenta puntoVenta, LocalDate fechaIn, LocalDate fechaFin, Boolean activo) {
         this.id = id;
         this.rep = rep;
-        this.pv = pv;
+        this.puntoVenta = puntoVenta;
         this.fechaIn = fechaIn;
         this.fechaFin = fechaFin;
         this.activo = activo;
@@ -72,12 +72,12 @@ public class RepartidorAsignacion implements Serializable {
         this.rep = rep;
     }
 
-    public PuntoVenta getPv() {
-        return pv;
+    public PuntoVenta getPuntoVenta() {
+        return puntoVenta;
     }
 
-    public void setPv(PuntoVenta pv) {
-        this.pv = pv;
+    public void setPuntoVenta(PuntoVenta puntoVenta) {
+        this.puntoVenta = puntoVenta;
     }
 
     public LocalDate getFechaIn() {

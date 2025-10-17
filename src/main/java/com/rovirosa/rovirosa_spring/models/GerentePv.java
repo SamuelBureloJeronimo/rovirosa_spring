@@ -27,7 +27,7 @@ public class GerentePv implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Usuario user;
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pv_id", nullable = false)
@@ -42,7 +42,7 @@ public class GerentePv implements Serializable {
     // Constructor con parámetros
     public GerentePv(Integer id, Usuario user, PuntoVenta puntoVenta, Boolean activo) {
         this.id = id;
-        this.user = user;
+        this.usuario = user;
         this.puntoVenta = puntoVenta;
         this.activo = activo;
     }
@@ -57,12 +57,12 @@ public class GerentePv implements Serializable {
         this.id = id;
     }
 
-    public Usuario getUser() {
-        return user;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUser(Usuario user) {
-        this.user = user;
+    public void setUsuario(Usuario user) {
+        this.usuario = user;
     }
 
     public PuntoVenta getPuntoVenta() {

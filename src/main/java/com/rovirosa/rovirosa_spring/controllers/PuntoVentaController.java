@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaDetallesDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaResponseDTO;
@@ -49,6 +51,19 @@ public class PuntoVentaController {
      * }
      */
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/detalles/{id}")
+    public ResponseEntity<ApiResponse<PuntoVentaDetallesDTO>> getPuntoDetalles(@PathVariable Integer id) {
+        PuntoVentaDetallesDTO dto = puntoService.getPuntoDetalles(id);
+        if (dto == null) {
+            return ResponseEntity.status(404).body(
+                new ApiResponse<>(false, "No se encontró el punto de venta.", null)
+            );
+        }
+        return ResponseEntity.status(200).body(
+            new ApiResponse<>(true, "Punto de venta obtenido exitosamente.", dto)
+        );
+    }
 
      @PreAuthorize("hasRole('ADMIN')")
      @PostMapping

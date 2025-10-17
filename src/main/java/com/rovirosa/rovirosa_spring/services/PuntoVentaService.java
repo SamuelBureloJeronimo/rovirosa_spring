@@ -6,15 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Direccion.DireccionResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerentePvQueryDTO;
+import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaDetallesDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaSimpleQueryDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorQueryDTO;
 import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
+import com.rovirosa.rovirosa_spring.repositories.CatalogoPvRepository;
 import com.rovirosa.rovirosa_spring.repositories.DireccionRepository;
+import com.rovirosa.rovirosa_spring.repositories.GerentePvRepository;
 import com.rovirosa.rovirosa_spring.repositories.PuntoVentaRepository;
+import com.rovirosa.rovirosa_spring.repositories.RepartidorAsignacionRepository;
 
 @Service
 public class PuntoVentaService {
@@ -23,6 +31,30 @@ public class PuntoVentaService {
     private PuntoVentaRepository puntoRep;
     @Autowired
     private DireccionRepository dirRep;
+    @Autowired
+    private RepartidorAsignacionRepository repAsignRep;
+    @Autowired
+    private GerentePvRepository gerenteRep;
+    @Autowired
+    private CatalogoPvRepository catalogoRep;
+
+    /*
+     * Necesito: 
+     * El punto de venta (nombre, lat, lng), 
+     * Repartidores asignados, 
+     * GerentePuntoVenta
+     * El catalogo de productos
+     */
+    public PuntoVentaDetallesDTO getPuntoDetalles(Integer id) {
+
+        PuntoVentaSimpleQueryDTO punto = puntoRep.findSimpleProjectedById(id);
+        List<RepartidorQueryDTO> repartidores = repAsignRep.findByPuntoVentaId(id);
+        GerentePvQueryDTO gerente = gerenteRep.findFirstByPuntoVentaId(id);
+        List<CatalogoQueryDTO> catalogo = catalogoRep.findByPuntoVenta_Id(id);
+
+        PuntoVentaDetallesDTO detalles = new PuntoVentaDetallesDTO(punto, repartidores, gerente, catalogo);
+        return detalles;
+    }
 
     @Transactional
     public PuntoVentaResponseDTO createPunto(PuntoVentaPostDTO dto) {

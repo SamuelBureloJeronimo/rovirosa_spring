@@ -5,6 +5,7 @@ import com.rovirosa.rovirosa_spring.models.Marca;
 public class CatalogoResponseDTO {
 
     private Integer id;
+    private Integer producto_Id;
     private String nombre;
     private Double precio;
     private String imagen;
@@ -17,6 +18,7 @@ public class CatalogoResponseDTO {
     // Constructor
     public CatalogoResponseDTO(CatalogoQueryDTO catalogo, Double valor, String tipo) {
         this.id = catalogo.getId();
+        this.producto_Id = catalogo.getProducto_Id();
         this.nombre = catalogo.getProducto_Nombre();
         this.precio = catalogo.getProducto_Precio();
         this.imagen = catalogo.getProducto_Imagen();
@@ -34,6 +36,14 @@ public class CatalogoResponseDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getProducto_Id() {
+        return producto_Id;
+    }
+
+    public void setProducto_Id(Integer producto_Id) {
+        this.producto_Id = producto_Id;
     }
 
     public String getNombre() {

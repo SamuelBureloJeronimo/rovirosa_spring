@@ -7,6 +7,7 @@ public interface CatalogoQueryDTO {
     public Integer getId();
     public Integer getStock();
     public Integer getVendidos();
+    public Integer getProducto_Id();
     public String getProducto_Nombre();
     public String getProducto_Imagen();
     public Double getProducto_Precio();

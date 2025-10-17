@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaQueryDTO;
+import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaSimpleQueryDTO;
 import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
 
@@ -20,4 +21,9 @@ public interface PuntoVentaRepository extends JpaRepository<PuntoVenta, Integer>
     Direccion findDireccionByPuntoVentaId(@Param("id") Integer id);
 
     List<PuntoVentaQueryDTO> findAllProjectedBy();
+
+    PuntoVentaQueryDTO findProjectedById(Integer id);
+
+    PuntoVentaSimpleQueryDTO findSimpleProjectedById(Integer id);
+    
 }
