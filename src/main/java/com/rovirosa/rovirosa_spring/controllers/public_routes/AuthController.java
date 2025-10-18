@@ -49,16 +49,14 @@ public class AuthController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> 
-    login(@Valid @RequestBody LoginPostDTO loginDTO)
-    {
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> login(@Valid @RequestBody LoginPostDTO loginDTO) {
         LoginResponseDTO res = authServ.login(loginDTO);
         if (res == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                new ApiResponse<>(false, "Credenciales inválidas", null));
-        } else if(res.getEstado().equals("suspendido")) {
+                    new ApiResponse<>(false, "Credenciales inválidas", null));
+        } else if (res.getEstado().equals("suspendido")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new ApiResponse<>(false, "Usuario suspendido por mal uso de la aplicación.", null));
+                    new ApiResponse<>(false, "Usuario suspendido por mal uso de la aplicación.", null));
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(true, "Login exitoso", res));
@@ -74,7 +72,6 @@ public class AuthController {
         response.put("coords", direcciones);
         return ResponseEntity.status(200).body(response);
     }
-    
 
     @PostMapping("/register")
     public ResponseEntity<HashMap<String, String>> registerClient(
@@ -85,40 +82,15 @@ public class AuthController {
 
         System.out.println(cliente);
 
-        cliente.setIneFront("ine/"+storageService.store(ineFront,"ine/"));
-        cliente.setIneBack("ine/"+storageService.store(ineBack,"ine/"));
+        cliente.setIneFront("ine/" + storageService.store(ineFront, "ine/"));
+        cliente.setIneBack("ine/" + storageService.store(ineBack, "ine/"));
 
         String token = authServ.register(cliente);
         reponse.put("token", token);
         return ResponseEntity.status(200).body(reponse);
     }
 
-    @GetMapping("/validate-curp/{curp}")
-    public ResponseEntity<HashMap<String, Boolean>> validate_curp(@PathVariable String curp) {
-        HashMap<String, Boolean> response = new HashMap<>();
-        Boolean exist = authServ.existCurp(curp);
-        response.put("existe", exist);
-        if (exist) {
-            return ResponseEntity.status(200).body(response);
-        } else {
-            return ResponseEntity.status(400).body(response);
-        }
-    }
-
-    @GetMapping("/validate-tel/{tel}")
-    public ResponseEntity<HashMap<String, Boolean>> validate_tel(@PathVariable String tel) {
-        HashMap<String, Boolean> response = new HashMap<>();
-        Boolean exist = authServ.existTel(tel);
-        response.put("existe", exist);
-        if (exist) {
-            return ResponseEntity.status(200).body(response);
-        } else {
-            return ResponseEntity.status(400).body(response);
-        }
-    }
-
     private final Map<String, CodigoVerificacion> codigoStorage = new ConcurrentHashMap<>();
-
 
     /**
      * Handles POST requests to send an HTML email.
@@ -152,12 +124,10 @@ public class AuthController {
 
             emailService.sendEmail(to, "Código de verificación", htmlContenido);
             return ResponseEntity.ok().body(
-                new ApiResponse<>(true, "Código enviado exitosamente", to)
-            );
+                    new ApiResponse<>(true, "Código enviado exitosamente", to));
         } catch (Exception e) {
             return ResponseEntity.status(400).body(
-                new ApiResponse<>(false, "Error al enviar el código: " + e.getMessage(), null)
-            );
+                    new ApiResponse<>(false, "Error al enviar el código: " + e.getMessage(), null));
         }
     }
 
@@ -186,15 +156,32 @@ public class AuthController {
     }
 
     @GetMapping("/validate/{correo}")
-    public ResponseEntity<HashMap<String, Boolean>> validate(@PathVariable String correo) {
-        HashMap<String, Boolean> response = new HashMap<>();
+    public ResponseEntity<ApiResponse<Boolean>> validate(@PathVariable String correo) {
+        
         Boolean userExist = emailService.validate(correo);
-        response.put("existe", userExist);
-        System.out.println(userExist);
+        
         if (userExist) {
-            return ResponseEntity.status(200).body(response);
+            return ResponseEntity.status(200).body(
+                    new ApiResponse<>(true, "El correo ya está registrado", userExist)
+            );
         } else {
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(200).body(
+                    new ApiResponse<>(false, "El correo no está registrado", userExist)
+            );
+        }
+    }
+
+    @GetMapping("/validate-curp/{curp}")
+    public ResponseEntity<ApiResponse<Boolean>> validate_curp(@PathVariable String curp) {
+
+        Boolean exist = authServ.existCurp(curp);
+
+        if (exist) {
+            return ResponseEntity.status(200).body(
+                    new ApiResponse<>(true, "El CURP ya está registrado", exist));
+        } else {
+            return ResponseEntity.status(200).body(
+                    new ApiResponse<>(false, "El CURP no está registrado", exist));
         }
     }
 

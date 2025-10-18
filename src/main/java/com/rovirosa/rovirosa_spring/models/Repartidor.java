@@ -28,19 +28,19 @@ public class Repartidor implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Usuario user;
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "veh_id", nullable = false)
+    @JoinColumn(name = "veh_id", nullable = true)
     private Vehiculo veh;
 
-    @Column(name = "lat", nullable = false)
+    @Column(name = "lat", nullable = true)
     private BigDecimal lat;
 
-    @Column(name = "lng", nullable = false)
+    @Column(name = "lng", nullable = true)
     private BigDecimal lng;
 
-    @Column(name = "estado", nullable = false)
+    @Column(name = "estado", nullable = true)
     private String estado; // ENUM("en_espera", "cargando", "en_ruta", "descansando")
 
 
@@ -50,7 +50,7 @@ public class Repartidor implements Serializable {
     // Constructor con parámetros
     public Repartidor(Integer id, Usuario user, Vehiculo veh, BigDecimal lat, BigDecimal lng, String estado) {
         this.id = id;
-        this.user = user;
+        this.usuario = user;
         this.veh = veh;
         this.lat = lat;
         this.lng = lng;
@@ -67,12 +67,12 @@ public class Repartidor implements Serializable {
         this.id = id;
     }
 
-    public Usuario getUser() {
-        return user;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUser(Usuario user) {
-        this.user = user;
+    public void setUsuario(Usuario user) {
+        this.usuario = user;
     }
 
     public Vehiculo getVeh() {

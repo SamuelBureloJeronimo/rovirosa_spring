@@ -53,11 +53,6 @@ public class AuthService {
         if (us != null)
             return new LoginResponseDTO(us, jwtUtil);
 
-        // Si no encuentra busca por Telefono
-        us = this.userRep.findByPasswordAndPersona_Tel(password, user);
-        if (us != null)
-            return new LoginResponseDTO(us, jwtUtil);
-
         return null;
     }
 
@@ -84,22 +79,12 @@ public class AuthService {
         if (us)
             return "La curp proporcionada ya existe.";
 
-        // Si no encuentra busca por Telefono
-        us = this.userRep.existsByPersona_Tel(usuario.getPersona().getTel());
-        if (us)
-            return "El teléfono porporcionado ya existe.";
-
         return "";
     }
 
     public Boolean existCurp(String curp) {
         // Busca por curp
         return this.userRep.existsByPersona_Curp(curp);
-    }
-
-    public Boolean existTel(String tel) {
-        // Busca por Telefono
-        return this.userRep.existsByPersona_Tel(tel);
     }
 
     public List<String> getCoords() {

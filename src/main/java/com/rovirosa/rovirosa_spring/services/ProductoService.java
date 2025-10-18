@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoCreateDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoDeleteDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoUpdateDTO;
 import com.rovirosa.rovirosa_spring.models.Marca;
@@ -50,10 +51,14 @@ public class ProductoService {
         Producto p = productoRepo.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        if (dto.getNombre() != null) p.setNombre(dto.getNombre());
-        if (dto.getPrecio() != null) p.setPrecio(dto.getPrecio());
-        if (dto.getPesoKg() != null) p.setPesoKg(dto.getPesoKg());
-        if (dto.getVolM3() != null) p.setVolM3(dto.getVolM3());
+        if (dto.getNombre() != null)
+            p.setNombre(dto.getNombre());
+        if (dto.getPrecio() != null)
+            p.setPrecio(dto.getPrecio());
+        if (dto.getPesoKg() != null)
+            p.setPesoKg(dto.getPesoKg());
+        if (dto.getVolM3() != null)
+            p.setVolM3(dto.getVolM3());
 
         if (dto.getMarcaId() != null) {
             Marca marca = marcaRepo.findById(dto.getMarcaId())
@@ -69,6 +74,22 @@ public class ProductoService {
         return mapToResponse(p);
     }
 
+    public boolean delete(Integer id) {
+
+        if (productoRepo.existsById(id)) {
+            
+            ProductoDeleteDTO producto = productoRepo.findProductoDeleteDTOById(id);
+            
+            if (producto != null)
+                storageService.delete(producto.getImagen());
+            
+            productoRepo.deleteById(id);
+            return true; // eliminado correctamente
+        } else {
+            return false; // no existía
+        }
+    }
+
     private ProductoResponseDTO mapToResponse(Producto p) {
         ProductoResponseDTO res = new ProductoResponseDTO();
         res.setId(p.getId());
@@ -82,4 +103,3 @@ public class ProductoService {
         return res;
     }
 }
-

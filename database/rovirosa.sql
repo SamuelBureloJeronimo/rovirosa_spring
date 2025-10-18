@@ -122,7 +122,7 @@ CREATE TABLE `clientes` (
   KEY `FK_clientes_usuarios` (`user_id`),
   CONSTRAINT `FK_clientes_direcciones` FOREIGN KEY (`dir_id`) REFERENCES `direcciones` (`id`),
   CONSTRAINT `FK_clientes_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,6 +131,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+INSERT INTO `clientes` VALUES (1,11,14,'ine/c60f68a4-2356-4eb3-ad88-f2423ec004a1.jpg','ine/d567da78-39cc-4c28-a904-74dbfb037b74.jpg',0,0,NULL);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,7 +292,7 @@ CREATE TABLE `direcciones` (
   `lng` decimal(11,8) NOT NULL COMMENT 'Longitud de la dirección',
   `ref` varchar(255) NOT NULL COMMENT 'Referencia de la dirección',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -300,7 +301,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (1,17.75008764,-92.60813767,''),(2,17.76364885,-92.59267079,''),(7,17.76082484,-92.59648390,''),(8,17.75535681,-92.58530146,''),(9,17.76455310,-92.59483297,''),(10,17.76121390,-92.59119726,'');
+INSERT INTO `direcciones` VALUES (1,17.75008764,-92.60813767,''),(2,17.76364885,-92.59267079,''),(7,17.76082484,-92.59648390,''),(8,17.75535681,-92.58530146,''),(9,17.76455310,-92.59483297,''),(10,17.76121390,-92.59119726,''),(14,17.76084206,-92.59733415,'asasasa');
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -552,9 +553,8 @@ CREATE TABLE `personas` (
   `fech_nac` date NOT NULL,
   `sexo` enum('MASCULINO','FEMENINO') NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `curp` (`curp`),
-  UNIQUE KEY `tel` (`tel`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `curp` (`curp`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -563,7 +563,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES (17,'BUJS030806HTCRRMA9','9361165168','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO');
+INSERT INTO `personas` VALUES (17,'BUJS030806HTCRRMA9','9361165168','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO'),(25,'MARA030910HTCYYNA6','9361158941','JOSE ANGEL','MAY','REYES','2003-09-10','MASCULINO');
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -772,7 +772,7 @@ CREATE TABLE `usuarios` (
   KEY `FK_usuarios_puntos_venta` (`pv_id`),
   CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`per_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_usuarios_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -781,7 +781,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (9,17,1,'admin@gmail.com','admin','activo','2025-09-27 23:09:49','ADMIN');
+INSERT INTO `usuarios` VALUES (9,17,5,'admin@gmail.com','admin','activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'samuelbj0608@gmail.com','numeroPI141592','activo','2025-10-17 17:31:27','CLIENTE');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -856,4 +856,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-16 23:30:27
+-- Dump completed on 2025-10-17 15:20:45

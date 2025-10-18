@@ -23,7 +23,7 @@ public class Usuario implements Serializable {
     private Persona persona;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pv_id", nullable = false)
+    @JoinColumn(name = "pv_id", nullable = true)
     private PuntoVenta puntoVenta;
 
     @Column(name = "correo", nullable = false, length = 100, unique = true)
@@ -36,7 +36,7 @@ public class Usuario implements Serializable {
     private String estado = "activo";
 
     @Column(name = "created", nullable = false, length = 50)
-    private Timestamp created;
+    private Timestamp created = new Timestamp(System.currentTimeMillis());
 
     @Column(name = "rol", nullable = false, length = 20)
     private String rol = "CLIENTE";

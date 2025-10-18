@@ -41,10 +41,10 @@ public class Cliente implements Serializable {
     private String ineBack;
 
     @Column(name = "stricks", nullable = false)
-    private Integer stricks;
+    private Integer stricks = 0;
 
     @Column(name = "p_cancel", nullable = false)
-    private Integer pCancel;
+    private Integer pCancel = 0;
 
     @Column(name = "last_cancel")
     private LocalDate lastCancel;
