@@ -13,6 +13,7 @@ import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
 
 public interface PuntoVentaRepository extends JpaRepository<PuntoVenta, Integer> {
+
     @Modifying
     @Query("UPDATE PuntoVenta p SET p.zonaPermitida = :zona WHERE p.id = :id")
     int updateZona(@Param("id") Integer id, @Param("zona") String zona);

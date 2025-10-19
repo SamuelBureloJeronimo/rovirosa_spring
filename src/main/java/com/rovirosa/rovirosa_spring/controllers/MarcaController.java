@@ -26,6 +26,7 @@ public class MarcaController {
     @Autowired
     private MarcaService marcaServ;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ApiResponse<Marca>> newBrand(@RequestParam String nombre, @RequestParam Integer categ_id,
             @RequestPart("logo") MultipartFile logo) {

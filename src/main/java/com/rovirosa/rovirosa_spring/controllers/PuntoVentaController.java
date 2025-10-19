@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,26 +31,6 @@ public class PuntoVentaController {
 
     @Autowired
     private PuntoVentaService puntoService;
-
-    /*
-     * @PreAuthorize("hasAnyRole('ADMIN','REPARTIDOR','CLIENTE')")
-     * 
-     * @GetMapping("/direccion/{id}")
-     * public ResponseEntity<ApiResponse<DireccionResponseDTO>>
-     * getDireccionByPuntoVentaId(@PathVariable Integer id)
-     * {
-     * DireccionResponseDTO dto = puntoService.getDireccion(id);
-     * if(dto == null)
-     * return ResponseEntity.status(404).body(
-     * new ApiResponse<DireccionResponseDTO>
-     * (false, "No se encontró la dirección.", null));
-     * 
-     * return ResponseEntity.status(200).body(
-     * new ApiResponse<DireccionResponseDTO>
-     * (true, "Dirección obtenida exitosamente.", dto)
-     * );
-     * }
-     */
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/detalles/{id}")
@@ -104,6 +85,17 @@ public class PuntoVentaController {
 
         response.put("success", "Zona actualizada exitosamente.");
         return ResponseEntity.status(200).body(response);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<String>> deletePunto(@PathVariable Integer id) {
+        boolean deleted = puntoService.deletePunto(id);
+        if (deleted) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Punto de venta eliminado exitosamente", null));
+        } else {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Punto de venta no encontrado", null));
+        }  
     }
 
 }

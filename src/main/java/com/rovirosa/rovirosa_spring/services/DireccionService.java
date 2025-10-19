@@ -2,7 +2,9 @@ package com.rovirosa.rovirosa_spring.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.rovirosa.rovirosa_spring.DTOs.Direccion.DireccionPutDTO;
 import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.repositories.DireccionRepository;
 
@@ -14,6 +16,11 @@ public class DireccionService {
     
     public Direccion updateDireccion(Direccion direccion) {
         return direccionRep.save(direccion);
+    }
+
+    @Transactional
+    public Boolean updateCoords(DireccionPutDTO coords) {
+        return direccionRep.updateCoordenadas(coords.getId(), coords.getLatitud(), coords.getLongitud(), coords.getRef()) > 0;
     }
     
 }

@@ -38,13 +38,6 @@ public class PuntoVentaService {
     @Autowired
     private CatalogoPvRepository catalogoRep;
 
-    /*
-     * Necesito: 
-     * El punto de venta (nombre, lat, lng), 
-     * Repartidores asignados, 
-     * GerentePuntoVenta
-     * El catalogo de productos
-     */
     public PuntoVentaDetallesDTO getPuntoDetalles(Integer id) {
 
         PuntoVentaSimpleQueryDTO punto = puntoRep.findSimpleProjectedById(id);
@@ -93,4 +86,15 @@ public class PuntoVentaService {
     public Boolean updateZone(Integer id, String zone) {
         return puntoRep.updateZona(id, zone) > 0;
     }
+
+    @Transactional
+    public boolean deletePunto(Integer id) {
+        if (puntoRep.existsById(id)) {
+            puntoRep.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

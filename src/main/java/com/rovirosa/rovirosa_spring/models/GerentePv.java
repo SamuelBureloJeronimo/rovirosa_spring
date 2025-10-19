@@ -30,7 +30,7 @@ public class GerentePv implements Serializable {
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pv_id", nullable = false)
+    @JoinColumn(name = "pv_id", nullable = true)
     private PuntoVenta puntoVenta;
 
     @Column(name = "activo", nullable = false)

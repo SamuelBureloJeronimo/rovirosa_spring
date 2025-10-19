@@ -4,14 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rovirosa.rovirosa_spring.services.RepartidorService;
+import com.rovirosa.rovirosa_spring.services.GerentePvService;
+
 
 @RestController
-@RequestMapping("/api/repartidores")
-public class RepartidorController {
+@RequestMapping("/api/gerente-pv")
+public class GerentePvController {
 
     @Autowired
-    private RepartidorService repartidorService;
-
-
+    private GerentePvService gerentePvService;
+    
+    
 }

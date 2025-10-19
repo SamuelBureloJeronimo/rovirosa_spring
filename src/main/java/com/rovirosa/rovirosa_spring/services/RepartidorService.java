@@ -3,7 +3,7 @@ package com.rovirosa.rovirosa_spring.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorPostDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioByRolPostDTO;
 import com.rovirosa.rovirosa_spring.models.Persona;
 import com.rovirosa.rovirosa_spring.models.Repartidor;
 import com.rovirosa.rovirosa_spring.models.Usuario;
@@ -24,7 +24,7 @@ public class RepartidorService {
     private UsuarioRepository usuarioRep;
 
     @Transactional
-    public Repartidor createRepartidor(RepartidorPostDTO dto) {
+    public Repartidor createRepartidor(UsuarioByRolPostDTO dto) {
 
         Persona persona = new Persona();
         persona.setCurp(dto.getCurp());

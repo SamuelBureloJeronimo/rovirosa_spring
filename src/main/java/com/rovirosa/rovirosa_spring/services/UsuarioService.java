@@ -37,6 +37,11 @@ public class UsuarioService {
     }
 
     @Transactional
+    public int changeStatus(Integer userId, String estado) {
+        return usuarioRepository.changeStatus(userId, estado);
+    }
+
+    @Transactional
     public void updatePuntoDeVenta(Integer pvId, Integer userId) {
         Usuario usuario = usuarioRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
