@@ -64,7 +64,7 @@ public class PuntoVentaController {
         }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN','CLIENTE')")
+    @PreAuthorize("hasRole('ADMIN','CLIENTE')")
     @GetMapping
     public ResponseEntity<ApiResponse<List<PuntoVentaQueryDTO>>> getPuntos() {
         List<PuntoVentaQueryDTO> puntos = puntoService.getAllPuntos();

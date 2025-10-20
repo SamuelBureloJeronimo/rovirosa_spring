@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
-import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoPostDTO;
-import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoPutDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoPostOrPutDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoQueryByClienteDTO;
 import com.rovirosa.rovirosa_spring.services.CarritoService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -30,27 +27,9 @@ public class CarritoController {
 
     @PreAuthorize("hasRole('CLIENTE')")
     @PostMapping
-    public ResponseEntity<ApiResponse<CarritoQueryByClienteDTO>> addToCart(@RequestBody CarritoPostDTO dto) {
-        
-        return ResponseEntity.ok(new ApiResponse<>(true, "Producto agregado al carrito exitosamente", carritoService.createCarrito(dto)));
-    }
-
-    @PreAuthorize("hasRole('CLIENTE')")
-    @PutMapping
-    public ResponseEntity<ApiResponse<String>> updateCart(@RequestBody CarritoPutDTO dto) {
-        carritoService.updateCarrito(dto.getId(), dto.getCantidad());
-        return ResponseEntity.ok(new ApiResponse<>(true, "Producto actualizado en el carrito exitosamente", null));
-    }
-
-    @PreAuthorize("hasRole('CLIENTE')")
-    @DeleteMapping("/{userId}/{catalogoId}")
-    public ResponseEntity<ApiResponse<String>> removeFromCart(@PathVariable Integer userId, @PathVariable Integer catalogoId) {
-        boolean rowAffected = carritoService.removeFromCart(userId, catalogoId);
-        if (rowAffected) {
-            return ResponseEntity.ok(new ApiResponse<>(true, "Producto eliminado del carrito exitosamente", null));
-        } else {
-            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Carrito no encontrado", null));
-        }
+    public ResponseEntity<ApiResponse<String>> addToCart(@RequestBody CarritoPostOrPutDTO dto) {
+        carritoService.agregarAlCarrito(dto);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Producto agregado al carrito exitosamente", null));
     }
 
     @PreAuthorize("hasRole('CLIENTE')")

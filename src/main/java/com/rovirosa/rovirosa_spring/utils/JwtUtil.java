@@ -1,38 +1,25 @@
 package com.rovirosa.rovirosa_spring.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // 🔹 Puedes cargarlo desde application.properties si quieres:
-    // jwt.secret=MiClaveSecretaMuySeguraParaJWT123456789
-    // jwt.expiration=3600000
-    @Value("${jwt.secret:MiClaveSecretaMuySeguraParaJWT123456789}")
-    private String SECRET_KEY;
+    private final String SECRET_KEY = "MiClaveSecretaMuySeguraParaJWT123456789"; // mínimo 32 caracteres
+    private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hora
 
-    @Value("${jwt.expiration:3600000}") // 1 hora por defecto
-    private long EXPIRATION_TIME;
-
-    // Clave de firma segura (mínimo 32 bytes)
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    public Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    // 🔹 Generar token
+    // Generar token
     public String generateToken(String correo, String role) {
         return Jwts.builder()
                 .setSubject(correo)
@@ -44,40 +31,24 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 🔹 Validar token
+    // Validar token
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
-                    .build()
-                    .parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException e) {
-            System.out.println("❌ Token expirado: " + e.getMessage());
-            throw e; // se capturará en el filtro
-        } catch (MalformedJwtException e) {
-            System.out.println("❌ Token malformado: " + e.getMessage());
-            throw e;
-        } catch (SignatureException e) {
-            System.out.println("❌ Firma JWT inválida: " + e.getMessage());
-            throw e;
-        } catch (IllegalArgumentException e) {
-            System.out.println("❌ Token vacío o nulo");
-            throw e;
+        } catch (JwtException e) {
+            return false;
         }
     }
 
-    // 🔹 Obtener Claims (datos completos dentro del token)
-    public Claims getClaims(String token) {
+    // Obtener username
+    public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
-                .getBody();
+                .getBody()
+                .getSubject();
     }
-
-    // 🔹 Obtener usuario (subject)
-    public String getUsernameFromToken(String token) {
-        return getClaims(token).getSubject();
-    }
+    
 }

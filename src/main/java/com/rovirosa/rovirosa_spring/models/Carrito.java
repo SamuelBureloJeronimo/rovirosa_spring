@@ -27,13 +27,13 @@ public class Carrito {
 
     // Relación con Cliente
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id")
-    private Usuario usuario;
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
     // Relación con Producto
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "catalogo_id")
-    private CatalogoPv catalogo;
+    @JoinColumn(name = "product_id")
+    private Producto producto;
 
     @Column(nullable = false)
     private Integer cantidad;
@@ -48,9 +48,9 @@ public class Carrito {
     public Carrito() {
     }
 
-    public Carrito(Usuario usuario, CatalogoPv catalogo, Integer cantidad) {
-        this.usuario = usuario;
-        this.catalogo = catalogo;
+    public Carrito(Cliente cliente, Producto producto, Integer cantidad) {
+        this.cliente = cliente;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
@@ -65,20 +65,20 @@ public class Carrito {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public CatalogoPv getCatalogo() {
-        return catalogo;
+    public Producto getProducto() {
+        return producto;
     }
-    
-    public void setCatalogo(CatalogoPv catalogo) {
-        this.catalogo = catalogo;
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public Integer getCantidad() {
