@@ -24,17 +24,17 @@ DROP TABLE IF EXISTS `carrito`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `carrito` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `cliente_id` int NOT NULL,
-  `product_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `catalogo_id` int NOT NULL,
   `cantidad` int NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `fk_carrito_cliente` (`cliente_id`),
-  KEY `fk_carrito_producto` (`product_id`),
-  CONSTRAINT `fk_carrito_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_carrito_producto` FOREIGN KEY (`product_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_carrito_user` (`user_id`),
+  KEY `fk_carrito_catalogo` (`catalogo_id`),
+  CONSTRAINT `fk_carrito_catalogo` FOREIGN KEY (`catalogo_id`) REFERENCES `catalogo_pv` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_carrito_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (1,1,1,5,'2025-10-19 00:26:35','2025-10-19 00:27:19');
+INSERT INTO `carrito` VALUES (28,11,4,3,'2025-10-19 19:53:19','2025-10-19 20:02:12'),(33,11,6,2,'2025-10-19 19:54:43','2025-10-19 19:54:46'),(34,11,2,3,'2025-10-19 20:20:46','2025-10-19 20:42:13'),(35,11,1,2,'2025-10-19 20:42:04','2025-10-19 20:42:08');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -890,4 +890,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-19  0:55:55
+-- Dump completed on 2025-10-20 10:19:29

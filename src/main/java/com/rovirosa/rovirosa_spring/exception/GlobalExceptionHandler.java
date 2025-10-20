@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiError;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
