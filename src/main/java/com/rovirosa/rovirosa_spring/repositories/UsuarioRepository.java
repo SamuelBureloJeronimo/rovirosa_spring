@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginQueryDTO;
+import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerentePvQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioQueryDTO;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 
@@ -20,6 +21,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     Boolean existsByCorreo(String correo);
 
     List<UsuarioQueryDTO> findByRol(String rol);
+
+    GerentePvQueryDTO findFirstByRolAndPuntoVenta_Id(String rol, Integer id);
 
     @Modifying
     @Query("UPDATE Usuario p SET p.estado = :estatus WHERE p.id = :id")

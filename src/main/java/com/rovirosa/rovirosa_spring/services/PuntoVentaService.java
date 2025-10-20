@@ -20,9 +20,9 @@ import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
 import com.rovirosa.rovirosa_spring.repositories.CatalogoPvRepository;
 import com.rovirosa.rovirosa_spring.repositories.DireccionRepository;
-import com.rovirosa.rovirosa_spring.repositories.GerentePvRepository;
 import com.rovirosa.rovirosa_spring.repositories.PuntoVentaRepository;
 import com.rovirosa.rovirosa_spring.repositories.RepartidorAsignacionRepository;
+import com.rovirosa.rovirosa_spring.repositories.UsuarioRepository;
 
 @Service
 public class PuntoVentaService {
@@ -34,15 +34,15 @@ public class PuntoVentaService {
     @Autowired
     private RepartidorAsignacionRepository repAsignRep;
     @Autowired
-    private GerentePvRepository gerenteRep;
-    @Autowired
     private CatalogoPvRepository catalogoRep;
+    @Autowired
+    private UsuarioRepository userRep;
 
     public PuntoVentaDetallesDTO getPuntoDetalles(Integer id) {
 
         PuntoVentaSimpleQueryDTO punto = puntoRep.findSimpleProjectedById(id);
         List<RepartidorQueryDTO> repartidores = repAsignRep.findByPuntoVentaId(id);
-        GerentePvQueryDTO gerente = gerenteRep.findFirstByPuntoVentaId(id);
+        GerentePvQueryDTO gerente = userRep.findFirstByRolAndPuntoVenta_Id("GERENTE", id);
         List<CatalogoQueryDTO> catalogo = catalogoRep.findByPuntoVenta_Id(id);
 
         PuntoVentaDetallesDTO detalles = new PuntoVentaDetallesDTO(punto, repartidores, gerente, catalogo);
