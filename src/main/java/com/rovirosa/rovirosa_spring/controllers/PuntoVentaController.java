@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.DiaLaboral.DiaLaboralPostDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Direccion.DireccionResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.HorarioLaboral.HorarioLaboralPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaDetallesDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaQueryDTO;
@@ -49,7 +52,8 @@ public class PuntoVentaController {
      @PreAuthorize("hasRole('ADMIN')")
      @PostMapping
         public ResponseEntity<ApiResponse<PuntoVentaResponseDTO>> createPunto(
-                @Valid @RequestBody PuntoVentaPostDTO dto) {
+                @Valid @RequestPart("dto") PuntoVentaPostDTO dto, 
+                @Valid @RequestPart("horarios") List<DiaLaboralPostDTO> horarios) {
 
             System.out.println("RFC: " + dto.getRfc());
             System.out.println("Nombre: " + dto.getNombre());
@@ -57,7 +61,17 @@ public class PuntoVentaController {
             System.out.println("Longitud: " + dto.getLng());
             System.out.println("Zona: " + dto.getZona());
 
-            PuntoVentaResponseDTO nuevo = puntoService.createPunto(dto);
+            System.out.println("Horarios:");
+
+            for (DiaLaboralPostDTO dia : horarios) {
+                System.out.println("Día de la semana: " + dia.getDiaSemana());
+                for (HorarioLaboralPostDTO horario : dia.getHorarios()) {
+                    System.out.println("Hora de apertura: " + horario.gethApertura().toString());
+                    System.out.println("Hora de cierre: " + horario.gethCierre().toString());
+                }
+            }
+
+            PuntoVentaResponseDTO nuevo = puntoService.createPunto(dto, horarios);
 
             return ResponseEntity.status(201).body(
                     new ApiResponse<PuntoVentaResponseDTO>(true, "Punto de venta creado exitosamente.", nuevo));
@@ -71,6 +85,19 @@ public class PuntoVentaController {
         return ResponseEntity.status(200).body(
                 new ApiResponse<List<PuntoVentaQueryDTO>>(true, "Puntos de venta obtenidos exitosamente.", puntos));
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENTE','REPARTIDOR')")
+    @GetMapping("/{pvId}")
+    public ResponseEntity<ApiResponse<PuntoVentaQueryDTO>> getById(@PathVariable Integer pvId) {
+        PuntoVentaQueryDTO pv = puntoService.getDireccion(pvId);
+        if (pv == null) {
+            return ResponseEntity.status(404).body(
+                    new ApiResponse<>(false, "No se encontró el punto de venta.", null));
+        }
+        return ResponseEntity.status(200).body(
+                new ApiResponse<>(true, "Punto de venta obtenida exitosamente.", pv));
+    }
+    
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/avalible-zone")

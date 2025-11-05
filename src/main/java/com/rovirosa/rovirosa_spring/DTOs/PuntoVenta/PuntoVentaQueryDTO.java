@@ -9,3 +9,4 @@ public interface PuntoVentaQueryDTO {
     public String getZonaPermitida();
     public Direccion getDireccion();
 }
+ 

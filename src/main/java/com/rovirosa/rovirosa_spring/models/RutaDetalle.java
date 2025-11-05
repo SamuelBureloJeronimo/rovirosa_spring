@@ -40,17 +40,21 @@ public class RutaDetalle implements Serializable {
     @Column(name = "lng", nullable = false)
     private BigDecimal lng;
 
+    @Column(name = "ref", nullable = false)
+    private String ref;
+
 
     // Constructor vacío
     public RutaDetalle() {}
 
     // Constructor con parámetros
-    public RutaDetalle(Integer id, Ruta ruta, Venta venta, BigDecimal lat, BigDecimal lng) {
+    public RutaDetalle(Integer id, Ruta ruta, Venta venta, BigDecimal lat, BigDecimal lng, String ref) {
         this.id = id;
         this.ruta = ruta;
         this.venta = venta;
         this.lat = lat;
         this.lng = lng;
+        this.ref = ref;
     }
 
     // Getters y Setters
@@ -95,6 +99,12 @@ public class RutaDetalle implements Serializable {
         this.lng = lng;
     }
 
+    public String getRef() {
+        return ref;
+    }
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
     
 
 }

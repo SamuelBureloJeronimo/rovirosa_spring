@@ -54,6 +54,17 @@ public class StorageController {
                 .body(file);
     }
 
+    @GetMapping("/descuentos/{filename}")
+    public ResponseEntity<Resource> getDescuentos(@PathVariable String filename) throws IOException {
+        Resource file = storageService.loadAsResource(filename, "descuentos/");
+        String contentType = Files.probeContentType(file.getFile().toPath());
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_TYPE, contentType)
+                .body(file);
+    }
+
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> getBrandLogo(@PathVariable String filename) throws IOException {
         Resource file = storageService.loadAsResource(filename, "");

@@ -94,7 +94,7 @@ public class UsuarioController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasRole('ADMIN','CLIENTE')")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENTE')")
     @PutMapping("/update-pv/{user_id}/{pv_id}")
     public ResponseEntity<ApiResponse<UsuarioQueryDTO>> updatePv(@PathVariable Integer pv_id,
             @PathVariable Integer user_id) {

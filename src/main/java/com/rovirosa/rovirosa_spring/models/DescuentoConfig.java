@@ -32,10 +32,10 @@ public class DescuentoConfig implements Serializable {
     @Column(name = "objetivo", nullable = false)
     private String objetivo;
 
-    @Column(name = "fecha_in", nullable = false)
+    @Column(name = "fech_in", nullable = false)
     private LocalDate fechaIn;
 
-    @Column(name = "fecha_fin", nullable = true)
+    @Column(name = "fech_fin", nullable = true)
     private LocalDate fechaFin;
 
     @Column(name = "banner", nullable = true)

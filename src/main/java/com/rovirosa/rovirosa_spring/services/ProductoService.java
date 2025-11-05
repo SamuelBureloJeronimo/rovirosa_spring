@@ -1,17 +1,28 @@
 package com.rovirosa.rovirosa_spring.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoPostDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoCreateDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoDeleteDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoUpdateDTO;
+import com.rovirosa.rovirosa_spring.models.CatalogoPv;
 import com.rovirosa.rovirosa_spring.models.Marca;
 import com.rovirosa.rovirosa_spring.models.Producto;
+import com.rovirosa.rovirosa_spring.models.PuntoVenta;
+import com.rovirosa.rovirosa_spring.repositories.CatalogoPvRepository;
 import com.rovirosa.rovirosa_spring.repositories.MarcaRepository;
 import com.rovirosa.rovirosa_spring.repositories.ProductoRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductoService {
@@ -25,24 +36,57 @@ public class ProductoService {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private CatalogoPvRepository catalogoPvRep;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    public List<Producto> getAllProducts() {
+        return productoRepo.findAll();
+    }
+
     public Producto getProductById(Integer id) {
         return productoRepo.findById(id).orElse(null);
     }
 
     // Crear producto
+    @Transactional
     public ProductoResponseDTO create(ProductoCreateDTO dto, MultipartFile imagen) {
         Marca marca = marcaRepo.findById(dto.getMarcaId())
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
 
+        System.out.println(dto.getId());
+
         Producto p = new Producto();
+        p.setId(dto.getId());
         p.setNombre(dto.getNombre());
         p.setMarca(marca);
         p.setPrecio(dto.getPrecio());
         p.setPesoKg(dto.getPesoKg());
         p.setVolM3(dto.getVolM3());
-        p.setImagen("productos/" + storageService.store(imagen, "productos/"));
+        p.setImagen("productos/" + storageService.generateFileName());
 
-        productoRepo.save(p);
+        em.persist(p);
+        
+
+        for (CatalogoPostDTO cvDto : dto.getCatalogo()) {
+            CatalogoPv newEntry = new CatalogoPv();
+
+            newEntry.setStock(cvDto.getStock());
+            newEntry.setVendidos(0);
+
+            PuntoVenta pv = new PuntoVenta();
+            pv.setId(cvDto.getPuntoVenta_id());
+            newEntry.setPuntoVenta(pv);
+
+            newEntry.setProducto(p);
+
+            catalogoPvRep.save(newEntry);
+        }
+
+        storageService.store(imagen, "productos/", p.getImagen().substring(10));
+
         return mapToResponse(p);
     }
 
@@ -77,12 +121,12 @@ public class ProductoService {
     public boolean delete(Integer id) {
 
         if (productoRepo.existsById(id)) {
-            
+
             ProductoDeleteDTO producto = productoRepo.findProductoDeleteDTOById(id);
-            
+
             if (producto != null)
                 storageService.delete(producto.getImagen());
-            
+
             productoRepo.deleteById(id);
             return true; // eliminado correctamente
         } else {

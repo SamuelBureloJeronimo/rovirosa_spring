@@ -32,7 +32,7 @@ public class Repartidor implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "veh_id", nullable = true)
-    private Vehiculo veh;
+    private Vehiculo vehiculo;
 
     @Column(name = "lat", nullable = true)
     private BigDecimal lat;
@@ -51,7 +51,7 @@ public class Repartidor implements Serializable {
     public Repartidor(Integer id, Usuario user, Vehiculo veh, BigDecimal lat, BigDecimal lng, String estado) {
         this.id = id;
         this.usuario = user;
-        this.veh = veh;
+        this.vehiculo = veh;
         this.lat = lat;
         this.lng = lng;
         this.estado = estado;
@@ -75,12 +75,12 @@ public class Repartidor implements Serializable {
         this.usuario = user;
     }
 
-    public Vehiculo getVeh() {
-        return veh;
+    public Vehiculo getVehiculo() {
+        return vehiculo;
     }
 
-    public void setVeh(Vehiculo veh) {
-        this.veh = veh;
+    public void setVehiculo(Vehiculo veh) {
+        this.vehiculo = veh;
     }
 
     public BigDecimal getLat() {

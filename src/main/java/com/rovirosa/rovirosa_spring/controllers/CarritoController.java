@@ -12,6 +12,7 @@ import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoPutDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoQueryByClienteDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Carrito.CarritoResponseDTO;
 import com.rovirosa.rovirosa_spring.services.CarritoService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,9 +56,9 @@ public class CarritoController {
 
     @PreAuthorize("hasRole('CLIENTE')")
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<List<CarritoQueryByClienteDTO>>> getCartByClientId(@PathVariable Integer userId) {
+    public ResponseEntity<ApiResponse<List<CarritoResponseDTO>>> getCarritoByUserId(@PathVariable Integer userId) {
         // Lógica para obtener el carrito por ID de cliente
-        List<CarritoQueryByClienteDTO> carrito = carritoService.getCarritoByUserId(userId);
+        List<CarritoResponseDTO> carrito = carritoService.getCarritoByUserId(userId);
         if (carrito != null) {
             return ResponseEntity.ok(new ApiResponse<>(true, "Carrito obtenido exitosamente", carrito));
         } else {

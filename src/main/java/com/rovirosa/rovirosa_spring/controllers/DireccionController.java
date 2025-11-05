@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Direccion.DireccionPutDTO;
+import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.services.DireccionService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/api/direccion")
@@ -21,7 +25,14 @@ public class DireccionController {
     @Autowired
     private DireccionService direccionService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE', 'REPARTIDOR')")
+    @GetMapping("/{UserId}")
+    public ResponseEntity<ApiResponse<Direccion>> get(@PathVariable Integer UserId) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Dirección obtenida exitosamente", direccionService.getDireccionByUserId(UserId)));
+    }
+    
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @PutMapping
     public ResponseEntity<ApiResponse<String>> updateCoords(@Valid @RequestBody DireccionPutDTO dto) {
 

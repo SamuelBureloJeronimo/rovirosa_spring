@@ -19,6 +19,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     Boolean existsByPersona_Curp(String curp);
     Boolean existsByCorreo(String correo);
 
+    UsuarioQueryDTO findProjectedById(Integer id);
+
     List<UsuarioQueryDTO> findByRol(String rol);
 
     @Modifying

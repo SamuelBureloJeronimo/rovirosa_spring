@@ -14,5 +14,5 @@ public interface DireccionRepository extends JpaRepository<Direccion, Integer> {
     @Modifying
     @Query("UPDATE Direccion d SET d.lat = :lat, d.lng = :lng, d.ref = :ref WHERE d.id = :id")
     int updateCoordenadas(@Param("id") Integer id, @Param("lat") BigDecimal lat, @Param("lng") BigDecimal lng, @Param("ref") String ref);
-
+    
 }

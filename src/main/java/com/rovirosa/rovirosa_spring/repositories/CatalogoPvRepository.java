@@ -14,6 +14,8 @@ public interface CatalogoPvRepository extends JpaRepository<CatalogoPv, Integer>
 
     CatalogoQueryDTO findCatalogoQueryDTOById(Integer id);
 
+    CatalogoQueryDTO findFirstCatalogoQueryDTOByProducto_IdAndPuntoVenta_Id(Integer prod_Id, Integer pvId);
+
     Boolean existsByProducto_IdAndPuntoVenta_Id(Integer productoId, Integer puntoVentaId);
     
     Integer deleteByProducto_IdAndPuntoVenta_Id(Integer productoId, Integer puntoVentaId);

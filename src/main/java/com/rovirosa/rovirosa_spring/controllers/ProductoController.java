@@ -1,5 +1,7 @@
 package com.rovirosa.rovirosa_spring.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoCreateDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoUpdateDTO;
@@ -22,6 +25,8 @@ import com.rovirosa.rovirosa_spring.models.Producto;
 import com.rovirosa.rovirosa_spring.services.ProductoService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/products")

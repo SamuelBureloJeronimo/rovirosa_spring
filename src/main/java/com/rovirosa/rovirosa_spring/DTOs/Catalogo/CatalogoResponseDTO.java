@@ -15,6 +15,9 @@ public class CatalogoResponseDTO {
     private Integer stock;
     private Integer vendidos;
 
+    public CatalogoResponseDTO() {
+    }
+
     // Constructor
     public CatalogoResponseDTO(CatalogoQueryDTO catalogo, Double valor, String tipo) {
         this.id = catalogo.getId();

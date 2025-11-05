@@ -46,7 +46,7 @@ public class Cliente implements Serializable {
     @Column(name = "p_cancel", nullable = false)
     private Integer pCancel = 0;
 
-    @Column(name = "last_cancel")
+    @Column(name = "last_cancel", nullable = true)
     private LocalDate lastCancel;
 
     // Constructor vacío

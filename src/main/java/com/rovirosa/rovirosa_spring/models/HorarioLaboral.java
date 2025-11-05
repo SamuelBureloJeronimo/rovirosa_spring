@@ -1,7 +1,6 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
-import java.sql.Time;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -27,32 +26,24 @@ public class HorarioLaboral implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pv_id", nullable = false)
-    private PuntoVenta puntoVenta;
+    @JoinColumn(name = "dia_id", nullable = false)
+    private DiaLaboral diaLaboral;
 
-    @Column(name = "dia_semana", nullable = false)
-    private String diaSemana;
+    @Column(name = "h_apertura", nullable = true)
+    private String hApertura;
 
-    @Column(name = "h_apertura", nullable = false)
-    private Time hApertura;
-
-    @Column(name = "h_cierre", nullable = false)
-    private Time hCierre;
-
-    @Column(name = "estado", nullable = false)
-    private String estado = "abierto"; // abierto, cerrado
+    @Column(name = "h_cierre", nullable = true)
+    private String hCierre;
 
     // Constructor vacío
     public HorarioLaboral() { }
 
     // Constructor con parámetros
-    public HorarioLaboral(Integer id, PuntoVenta puntoVenta, String diaSemana, Time hApertura, Time hCierre, String estado) {
+    public HorarioLaboral(Integer id, DiaLaboral diaLaboral, String hApertura, String hCierre) {
         this.id = id;
-        this.puntoVenta = puntoVenta;
-        this.diaSemana = diaSemana;
+        this.diaLaboral = diaLaboral;
         this.hApertura = hApertura;
         this.hCierre = hCierre;
-        this.estado = estado;
     }
 
     // Getters y Setters
@@ -65,44 +56,27 @@ public class HorarioLaboral implements Serializable {
         this.id = id;
     }
 
-    public PuntoVenta getPuntoVenta() {
-        return puntoVenta;
+    public DiaLaboral getDiaLaboral() {
+        return diaLaboral;
+    }
+    public void setDiaLaboral(DiaLaboral diaLaboral) {
+        this.diaLaboral = diaLaboral;
     }
 
-    public void setPuntoVenta(PuntoVenta puntoVenta) {
-        this.puntoVenta = puntoVenta;
-    }
-
-    public String getDiaSemana() {
-        return diaSemana;
-    }
-
-    public void setDiaSemana(String diaSemana) {
-        this.diaSemana = diaSemana;
-    }
-
-    public Time gethApertura() {
+    public String gethApertura() {
         return hApertura;
     }
 
-    public void sethApertura(Time hApertura) {
+    public void sethApertura(String hApertura) {
         this.hApertura = hApertura;
     }
 
-    public Time gethCierre() {
+    public String gethCierre() {
         return hCierre;
     }
 
-    public void sethCierre(Time hCierre) {
+    public void sethCierre(String hCierre) {
         this.hCierre = hCierre;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }    
+    }   
     
 }

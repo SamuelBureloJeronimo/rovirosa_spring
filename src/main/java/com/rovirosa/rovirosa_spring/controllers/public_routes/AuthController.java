@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Auth.CreateAccount.CreateAccountDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaQueryDTO;
 import com.rovirosa.rovirosa_spring.clases.CodigoVerificacion;
-import com.rovirosa.rovirosa_spring.models.Cliente;
 import com.rovirosa.rovirosa_spring.services.AuthService;
 import com.rovirosa.rovirosa_spring.services.EmailService;
-import com.rovirosa.rovirosa_spring.services.StorageService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -37,8 +37,6 @@ public class AuthController {
 
     @Autowired
     private AuthService authServ;
-    @Autowired
-    private StorageService storageService;
     @Autowired
     private EmailService emailService;
 
@@ -63,31 +61,42 @@ public class AuthController {
     }
 
     @GetMapping("/get-coords")
-    public ResponseEntity<HashMap<String, List<String>>> getCoords() {
-        HashMap<String, List<String>> response = new HashMap<>();
-        List<String> direcciones = authServ.getCoords();
-        if (direcciones == null) {
-            return ResponseEntity.status(404).body(response);
-        }
-        response.put("coords", direcciones);
-        return ResponseEntity.status(200).body(response);
+    public ResponseEntity<ApiResponse<List<PuntoVentaQueryDTO>>> getPuntos() {
+        List<PuntoVentaQueryDTO> puntos = authServ.getAllPuntos();
+        return ResponseEntity.status(200).body(
+                new ApiResponse<List<PuntoVentaQueryDTO>>(true, "Puntos de venta obtenidos exitosamente.", puntos));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<HashMap<String, String>> registerClient(
-            @RequestPart Cliente cliente,
+    public ResponseEntity<ApiResponse<String>> registerClient(
+            @Valid @RequestPart CreateAccountDTO dto,
             @RequestPart("ine_front") MultipartFile ineFront,
             @RequestPart("ine_back") MultipartFile ineBack) {
-        HashMap<String, String> reponse = new HashMap<>();
 
-        System.out.println(cliente);
 
-        cliente.setIneFront("ine/" + storageService.store(ineFront, "ine/"));
-        cliente.setIneBack("ine/" + storageService.store(ineBack, "ine/"));
+                System.out.println("DTO: " + dto.getCorreo());
+                System.out.println("CURP: " + dto.getCurp());
+                System.out.println("Nombre: " + dto.getNombre());
+                System.out.println("Teléfono: " + dto.getTel());
+                System.out.println("Apellido Paterno: " + dto.getApp());
+                System.out.println("Apellido Materno: " + dto.getApm());
+                System.out.println("Fecha de Nacimiento: " + dto.getFechaNac());
+                System.out.println("Sexo: " + dto.getSexo());
 
-        String token = authServ.register(cliente);
-        reponse.put("token", token);
-        return ResponseEntity.status(200).body(reponse);
+                System.out.println("Correo: " + dto.getCorreo());
+                System.out.println("Password: " + dto.getPassword());
+                System.out.println("Punto de Venta ID: " + dto.getPuntoVentaId());
+
+                System.out.println("Latitud: " + dto.getLat());
+                System.out.println("Longitud: " + dto.getLng());
+
+                System.out.println("INE Front: " + ineFront.getOriginalFilename());
+                System.out.println("INE Back: " + ineBack.getOriginalFilename());
+
+        String token = authServ.register(dto, ineFront, ineBack);
+        return ResponseEntity.status(200).body(
+                new ApiResponse<>(true, "Usuario registrado exitosamente.", token)
+        );
     }
 
     private final Map<String, CodigoVerificacion> codigoStorage = new ConcurrentHashMap<>();
@@ -157,17 +166,15 @@ public class AuthController {
 
     @GetMapping("/validate/{correo}")
     public ResponseEntity<ApiResponse<Boolean>> validate(@PathVariable String correo) {
-        
+
         Boolean userExist = emailService.validate(correo);
-        
+
         if (userExist) {
             return ResponseEntity.status(200).body(
-                    new ApiResponse<>(true, "El correo ya está registrado", userExist)
-            );
+                    new ApiResponse<>(true, "El correo ya está registrado", userExist));
         } else {
             return ResponseEntity.status(200).body(
-                    new ApiResponse<>(false, "El correo no está registrado", userExist)
-            );
+                    new ApiResponse<>(false, "El correo no está registrado", userExist));
         }
     }
 

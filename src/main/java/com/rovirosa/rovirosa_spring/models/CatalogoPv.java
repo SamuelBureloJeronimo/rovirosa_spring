@@ -37,7 +37,7 @@ public class CatalogoPv  implements Serializable {
     private Integer stock;
 
     @Column(name = "vendidos", nullable = false)
-    private Integer vendidos;
+    private Integer vendidos = 0;
 
     // Constructor vacío
     public CatalogoPv() {

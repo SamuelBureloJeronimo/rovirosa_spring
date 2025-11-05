@@ -17,6 +17,7 @@ import com.rovirosa.rovirosa_spring.repositories.CatalogoPvRepository;
 import com.rovirosa.rovirosa_spring.repositories.DescuentoCategRepository;
 import com.rovirosa.rovirosa_spring.repositories.DescuentoMarcaRepository;
 import com.rovirosa.rovirosa_spring.repositories.DescuentoProductoRepository;
+import com.rovirosa.rovirosa_spring.repositories.PuntoVentaRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -31,6 +32,8 @@ public class CatalogoPvService {
     private DescuentoMarcaRepository descMarcaRepo;
     @Autowired
     private DescuentoProductoRepository descProductoRepo;
+    @Autowired
+    private PuntoVentaRepository puntoVentaRepo;
 
     public Boolean existPvAndProd(Integer pv_id, Integer prod_id) {
         return catalogoPvRep.existsByProducto_IdAndPuntoVenta_Id(prod_id, pv_id);
@@ -61,23 +64,41 @@ public class CatalogoPvService {
 
         List<CatalogoQueryDTO> catalogo = catalogoPvRep.findByPuntoVenta_IdAndProducto_Marca_Id(pv_id, marca_id);
         List<CatalogoResponseDTO> res = new ArrayList<>();
-        
+
         for (CatalogoQueryDTO item : catalogo) {
+            // Si no hay stock en el punto de venta, verificar si hay stock en otro punto de venta
+            if (item.getStock() <= 0) {
+
+                System.out.println("Sin stock en el punto de venta: " + pv_id + " para el producto: " + item.getProducto_Id());
+
+                CatalogoQueryDTO empty = getCatalogoIfIsEmpty(item.getProducto_Id(), pv_id);
+
+                System.out.println("Empty encontrado: " + empty);
+
+                if (empty != null)
+                    item = empty;
+
+            }
+
             DescuentoConfigQueryDTO descProd = descProductoRepo.findByProducto_Id(item.getProducto_Id());
-            if(descProd != null){
-                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descProd.getConfig_Valor(), descProd.getConfig_Tipo());
+            if (descProd != null) {
+                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descProd.getConfig_Valor(),
+                        descProd.getConfig_Tipo());
                 res.add(response);
                 continue;
             }
             DescuentoConfigQueryDTO descMarca = descMarcaRepo.findByMarca_Id(item.getProducto_Marca().getId());
-            if(descMarca != null){
-                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descMarca.getConfig_Valor(), descMarca.getConfig_Tipo());
+            if (descMarca != null) {
+                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descMarca.getConfig_Valor(),
+                        descMarca.getConfig_Tipo());
                 res.add(response);
                 continue;
             }
-            DescuentoConfigQueryDTO descCateg = descCategRepo.findByCategoria_Id(item.getProducto_Marca().getCategoria().getId());
-            if(descCateg != null){
-                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descCateg.getConfig_Valor(), descCateg.getConfig_Tipo());
+            DescuentoConfigQueryDTO descCateg = descCategRepo
+                    .findByCategoria_Id(item.getProducto_Marca().getCategoria().getId());
+            if (descCateg != null) {
+                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descCateg.getConfig_Valor(),
+                        descCateg.getConfig_Tipo());
                 res.add(response);
                 continue;
             }
@@ -87,9 +108,32 @@ public class CatalogoPvService {
         return res;
     }
 
+    private CatalogoQueryDTO getCatalogoIfIsEmpty(Integer prod_id, Integer pvId) {
+        List<Integer> allPvs = puntoVentaRepo.findAllIds();
+        for (Integer puntoVentaId : allPvs) {
+
+            System.out.println("Buscando en PV: #" + puntoVentaId);
+
+            if (puntoVentaId.equals(pvId))
+                continue;
+
+            CatalogoQueryDTO catalogo = catalogoPvRep.findFirstCatalogoQueryDTOByProducto_IdAndPuntoVenta_Id(prod_id, puntoVentaId);
+            if (catalogo != null) {
+                if(catalogo.getStock() > 0){
+                    System.out.println("Encontrado en otro punto de venta: " + puntoVentaId);
+                    return catalogo;
+                } else {
+                    System.out.println("No se encontro stock en este PV #" + puntoVentaId);
+                }
+            }
+
+        }
+        return null;
+    }
+
     @Transactional
     public Integer removeProducto(Integer pv_id, Integer prod_id) {
         return catalogoPvRep.deleteByProducto_IdAndPuntoVenta_Id(prod_id, pv_id);
     }
-    
+
 }
