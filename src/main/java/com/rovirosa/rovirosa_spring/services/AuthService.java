@@ -12,6 +12,7 @@ import com.rovirosa.rovirosa_spring.DTOs.Auth.CreateAccount.CreateAccountDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Cliente.ClienteQueryDireccionDTO;
 import com.rovirosa.rovirosa_spring.DTOs.PuntoVenta.PuntoVentaQueryDTO;
 import com.rovirosa.rovirosa_spring.models.Cliente;
 import com.rovirosa.rovirosa_spring.models.Direccion;
@@ -51,13 +52,17 @@ public class AuthService {
 
         // Buscar por correo y contraseña
         LoginQueryDTO us = this.userRep.findByPasswordAndCorreo(password, user);
-        if (us != null)
-            return new LoginResponseDTO(us, jwtUtil);
+        if (us != null){
+            ClienteQueryDireccionDTO cliente = clientRep.findByUsuario_Id(us.getId());
+            return new LoginResponseDTO(us, jwtUtil, cliente != null ? cliente.getId() : null);
+        }
 
         // Si no encuentra busca por curp
         us = this.userRep.findByPasswordAndPersona_Curp(password, user);
-        if (us != null)
-            return new LoginResponseDTO(us, jwtUtil);
+        if (us != null){
+            ClienteQueryDireccionDTO cliente = clientRep.findByUsuario_Id(us.getId());
+            return new LoginResponseDTO(us, jwtUtil, cliente != null ? cliente.getId() : null);
+        }
 
         return null;
     }

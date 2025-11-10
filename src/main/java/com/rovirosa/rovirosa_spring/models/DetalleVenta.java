@@ -36,14 +36,14 @@ public class DetalleVenta implements Serializable {
     @Column(name = "cant_in", nullable = false)
     private Integer cantIn;
 
-    @Column(name = "cant_fin", nullable = false)
+    @Column(name = "cant_fin", nullable = true)
     private Integer cantFin;
 
     @Column(name = "precio_unit", nullable = false)
     private Double precioUnit;
 
-    @Column(name = "desc", nullable = false)
-    private Double desc;
+    @Column(name = "desc_unit", nullable = false)
+    private Double descUnit;
 
     // Constructor vacío
     public DetalleVenta() { }
@@ -56,7 +56,7 @@ public class DetalleVenta implements Serializable {
         this.cantIn = cantIn;
         this.cantFin = cantFin;
         this.precioUnit = precioUnit;
-        this.desc = desc;
+        this.descUnit = desc;
     }
 
     // Getters y Setters
@@ -109,12 +109,12 @@ public class DetalleVenta implements Serializable {
         this.precioUnit = precioUnit;
     }
 
-    public Double getDesc() {
-        return desc;
+    public Double getDescUnit() {
+        return descUnit;
     }
 
-    public void setDesc(Double desc) {
-        this.desc = desc;
+    public void setDescUnit(Double desc) {
+        this.descUnit = desc;
     }
 
 }

@@ -1,7 +1,6 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
-import java.security.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,8 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "ventas")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Venta implements Serializable {
@@ -31,78 +36,23 @@ public class Venta implements Serializable {
     private Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pv_id", nullable = false)
+    private PuntoVenta puntoVenta;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pago_id", nullable = false)
     private Pago pago;
 
     @Column(name = "fecha_inic", nullable = false)
-    private Timestamp fechaInicio;
+    private String fechaInicio;
 
-    @Column(name = "fecha_fin", nullable = false)
-    private Timestamp fechaFin;
+    @Column(name = "fecha_fin", nullable = true)
+    private String fechaFin;
+    
+    @Column(name = "estado", nullable = true)
+    private String estado;
 
-    @Column(name = "calif", nullable = false)
+    @Column(name = "calif", nullable = true)
     private Integer calif;
-
-    // Constructor vacío
-    public Venta() { }
-
-    // Constructor con parámetros
-    public Venta(Integer id, Cliente cliente, Pago pago, Timestamp fechaInicio, Timestamp fechaFin, Integer calif) {
-        this.id = id;
-        this.cliente = cliente;
-        this.pago = pago;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.calif = calif;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Pago getPago() {
-        return pago;
-    }
-
-    public void setPago(Pago pago) {
-        this.pago = pago;
-    }
-
-    public Timestamp getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Timestamp fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Timestamp getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Timestamp fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public Integer getCalif() {
-        return calif;
-    }
-
-    public void setCalif(Integer calif) {
-        this.calif = calif;
-    }
-
     
 }

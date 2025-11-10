@@ -34,7 +34,7 @@ CREATE TABLE `carrito` (
   KEY `fk_carrito_catalogo` (`catalogo_id`),
   CONSTRAINT `fk_carrito_catalogo` FOREIGN KEY (`catalogo_id`) REFERENCES `catalogo_pv` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_carrito_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(131,32,2,1,'2025-11-03 11:50:05','2025-11-03 11:50:05'),(135,32,8,4,'2025-11-03 14:43:52','2025-11-03 14:44:02');
+INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(148,32,2,1,'2025-11-08 15:20:57','2025-11-08 15:20:57'),(149,32,33,1,'2025-11-08 15:20:57','2025-11-08 15:20:57'),(150,32,34,1,'2025-11-08 15:20:58','2025-11-08 15:20:58');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,6 +165,32 @@ LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
 INSERT INTO `clientes` VALUES (1,11,14,'ine/c60f68a4-2356-4eb3-ad88-f2423ec004a1.jpg','ine/d567da78-39cc-4c28-a904-74dbfb037b74.jpg',0,0,NULL),(9,32,36,'ine/2d13cbf0-092a-4a45-9d68-ef154fb882cf.jpg','ine/9ea31a60-a94e-42b3-8089-5de9ed4a98d2.jpg',0,0,NULL);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `datos_transferencia`
+--
+
+DROP TABLE IF EXISTS `datos_transferencia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `datos_transferencia` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `titular` varchar(255) NOT NULL,
+  `banco` varchar(255) NOT NULL,
+  `clave` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datos_transferencia`
+--
+
+LOCK TABLES `datos_transferencia` WRITE;
+/*!40000 ALTER TABLE `datos_transferencia` DISABLE KEYS */;
+INSERT INTO `datos_transferencia` VALUES (1,'Samuel Burelos Jeronimo','NU Bank','638180010199083400');
+/*!40000 ALTER TABLE `datos_transferencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -303,7 +329,7 @@ CREATE TABLE `detalles_venta` (
   KEY `FK_detalles_venta_ventas` (`vnta_id`),
   CONSTRAINT `FK_detalles_venta_producto` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_detalles_venta_ventas` FOREIGN KEY (`vnta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,6 +338,7 @@ CREATE TABLE `detalles_venta` (
 
 LOCK TABLES `detalles_venta` WRITE;
 /*!40000 ALTER TABLE `detalles_venta` DISABLE KEYS */;
+INSERT INTO `detalles_venta` VALUES (1,3,1,4,NULL,23.82,2.38),(2,3,4,7,NULL,239.00,23.90);
 /*!40000 ALTER TABLE `detalles_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +391,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (1,17.74748539,-92.61013526,''),(2,17.76364885,-92.59267079,''),(7,17.76405609,-92.59525008,''),(8,17.75535681,-92.58530146,''),(9,17.76455310,-92.59483297,''),(10,17.76363734,-92.59165994,''),(14,17.76084206,-92.59733415,''),(15,17.76446564,-92.59152140,''),(17,17.75950992,-92.59327040,''),(18,17.76337798,-92.59217243,''),(19,17.76255966,-92.59218810,''),(20,17.76237979,-92.59881699,''),(21,17.76284780,-92.59082261,''),(22,17.76451976,-92.59435825,''),(25,17.76223207,-92.59787038,''),(26,17.75965531,-92.60268181,''),(27,17.76523092,-92.59827881,''),(29,17.76034735,-92.60186323,'Casa color azul con blanco.'),(30,17.75886835,-92.60434033,'Casa color azul con blanco.'),(31,17.75822595,-92.60296399,'asasasasasasasasa'),(32,17.75822570,-92.60319055,'ertrertererte'),(33,17.75757141,-92.60327433,'ASASAAS'),(34,17.75843902,-92.60392840,'ssddsfsdf'),(35,17.75839031,-92.60331586,'ASASASA'),(36,17.75907809,-92.59947625,'Mi casa esta cerca de la laguna.'),(37,17.76430707,-92.58864793,'');
+INSERT INTO `direcciones` VALUES (1,17.74748539,-92.61013526,''),(2,17.76364885,-92.59267079,''),(7,17.76405609,-92.59525008,''),(8,17.75535681,-92.58530146,''),(9,17.76455310,-92.59483297,''),(10,17.76363734,-92.59165994,''),(14,17.76084206,-92.59733415,''),(15,17.76446564,-92.59152140,''),(17,17.75950992,-92.59327040,''),(18,17.76337798,-92.59217243,''),(19,17.76255966,-92.59218810,''),(20,17.76237979,-92.59881699,''),(21,17.76284780,-92.59082261,''),(22,17.76451976,-92.59435825,''),(25,17.76223207,-92.59787038,''),(26,17.75965531,-92.60268181,''),(27,17.76523092,-92.59827881,''),(29,17.76034735,-92.60186323,'Casa color azul con blanco.'),(30,17.75886835,-92.60434033,'Casa color azul con blanco.'),(31,17.75822595,-92.60296399,'asasasasasasasasa'),(32,17.75822570,-92.60319055,'ertrertererte'),(33,17.75757141,-92.60327433,'ASASAAS'),(34,17.75843902,-92.60392840,'ssddsfsdf'),(35,17.75839031,-92.60331586,'ASASASA'),(36,17.76151661,-92.60259750,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(37,17.76430707,-92.58864793,'');
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,7 +614,7 @@ CREATE TABLE `pagos` (
   `compr` varchar(100) DEFAULT NULL COMMENT 'Descripción de la compra',
   `estado` enum('pendiente','pagado','rechazado') NOT NULL DEFAULT 'pendiente',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -596,6 +623,7 @@ CREATE TABLE `pagos` (
 
 LOCK TABLES `pagos` WRITE;
 /*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
+INSERT INTO `pagos` VALUES (6,'transferencia',1591.45,NULL,NULL,'comprobantes/1028809f-c09a-4d52-9d94-620898d78192.jpg','pendiente');
 /*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -689,7 +717,7 @@ CREATE TABLE `puntos_venta` (
 
 LOCK TABLES `puntos_venta` WRITE;
 /*!40000 ALTER TABLE `puntos_venta` DISABLE KEYS */;
-INSERT INTO `puntos_venta` VALUES (1,'Q92R+2P Macuspana, Tabasco.',1,'DRO700527V91','[{\"lat\":17.743343415559103,\"lng\":-92.62033872419875},{\"lat\":17.747779232366643,\"lng\":-92.61099444071475},{\"lat\":17.750141725755075,\"lng\":-92.607562365531},{\"lat\":17.751103800667543,\"lng\":-92.6074515300474},{\"lat\":17.751498995137162,\"lng\":-92.60617932124474},{\"lat\":17.753460781455384,\"lng\":-92.6051099111159},{\"lat\":17.754526496403148,\"lng\":-92.60576708367665},{\"lat\":17.755420526400712,\"lng\":-92.60610879185192},{\"lat\":17.756561246222926,\"lng\":-92.60511800969064},{\"lat\":17.758453041790254,\"lng\":-92.60514122008007},{\"lat\":17.76159903353849,\"lng\":-92.60496481426591},{\"lat\":17.761854955272593,\"lng\":-92.600560837757},{\"lat\":17.757973057164328,\"lng\":-92.59774489924231},{\"lat\":17.757827022477436,\"lng\":-92.60020945233256},{\"lat\":17.75029537552799,\"lng\":-92.60545111166059},{\"lat\":17.748167687824296,\"lng\":-92.60711159963844},{\"lat\":17.747430662087385,\"lng\":-92.60767951576042},{\"lat\":17.747509144821926,\"lng\":-92.6084727634694},{\"lat\":17.74594162000117,\"lng\":-92.61006646265837},{\"lat\":17.74495172059465,\"lng\":-92.61209966170144},{\"lat\":17.742362070584235,\"lng\":-92.61928018639026},{\"lat\":17.742049140794354,\"lng\":-92.62281713444122},{\"lat\":17.74397580271168,\"lng\":-92.62329322680739},{\"lat\":17.746470021961947,\"lng\":-92.62285705820727},{\"lat\":17.746557356102514,\"lng\":-92.6211688431074}]','habilitado'),(6,'jksksksk',15,'DRO700527V91','[{\"lat\":17.765622938687407,\"lng\":-92.594417862419},{\"lat\":17.765622938687407,\"lng\":-92.590417862419},{\"lat\":17.763489870468206,\"lng\":-92.5903277297842},{\"lat\":17.762880745124157,\"lng\":-92.59163456652813},{\"lat\":17.757313711150985,\"lng\":-92.5939519235539},{\"lat\":17.754984262522072,\"lng\":-92.60578065914109},{\"lat\":17.763005959942483,\"lng\":-92.60435712287239}]','habilitado');
+INSERT INTO `puntos_venta` VALUES (1,'Q92R+2P Macuspana, Tabasco.',1,'DRO700527V91','[{\"lat\":17.743343415559103,\"lng\":-92.62033872419875},{\"lat\":17.747779232366643,\"lng\":-92.61099444071475},{\"lat\":17.750141725755075,\"lng\":-92.607562365531},{\"lat\":17.751103800667543,\"lng\":-92.6074515300474},{\"lat\":17.751498995137162,\"lng\":-92.60617932124474},{\"lat\":17.753460781455384,\"lng\":-92.6051099111159},{\"lat\":17.754526496403148,\"lng\":-92.60576708367665},{\"lat\":17.755420526400712,\"lng\":-92.60610879185192},{\"lat\":17.756561246222926,\"lng\":-92.60511800969064},{\"lat\":17.758453041790254,\"lng\":-92.60514122008007},{\"lat\":17.76159903353849,\"lng\":-92.60496481426591},{\"lat\":17.761854955272593,\"lng\":-92.600560837757},{\"lat\":17.757973057164328,\"lng\":-92.59774489924231},{\"lat\":17.757827022477436,\"lng\":-92.60020945233256},{\"lat\":17.75029537552799,\"lng\":-92.60545111166059},{\"lat\":17.748167687824296,\"lng\":-92.60711159963844},{\"lat\":17.747430662087385,\"lng\":-92.60767951576042},{\"lat\":17.747509144821926,\"lng\":-92.6084727634694},{\"lat\":17.74594162000117,\"lng\":-92.61006646265837},{\"lat\":17.74495172059465,\"lng\":-92.61209966170144},{\"lat\":17.742362070584235,\"lng\":-92.61928018639026},{\"lat\":17.742049140794354,\"lng\":-92.62281713444122},{\"lat\":17.74397580271168,\"lng\":-92.62329322680739},{\"lat\":17.746470021961947,\"lng\":-92.62285705820727},{\"lat\":17.746557356102514,\"lng\":-92.6211688431074}]','habilitado'),(6,'Centro C. Francisco I. Madero 705.',15,'DRO700527V91','[{\"lat\":17.765622938687407,\"lng\":-92.594417862419},{\"lat\":17.765622938687407,\"lng\":-92.590417862419},{\"lat\":17.763489870468206,\"lng\":-92.5903277297842},{\"lat\":17.762880745124157,\"lng\":-92.59163456652813},{\"lat\":17.757313711150985,\"lng\":-92.5939519235539},{\"lat\":17.754984262522072,\"lng\":-92.60578065914109},{\"lat\":17.763005959942483,\"lng\":-92.60435712287239}]','habilitado');
 /*!40000 ALTER TABLE `puntos_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -891,16 +919,20 @@ DROP TABLE IF EXISTS `ventas`;
 CREATE TABLE `ventas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `cliente_id` int DEFAULT NULL COMMENT 'ID del cliente',
+  `pv_id` int DEFAULT NULL COMMENT 'ID del punto de venta',
   `pago_id` int NOT NULL COMMENT 'ID del pago',
   `fecha_inic` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Fecha y hora de la creación de la venta',
   `fecha_fin` timestamp NULL DEFAULT NULL COMMENT 'Fecha y hora de la finalización de la venta',
+  `estado` ENUM('En preparacion', 'En camino', 'Completada', 'Cancelada') DEFAULT 'En preparacion' COMMENT 'Estado de la venta',
   `calif` int DEFAULT NULL COMMENT 'Calificación del usuario por la venta',
   PRIMARY KEY (`id`),
   KEY `FK_ventas_pagos` (`pago_id`),
+  KEY `FK_ventas_puntos_venta` (`pv_id`),
   KEY `FK_ventas_clientes` (`cliente_id`),
   CONSTRAINT `FK_ventas_clientes` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`),
+  CONSTRAINT `FK_ventas_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -909,6 +941,7 @@ CREATE TABLE `ventas` (
 
 LOCK TABLES `ventas` WRITE;
 /*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
+INSERT INTO `ventas` VALUES (3,9,6,6,'2025-11-08 06:00:00',NULL,'En preparacion',NULL);
 /*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -921,4 +954,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-04 18:53:56
+-- Dump completed on 2025-11-08 21:53:26

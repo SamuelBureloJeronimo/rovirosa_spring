@@ -15,10 +15,13 @@ import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.EmpresaConfigPutDTO;
 import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.EmpresaConfigQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.GmailPassDTO;
 import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.GmailPassPutDTO;
+import com.rovirosa.rovirosa_spring.models.DatoTransferencia;
 import com.rovirosa.rovirosa_spring.services.EmpresaConfigService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/api/empresa-config")
@@ -33,6 +36,26 @@ public class EmpresaConfigController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(true, "Configuración obtenida con éxito", empresaConfigService.getConfig()));
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENTE')")
+    @GetMapping("/cuenta")
+    public ResponseEntity<ApiResponse<DatoTransferencia>> getCuentaTransferencia() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(true, "Datos de transferencia obtenidos con éxito",
+                        empresaConfigService.getCuentaTransferencia()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/cuenta")
+    public ResponseEntity<ApiResponse<String>> updateCuentaTransferencia(@RequestBody DatoTransferencia datoTransferencia) {
+        // Lógica para actualizar los datos de transferencia bancaria
+        // (No implementada en el servicio según los snippets proporcionados)
+        empresaConfigService.saveCuentaTransferencia(datoTransferencia);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(true, "Datos de transferencia actualizados con éxito", null));
+    }
+    
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/gmail-app")

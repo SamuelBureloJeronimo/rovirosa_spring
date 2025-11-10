@@ -29,17 +29,17 @@ public class Pago implements Serializable {
     @Column(name = "monto", nullable = false)
     private Double monto;
 
-    @Column(name = "paga_con", nullable = false)
+    @Column(name = "paga_con", nullable = true)
     private Double pagaCon;
 
-    @Column(name = "fecha", nullable = false)
+    @Column(name = "fecha", nullable = true)
     private Timestamp fecha;
 
-    @Column(name = "compr", nullable = false)
+    @Column(name = "compr", nullable = true)
     private String compr;
 
     @Column(name = "estado", nullable = false)
-    private String estado;
+    private String estado = "pendiente";
 
 
     // Constructor vacío

@@ -8,7 +8,9 @@ import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.EmpresaConfigPutDTO;
 import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.EmpresaConfigQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.GmailPassDTO;
 import com.rovirosa.rovirosa_spring.DTOs.EmpresaConfig.GmailPassPutDTO;
+import com.rovirosa.rovirosa_spring.models.DatoTransferencia;
 import com.rovirosa.rovirosa_spring.models.EmpresaConfig;
+import com.rovirosa.rovirosa_spring.repositories.DatoTransferenciaRepository;
 import com.rovirosa.rovirosa_spring.repositories.EmpresaConfigRepository;
 
 import jakarta.transaction.Transactional;
@@ -20,6 +22,8 @@ public class EmpresaConfigService {
     private EmpresaConfigRepository configRep;
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private DatoTransferenciaRepository datoTransfRepository;
 
     public GmailPassDTO getGmailConfig() {
         return configRep.findFirstBy();
@@ -28,6 +32,21 @@ public class EmpresaConfigService {
     @Transactional
     public Integer updateGmailApp(GmailPassPutDTO gmailPassDTO) {
         return configRep.updateGmailConfig(gmailPassDTO.getEmailApp(), gmailPassDTO.getCodigoApp());
+    }
+
+    public DatoTransferencia getCuentaTransferencia() {
+        return datoTransfRepository.findFirstBy();
+    }
+
+    @Transactional
+    public void saveCuentaTransferencia(DatoTransferencia datoTransferencia) {
+        DatoTransferencia existing = datoTransfRepository.findById(datoTransferencia.getId()).orElse(null);
+        if (existing != null) {
+            existing.setTitular(datoTransferencia.getTitular());
+            existing.setBanco(datoTransferencia.getBanco());
+            existing.setClave(datoTransferencia.getClave());
+            datoTransfRepository.save(existing);
+        }
     }
 
     public EmpresaConfigQueryDTO getConfig() {

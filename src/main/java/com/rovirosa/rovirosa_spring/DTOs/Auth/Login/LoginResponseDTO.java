@@ -5,15 +5,17 @@ import com.rovirosa.rovirosa_spring.utils.JwtUtil;
 public class LoginResponseDTO {
 
     private Integer id;
+    private Integer clienteId;
     private Integer puntoVenta_Id;
     private String token;
     private String estado;
     private String rol;
 
-    public LoginResponseDTO(LoginQueryDTO dto, JwtUtil jwtUtil) {
+    public LoginResponseDTO(LoginQueryDTO dto, JwtUtil jwtUtil, Integer clienteId) {
         if(dto.getEstado().equals("activo"))
             this.token = jwtUtil.generateToken(dto.getCorreo(), dto.getRol());
         this.id = dto.getId();
+        this.clienteId = clienteId;
         this.puntoVenta_Id = dto.getPuntoVenta_Id();
         this.estado = dto.getEstado();
         this.rol = dto.getRol();
@@ -31,6 +33,14 @@ public class LoginResponseDTO {
     }
     public void setPuntoVenta_Id(Integer puntoVenta_Id) {
         this.puntoVenta_Id = puntoVenta_Id;
+    }
+
+    public Integer getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Integer clienteId) {
+        this.clienteId = clienteId;
     }
     
     public String getToken() {
