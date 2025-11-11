@@ -10,12 +10,11 @@ import com.rovirosa.rovirosa_spring.models.Usuario;
 import com.rovirosa.rovirosa_spring.repositories.PersonaRepository;
 import com.rovirosa.rovirosa_spring.repositories.RepartidorRepository;
 import com.rovirosa.rovirosa_spring.repositories.UsuarioRepository;
-
 import jakarta.transaction.Transactional;
 
 @Service
 public class RepartidorService {
-    
+
     @Autowired
     private RepartidorRepository repartidorRep;
     @Autowired
@@ -51,4 +50,5 @@ public class RepartidorService {
         return repartidorRep.save(repartidor);
 
     }
+
 }

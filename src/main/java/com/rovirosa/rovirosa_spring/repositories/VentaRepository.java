@@ -10,5 +10,6 @@ import com.rovirosa.rovirosa_spring.models.Venta;
 public interface VentaRepository extends JpaRepository<Venta, Integer> {
 
     List<VentaQueryClienteDTO> findByCliente_Id(Integer clienteId);
-    
+    List<Venta> findByPuntoVenta_IdAndEstado(Integer id, String estado);
+        
 }

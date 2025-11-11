@@ -14,8 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "repart_asign")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RepartidorAsignacion implements Serializable {
@@ -42,66 +48,5 @@ public class RepartidorAsignacion implements Serializable {
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
-
-    // Constructor vacío
-    public RepartidorAsignacion() {}
-
-    // Constructor con parámetros
-    public RepartidorAsignacion(Integer id, Repartidor rep, PuntoVenta puntoVenta, LocalDate fechaIn, LocalDate fechaFin, Boolean activo) {
-        this.id = id;
-        this.rep = rep;
-        this.puntoVenta = puntoVenta;
-        this.fechaIn = fechaIn;
-        this.fechaFin = fechaFin;
-        this.activo = activo;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Repartidor getRep() {
-        return rep;
-    }
-
-    public void setRep(Repartidor rep) {
-        this.rep = rep;
-    }
-
-    public PuntoVenta getPuntoVenta() {
-        return puntoVenta;
-    }
-
-    public void setPuntoVenta(PuntoVenta puntoVenta) {
-        this.puntoVenta = puntoVenta;
-    }
-
-    public LocalDate getFechaIn() {
-        return fechaIn;
-    }
-
-    public void setFechaIn(LocalDate fechaIn) {
-        this.fechaIn = fechaIn;
-    }
-
-    public LocalDate getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(LocalDate fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public Boolean getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }   
     
 }

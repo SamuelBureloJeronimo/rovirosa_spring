@@ -1,12 +1,14 @@
 package com.rovirosa.rovirosa_spring.DTOs.Producto;
 
+import java.math.BigDecimal;
+
 public class ProductoResponseDTO {
     private Integer id;
     private String nombre;
     private String imagen;
     private Double precio;
     private Double pesoKg;
-    private Double volM3;
+    private BigDecimal volM3;
 
     // Info adicional anidada
     private String marcaNombre;
@@ -28,8 +30,8 @@ public class ProductoResponseDTO {
     public Double getPesoKg() { return pesoKg; }
     public void setPesoKg(Double pesoKg) { this.pesoKg = pesoKg; }
 
-    public Double getVolM3() { return volM3; }
-    public void setVolM3(Double volM3) { this.volM3 = volM3; }
+    public BigDecimal getVolM3() { return volM3; }
+    public void setVolM3(BigDecimal volM3) { this.volM3 = volM3; }
 
     public String getMarcaNombre() { return marcaNombre; }
     public void setMarcaNombre(String marcaNombre) { this.marcaNombre = marcaNombre; }

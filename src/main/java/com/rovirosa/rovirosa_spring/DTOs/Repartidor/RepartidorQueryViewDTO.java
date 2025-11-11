@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public interface RepartidorQueryViewDTO {
     
     Integer getId();
-
     LocalDate getFechaIn();
     LocalDate getFechaFin();
     Boolean getActivo();

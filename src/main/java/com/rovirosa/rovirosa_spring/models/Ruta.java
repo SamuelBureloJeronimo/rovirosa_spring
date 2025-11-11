@@ -1,7 +1,7 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,8 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
  @Entity
+ @Data
+ @AllArgsConstructor
+ @NoArgsConstructor
  @Table(name = "rutas")
  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ruta implements Serializable {
@@ -27,72 +33,17 @@ public class Ruta implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rep_id", nullable = false)
-    private Repartidor rep;
+    @JoinColumn(name = "rep_id", nullable = true)
+    private Repartidor repartidor = null;
 
-    @Column(name = "fecha_in", nullable = false)
-    private Timestamp fechaIn;
+    @Column(name = "fech_in", nullable = false)
+    private String fechaIn = LocalDateTime.now().toString();
 
-    @Column(name = "fecha_fin", nullable = true)
-    private Timestamp fechaFin;
+    @Column(name = "fech_fin", nullable = true)
+    private String fechaFin = null;
 
     @Column(name = "estado", nullable = false)
     private String estado; // ENUM("pendiente", "en_ruta", "finalizada")
-
-    // Constructor vacío
-    public Ruta() {}
-
-    // Constructor con parámetros
-    public Ruta(Integer id, Repartidor rep, Timestamp fechaIn, Timestamp fechaFin, String estado) {
-        this.id = id;
-        this.rep = rep;
-        this.fechaIn = fechaIn;
-        this.fechaFin = fechaFin;
-        this.estado = estado;
-    }
-
-    // Getters y Setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Repartidor getRep() {
-        return rep;
-    }
-
-    public void setRep(Repartidor rep) {
-        this.rep = rep;
-    }
-
-    public Timestamp getFechaIn() {
-        return fechaIn;
-    }
-
-    public void setFechaIn(Timestamp fechaIn) {
-        this.fechaIn = fechaIn;
-    }
-
-    public Timestamp getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Timestamp fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     
 
 }

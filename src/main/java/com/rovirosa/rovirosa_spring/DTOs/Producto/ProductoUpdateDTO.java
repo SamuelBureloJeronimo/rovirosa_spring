@@ -1,5 +1,7 @@
 package com.rovirosa.rovirosa_spring.DTOs.Producto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotNull;
 
 public class ProductoUpdateDTO {
@@ -11,7 +13,7 @@ public class ProductoUpdateDTO {
     private Integer marcaId;
     private Double precio;
     private Double pesoKg;
-    private Double volM3;
+    private BigDecimal volM3;
 
     // Getters y Setters
     public Integer getId() { return id; }
@@ -29,7 +31,7 @@ public class ProductoUpdateDTO {
     public Double getPesoKg() { return pesoKg; }
     public void setPesoKg(Double pesoKg) { this.pesoKg = pesoKg; }
 
-    public Double getVolM3() { return volM3; }
-    public void setVolM3(Double volM3) { this.volM3 = volM3; }
+    public BigDecimal getVolM3() { return volM3; }
+    public void setVolM3(BigDecimal volM3) { this.volM3 = volM3; }
 }
 

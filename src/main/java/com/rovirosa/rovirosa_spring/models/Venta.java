@@ -49,8 +49,8 @@ public class Venta implements Serializable {
     @Column(name = "fecha_fin", nullable = true)
     private String fechaFin;
     
-    @Column(name = "estado", nullable = true)
-    private String estado;
+    @Column(name = "estado", nullable = false)
+    private String estado = "Pendiente";
 
     @Column(name = "calif", nullable = true)
     private Integer calif;

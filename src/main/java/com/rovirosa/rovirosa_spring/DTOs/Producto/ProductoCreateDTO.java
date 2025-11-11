@@ -1,5 +1,6 @@
 package com.rovirosa.rovirosa_spring.DTOs.Producto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoPostDTO;
@@ -30,7 +31,7 @@ public class ProductoCreateDTO {
 
     @NotNull(message = "Debe indicar el volumen en metros cúbicos")
     @Positive(message = "El volumen debe ser mayor que cero")
-    private Double volM3;
+    private BigDecimal volM3;
 
     // Imagen se sube por separado vía MultipartFile, no se valida aquí
     // Getters y Setters
@@ -52,6 +53,6 @@ public class ProductoCreateDTO {
     public Double getPesoKg() { return pesoKg; }
     public void setPesoKg(Double pesoKg) { this.pesoKg = pesoKg; }
 
-    public Double getVolM3() { return volM3; }
-    public void setVolM3(Double volM3) { this.volM3 = volM3; }
+    public BigDecimal getVolM3() { return volM3; }
+    public void setVolM3(BigDecimal volM3) { this.volM3 = volM3; }
 }

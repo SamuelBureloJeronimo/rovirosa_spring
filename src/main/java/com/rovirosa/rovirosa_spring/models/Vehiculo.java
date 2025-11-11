@@ -1,6 +1,7 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,8 +11,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "vehiculos")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Vehiculo implements Serializable {
@@ -38,27 +45,12 @@ public class Vehiculo implements Serializable {
     private String tipo;
 
     @Column(name = "capacidad_kg", nullable = false)
-    private Double capacidadKg;
+    private BigDecimal capacidadKg;
 
     @Column(name = "volumen_m3", nullable = false)
-    private Double volumenM3;
+    private BigDecimal volumenM3;
 
     @Column(name = "factor_uso_max", nullable = false)
     private Double factorUsoMax = 0.8;
-
-    // Constructor vacío
-    public Vehiculo() { }
-
-    // Constructor con parametros
-    public Vehiculo(Integer id, String placa, String marca, String modelo, Boolean activo, String tipo, Double capacidadKg, Double volumenM3) {
-        this.id = id;
-        this.placa = placa;
-        this.marca = marca;
-        this.modelo = modelo;
-        this.activo = activo;
-        this.tipo = tipo;
-        this.capacidadKg = capacidadKg;
-        this.volumenM3 = volumenM3; 
-    }
 
 }

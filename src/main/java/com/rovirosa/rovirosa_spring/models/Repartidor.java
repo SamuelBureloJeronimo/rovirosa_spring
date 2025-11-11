@@ -14,8 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "repartidores")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Repartidor implements Serializable {
@@ -42,71 +48,5 @@ public class Repartidor implements Serializable {
 
     @Column(name = "estado", nullable = true)
     private String estado; // ENUM("en_espera", "cargando", "en_ruta", "descansando")
-
-
-    // Constructor vacío
-    public Repartidor() {}
-
-    // Constructor con parámetros
-    public Repartidor(Integer id, Usuario user, Vehiculo veh, BigDecimal lat, BigDecimal lng, String estado) {
-        this.id = id;
-        this.usuario = user;
-        this.vehiculo = veh;
-        this.lat = lat;
-        this.lng = lng;
-        this.estado = estado;
-    }
-
-    // Getters y Setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario user) {
-        this.usuario = user;
-    }
-
-    public Vehiculo getVehiculo() {
-        return vehiculo;
-    }
-
-    public void setVehiculo(Vehiculo veh) {
-        this.vehiculo = veh;
-    }
-
-    public BigDecimal getLat() {
-        return lat;
-    }
-
-    public void setLat(BigDecimal lat) {
-        this.lat = lat;
-    }
-
-    public BigDecimal getLng() {
-        return lng;
-    }
-
-    public void setLng(BigDecimal lng) {
-        this.lng = lng;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    
 
 }
