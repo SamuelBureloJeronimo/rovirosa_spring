@@ -34,7 +34,7 @@ CREATE TABLE `carrito` (
   KEY `fk_carrito_catalogo` (`catalogo_id`),
   CONSTRAINT `fk_carrito_catalogo` FOREIGN KEY (`catalogo_id`) REFERENCES `catalogo_pv` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_carrito_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(155,32,34,1,'2025-11-11 14:18:00','2025-11-11 14:18:00'),(156,32,34,1,'2025-11-11 14:33:29','2025-11-11 14:33:29'),(157,32,33,1,'2025-11-11 14:36:43','2025-11-11 14:36:43'),(158,32,33,1,'2025-11-11 14:37:38','2025-11-11 14:37:38'),(159,32,33,1,'2025-11-11 14:40:18','2025-11-11 14:40:18'),(160,32,33,1,'2025-11-11 14:42:01','2025-11-11 14:42:01');
+INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(168,32,33,1,'2025-11-11 15:34:38','2025-11-11 15:34:38'),(169,32,34,1,'2025-11-11 15:35:28','2025-11-11 15:35:28'),(170,32,33,5,'2025-11-11 15:37:24','2025-11-11 15:37:27');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +74,7 @@ CREATE TABLE `catalogo_pv` (
 
 LOCK TABLES `catalogo_pv` WRITE;
 /*!40000 ALTER TABLE `catalogo_pv` DISABLE KEYS */;
-INSERT INTO `catalogo_pv` VALUES (1,1,1,0,0),(2,2,1,0,0),(4,4,1,0,0),(5,5,1,29,0),(6,6,1,2,0),(7,7,1,36,0),(8,8,1,65,0),(33,1,6,17,0),(34,4,6,38,0);
+INSERT INTO `catalogo_pv` VALUES (1,1,1,0,0),(2,2,1,0,0),(4,4,1,0,0),(5,5,1,29,0),(6,6,1,2,0),(7,7,1,36,0),(8,8,1,65,0),(33,1,6,10,0),(34,4,6,37,0);
 /*!40000 ALTER TABLE `catalogo_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +329,7 @@ CREATE TABLE `detalles_venta` (
   KEY `FK_detalles_venta_ventas` (`vnta_id`),
   CONSTRAINT `FK_detalles_venta_producto` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_detalles_venta_ventas` FOREIGN KEY (`vnta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -338,6 +338,7 @@ CREATE TABLE `detalles_venta` (
 
 LOCK TABLES `detalles_venta` WRITE;
 /*!40000 ALTER TABLE `detalles_venta` DISABLE KEYS */;
+INSERT INTO `detalles_venta` VALUES (17,25,1,5,NULL,23.82,2.38);
 /*!40000 ALTER TABLE `detalles_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -613,7 +614,7 @@ CREATE TABLE `pagos` (
   `compr` varchar(100) DEFAULT NULL COMMENT 'Descripción de la compra',
   `estado` enum('pendiente','pagado','rechazado') NOT NULL DEFAULT 'pendiente',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -622,7 +623,7 @@ CREATE TABLE `pagos` (
 
 LOCK TABLES `pagos` WRITE;
 /*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
-INSERT INTO `pagos` VALUES (12,'transferencia',215.10,NULL,NULL,NULL,'pendiente'),(14,'terminal',21.44,NULL,NULL,NULL,'pendiente'),(15,'efectivo',215.10,NULL,NULL,NULL,'pendiente'),(16,'terminal',215.10,NULL,NULL,NULL,'pendiente');
+INSERT INTO `pagos` VALUES (12,'transferencia',215.10,NULL,NULL,NULL,'pendiente'),(14,'terminal',21.44,NULL,NULL,NULL,'pendiente'),(15,'efectivo',215.10,NULL,NULL,NULL,'pendiente'),(16,'terminal',215.10,NULL,NULL,NULL,'pendiente'),(24,'terminal',21.44,NULL,NULL,NULL,'pendiente'),(25,'terminal',21.44,NULL,NULL,NULL,'pendiente'),(26,'transferencia',21.44,NULL,NULL,NULL,'pendiente'),(27,'link_mp',21.44,NULL,NULL,NULL,'pendiente'),(28,'link_mp',21.44,NULL,NULL,NULL,'pendiente'),(29,'terminal',215.10,NULL,NULL,NULL,'pendiente'),(30,'efectivo',107.19,NULL,NULL,NULL,'pendiente');
 /*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -684,21 +685,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-
-INSERT INTO `productos` VALUES
-(1,3,'productos/ff495738-70fe-44e8-9763-d1efcf8131df.jpg','Cerveza Modelo 1/2 Corona',23.82,0.66,0.00076),
-(2,3,'productos/77ba11f2-dffd-4a40-af51-efa1ab58ebc7.jpg','Cerveza Corona 473 ml 4 PZS',17.90,2.8,0.0025),
-(4,3,'productos/27422288-5bd5-4e26-8c56-a49281bc002f.jpg','Cerveza clara Coronita Extra 24 botellas de 210 ml c/u',239.00,9.0,0.030),
-(5,8,'productos/df70d3b4-6bf5-4f97-9b5b-5100fa3a6cc2.jpg','Pack de cerveza Victoria ambar con 24 botellas de 210 ml c/u',239.00,9.2,0.031),
-(6,12,'productos/e3719da3-2e48-4e9e-8255-f0f1ec5254bd.jpg','Cerveza clara Barrilito 6 botellas de 325 ml c/u',74.00,3.9,0.0075),
-(7,13,'productos/81f733ff-9b8c-4556-9c9b-82d4ff88f053.jpg','Refresco Pepsi regular 2.5L',33.00,2.6,0.0040),
-(8,14,'productos/10bff2cb-7523-4859-90bc-d54c2dbdafb3.jpg','Refresco Mirinda sabor naranja botella de 2.5L',34.00,2.6,0.0040),
-(9,14,'productos/1e2011d6-9677-4983-b5f9-49f141c67fa8.jpg','rtwrwet',340.00,1.0,0.0010),
-(12,19,'productos/2a62677d-b799-45df-99ff-83d79a71b4dd.jpg','disiplina',36000.00,10.0,0.1000),
-(15,1,'productos/07fad83d-da8b-4581-a917-025b499ddcee.jpg','sasas',120.00,12.0,0.0800),
-(16,1,'productos/9abb8c01-fede-45bd-93cc-c0c6c465f437.jpg','dsff',12.00,1.0,0.0020),
-(17,1,'productos/a03740c3-179d-4cbc-b36b-f7dd636a9282.jpg','wrfdfsf',123.00,5.0,0.0100);
-
+INSERT INTO `productos` VALUES (1,3,'productos/ff495738-70fe-44e8-9763-d1efcf8131df.jpg','Cerveza Modelo 1/2 Corona',23.82,0.66000000,0.00076000),(2,3,'productos/77ba11f2-dffd-4a40-af51-efa1ab58ebc7.jpg','Cerveza Corona 473 ml 4 PZS',17.90,2.80000000,0.00250000),(4,3,'productos/27422288-5bd5-4e26-8c56-a49281bc002f.jpg','Cerveza clara Coronita Extra 24 botellas de 210 ml c/u',239.00,9.00000000,0.03000000),(5,8,'productos/df70d3b4-6bf5-4f97-9b5b-5100fa3a6cc2.jpg','Pack de cerveza Victoria ambar con 24 botellas de 210 ml c/u',239.00,9.20000000,0.03100000),(6,12,'productos/e3719da3-2e48-4e9e-8255-f0f1ec5254bd.jpg','Cerveza clara Barrilito 6 botellas de 325 ml c/u',74.00,3.90000000,0.00750000),(7,13,'productos/81f733ff-9b8c-4556-9c9b-82d4ff88f053.jpg','Refresco Pepsi regular 2.5L',33.00,2.60000000,0.00400000),(8,14,'productos/10bff2cb-7523-4859-90bc-d54c2dbdafb3.jpg','Refresco Mirinda sabor naranja botella de 2.5L',34.00,2.60000000,0.00400000),(9,14,'productos/1e2011d6-9677-4983-b5f9-49f141c67fa8.jpg','rtwrwet',340.00,1.00000000,0.00100000),(12,19,'productos/2a62677d-b799-45df-99ff-83d79a71b4dd.jpg','disiplina',9999.99,10.00000000,0.10000000),(15,1,'productos/07fad83d-da8b-4581-a917-025b499ddcee.jpg','sasas',120.00,12.00000000,0.08000000),(16,1,'productos/9abb8c01-fede-45bd-93cc-c0c6c465f437.jpg','dsff',12.00,1.00000000,0.00200000),(17,1,'productos/a03740c3-179d-4cbc-b36b-f7dd636a9282.jpg','wrfdfsf',123.00,5.00000000,0.01000000);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -814,7 +801,7 @@ CREATE TABLE `rutas` (
   PRIMARY KEY (`id`),
   KEY `repartidor_id` (`rep_id`),
   CONSTRAINT `rutas_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -823,6 +810,7 @@ CREATE TABLE `rutas` (
 
 LOCK TABLES `rutas` WRITE;
 /*!40000 ALTER TABLE `rutas` DISABLE KEYS */;
+INSERT INTO `rutas` VALUES (7,7,'2025-11-11 21:37:41',NULL,'pendiente');
 /*!40000 ALTER TABLE `rutas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -845,7 +833,7 @@ CREATE TABLE `rutas_detalle` (
   KEY `venta_id` (`venta_id`),
   CONSTRAINT `ruta_detalle_ibfk_1` FOREIGN KEY (`ruta_id`) REFERENCES `rutas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `ruta_detalle_ibfk_2` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -854,6 +842,7 @@ CREATE TABLE `rutas_detalle` (
 
 LOCK TABLES `rutas_detalle` WRITE;
 /*!40000 ALTER TABLE `rutas_detalle` DISABLE KEYS */;
+INSERT INTO `rutas_detalle` VALUES (7,7,25,17.76151661,-92.60259750,'Mi casa esta cerca de la laguna mata de capilin afuera.');
 /*!40000 ALTER TABLE `rutas_detalle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -948,7 +937,7 @@ CREATE TABLE `ventas` (
   CONSTRAINT `FK_ventas_clientes` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`),
   CONSTRAINT `FK_ventas_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -957,6 +946,7 @@ CREATE TABLE `ventas` (
 
 LOCK TABLES `ventas` WRITE;
 /*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
+INSERT INTO `ventas` VALUES (25,9,6,30,'2025-11-11 21:37:41','2025-11-11 21:37:40',NULL,'Pendiente',NULL);
 /*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -969,4 +959,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-11 14:45:10
+-- Dump completed on 2025-11-11 15:40:03
