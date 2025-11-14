@@ -18,11 +18,13 @@ import com.rovirosa.rovirosa_spring.models.Cliente;
 import com.rovirosa.rovirosa_spring.models.Direccion;
 import com.rovirosa.rovirosa_spring.models.Persona;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
+import com.rovirosa.rovirosa_spring.models.Repartidor;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 import com.rovirosa.rovirosa_spring.repositories.ClienteRepository;
 import com.rovirosa.rovirosa_spring.repositories.DireccionRepository;
 import com.rovirosa.rovirosa_spring.repositories.PersonaRepository;
 import com.rovirosa.rovirosa_spring.repositories.PuntoVentaRepository;
+import com.rovirosa.rovirosa_spring.repositories.RepartidorRepository;
 import com.rovirosa.rovirosa_spring.repositories.UsuarioRepository;
 import com.rovirosa.rovirosa_spring.utils.JwtUtil;
 
@@ -41,27 +43,46 @@ public class AuthService {
     private PuntoVentaRepository puntoRep;
     @Autowired
     private StorageService storageService;
-
     @Autowired
     private PersonaRepository personaRep;
+    @Autowired
+    private RepartidorRepository repartidorRep;
 
     public LoginResponseDTO login(LoginPostDTO loginDTO) {
-        
+
         String user = loginDTO.getUsername();
         String password = loginDTO.getPassword();
 
         // Buscar por correo y contraseña
         LoginQueryDTO us = this.userRep.findByPasswordAndCorreo(password, user);
-        if (us != null){
-            ClienteQueryDireccionDTO cliente = clientRep.findByUsuario_Id(us.getId());
-            return new LoginResponseDTO(us, jwtUtil, cliente != null ? cliente.getId() : null);
+        if (us != null) {
+            if (us.getRol().equals("CLIENTE")) {
+                ClienteQueryDireccionDTO cliente = clientRep.findByUsuario_Id(us.getId());
+                return new LoginResponseDTO(us, jwtUtil, cliente != null ? cliente.getId() : null);
+            } else if (us.getRol().equals("REPARTIDOR")) {
+                Repartidor rep = repartidorRep.findByUsuario_Id(us.getId());
+                LoginResponseDTO res = new LoginResponseDTO(us, jwtUtil, null);
+                res.setRepartidorId(rep.getId());
+                return res;
+            } else {
+                return new LoginResponseDTO(us, jwtUtil, null);
+            }
         }
 
         // Si no encuentra busca por curp
         us = this.userRep.findByPasswordAndPersona_Curp(password, user);
-        if (us != null){
-            ClienteQueryDireccionDTO cliente = clientRep.findByUsuario_Id(us.getId());
-            return new LoginResponseDTO(us, jwtUtil, cliente != null ? cliente.getId() : null);
+        if (us != null) {
+            if (us.getRol().equals("CLIENTE")) {
+                ClienteQueryDireccionDTO cliente = clientRep.findByUsuario_Id(us.getId());
+                return new LoginResponseDTO(us, jwtUtil, cliente != null ? cliente.getId() : null);
+            } else if (us.getRol().equals("REPARTIDOR")) {
+                Repartidor rep = repartidorRep.findByUsuario_Id(us.getId());
+                LoginResponseDTO res = new LoginResponseDTO(us, jwtUtil, null);
+                res.setRepartidorId(rep.getId());
+                return res;
+            } else {
+                return new LoginResponseDTO(us, jwtUtil, null);
+            }
         }
 
         return null;
@@ -113,7 +134,6 @@ public class AuthService {
         String fileNameBack = storageService.generateFileName();
         cliente.setIneBack("ine/" + fileNameBack);
 
-        
         clientRep.save(cliente);
 
         storageService.store(ineFront, "ine/", fileNameFront);

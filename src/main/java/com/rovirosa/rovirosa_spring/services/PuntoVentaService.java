@@ -11,7 +11,6 @@ import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.DiaLaboral.DiaLaboralPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.DiaLaboral.DiaLaboralQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.DiaLaboral.DiaLaboralResponseDTO;
-import com.rovirosa.rovirosa_spring.DTOs.Direccion.DireccionResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerentePvQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.HorarioLaboral.HorarioLaboralPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.HorarioLaboral.HorarioLaboralQueryDTO;

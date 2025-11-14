@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "rovirosa-app",
+  "private_key_id": "9bc64e8b11fe11f6396ea01ebc18c84c9e4af3b4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCsk62QD1GIqs6J\npsempdX/aKuDO2FT5eBImGiBlPAyrppORrWYKbA+X3Qtm23A2GTvtn311wNj29o+\n1M40gOmOAVy47/Oaebh/4nDk6gX6OzfXq8pATzbOVFxBghsXliMC4i0t/WoNk5gn\nqMOsiMhsPmFVZJmtQBI9e6X59yEIAgw+AJteFm5EriE/0g4YFHhzohptM0ifQbt5\nhDZxBjkgROuW63ziHJ6+kMlKfMA8JRrfJgJ48UdAs1D/RB4+P81C7Jm5RHrltqwx\npI8bave6wptJDr1yR8LpQojFSCxYifyKbkj8G7SneGtl7O02sbvtIDESnG16MbPA\ncRow26lTAgMBAAECggEAME+1LleDeTFr2VAVoxrYsgPww6+bWvvG0jvMQb5aka2c\nZ95Wls7Q1l0tblkNHAfYFd0uHOTAv7M7wQwc38jY2RabiPAvb2a01iQje4nh+3+Z\nbehbGa6zRoaKPxJ3mB5BFd0QTcgb6MoRNcUCZinyhY7e+6NKfBwsHwce2z+qAQ3v\nyUWC1ilm3nnxcsdSydGgZLkIgBBO4ESUbOstq4tVWjqvLCetcwZKQYsluZj27lSo\nKGAbPs+88HYa0KMewyaN+SDhlHaiCpzchmEsihbqBpYMqDlSR+mMhfSi+ujZEJLr\nRN+n5aHX/XzUoLhF3r+h6PLuSELusSYWutxnEBbLnQKBgQDf6HaoBta0sbOyw/d4\nQxnaxqD33h0uBY4HSj7lbDUqLFZxKptK4Oh603yRi2YBBcnkLsLb+gE/LQgoRHsU\nhcM1MbmvLeJzNmgdMiR3g+fsXg8DXqEq+qTWx/YL6H7I+zceBXPmaVeMfxu++1ZX\npXlGwlgbr3t8V9U/LFILHRJ5RQKBgQDFT8r1fL0sqIStlf/HF9weCYZf/QXHbcbP\nhRHx6/xy2I3WO6/fskyzpJDTp1urn9LPavirLMkzvexKbJqmjGx50faQW4FOli9L\nKMBe4I9JfZbTHDGiYpjD2leolBc6juwMFn6QWeGHC2rwgJguQSBywkyTrb/m9DSl\nvOYfSqAltwKBgE3xwIyRhOB2E9YhPd6RjUiJaLOgkIvaxyxmfiqjVoaN1LGkYVbZ\noFRRlsWbvzCP8U4LsS2ehByX8oUCAc6NGf1EiB0hXfk5cVjogaVRN8UioRtNL9Gk\nWwmhpldS4f/Y48EBqO0GssFn5iK/n7j3E5a8RKuulNAeS0+ogA76Wdn5AoGBALfo\neLc5ziW66PfW8PIEVkGVBS+g6esJch5o3OIN4F63Y/TD61jomr9yax8sRbCBJn/4\nJ9F8zAizRHPWKIuGJXGid1v0PmEecPRwBmYojsWkDpm1FLpThio+8CeL6N7G6lMW\nAF/Rtvkldka2xaGPSIxOeAvKDi1Zf1zf5epSp1SfAoGASn2aascYh4prbbe+9vb3\nLI+T/NJQqdo1VX9DjTCbbD1KxQoge7jRZrk8/m4Y/zh2fFWWeRnf8K62O8H9VAnR\n+T0I/mDY/GnngycZefjHK6aKepJwU+qXEOnM8fFJ4vI/HVSJUNHOZqFiTidlB7ln\nXzfNOljatHEk5O2vIeyiDvY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@rovirosa-app.iam.gserviceaccount.com",
+  "client_id": "100843258111421493905",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40rovirosa-app.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

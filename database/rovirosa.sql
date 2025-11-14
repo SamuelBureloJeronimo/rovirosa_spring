@@ -43,7 +43,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(168,32,33,1,'2025-11-11 15:34:38','2025-11-11 15:34:38'),(169,32,34,1,'2025-11-11 15:35:28','2025-11-11 15:35:28'),(170,32,33,5,'2025-11-11 15:37:24','2025-11-11 15:37:27');
+INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -645,7 +645,7 @@ CREATE TABLE `personas` (
   `sexo` enum('MASCULINO','FEMENINO') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `curp` (`curp`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -654,7 +654,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES (17,'BUJS030806HTCRRM1','9361165168','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO'),(25,'MARA030910HTCYYNA6','9361158941','JOSE ANGEL','MAY','REYES','2003-09-10','MASCULINO'),(35,'MAHJ030812HTCGRSA5','9361165168','JOSUE','MAGAÑA','HERNANDEZ','2003-08-12','MASCULINO'),(36,'JACF031030HTCVRRA6','9361335461','JOSE FRANCISCO','JAVIER','DE LA CRUZ','2003-10-30','MASCULINO'),(47,'BUJS030806HTCRRMA9','9361224565','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO');
+INSERT INTO `personas` VALUES (17,'BUJS030806HTCRRM1','9361165168','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO'),(25,'MARA030910HTCYYNA6','9361158941','JOSE ANGEL','MAY','REYES','2003-09-10','MASCULINO'),(35,'MAHJ030812HTCGRSA5','9361165168','JOSUE','MAGAÑA','HERNANDEZ','2003-08-12','MASCULINO'),(36,'JACF031030HTCVRRA6','9361335461','JOSE FRANCISCO','JAVIER','DE LA CRUZ','2003-10-30','MASCULINO'),(47,'BUJS030806HTCRRMA9','9361224565','SAMUEL','BURELOS','JERONIMO','2003-08-06','MASCULINO'),(48,'MHJU070803HTCRRMA7','9361145615','JESUS MIGUEL','MARQUEZ','MENDEZ','2003-08-13','MASCULINO');
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -734,13 +734,12 @@ CREATE TABLE `repart_asign` (
   `pv_id` int NOT NULL COMMENT 'ID del punto de venta',
   `fecha_inicio` date NOT NULL COMMENT 'Fecha en la que se inició la asignación',
   `fecha_fin` date DEFAULT NULL COMMENT 'Fecha en la que se terminó la asignación',
-  `activo` tinyint(1) DEFAULT '1' COMMENT '1 = Activo, 0 = Inactivo',
   PRIMARY KEY (`id`),
   KEY `repartidor_id` (`rep_id`),
   KEY `pv_id` (`pv_id`),
   CONSTRAINT `repartidor_asignacion_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`),
   CONSTRAINT `repartidor_asignacion_ibfk_2` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -749,7 +748,6 @@ CREATE TABLE `repart_asign` (
 
 LOCK TABLES `repart_asign` WRITE;
 /*!40000 ALTER TABLE `repart_asign` DISABLE KEYS */;
-INSERT INTO `repart_asign` VALUES (1,7,6,'2025-11-11',NULL,1);
 /*!40000 ALTER TABLE `repart_asign` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -772,7 +770,7 @@ CREATE TABLE `repartidores` (
   KEY `veh_id` (`veh_id`),
   CONSTRAINT `repartidores_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `repartidores_ibfk_2` FOREIGN KEY (`veh_id`) REFERENCES `vehiculos` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -781,7 +779,7 @@ CREATE TABLE `repartidores` (
 
 LOCK TABLES `repartidores` WRITE;
 /*!40000 ALTER TABLE `repartidores` DISABLE KEYS */;
-INSERT INTO `repartidores` VALUES (7,21,1,NULL,NULL,'en_espera');
+INSERT INTO `repartidores` VALUES (7,21,5,NULL,NULL,'en_espera'),(8,33,4,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `repartidores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -859,6 +857,7 @@ CREATE TABLE `usuarios` (
   `pv_id` int DEFAULT NULL COMMENT 'ID del punto de venta (Para los gerentes representa el punto de venta que administran, para los clientes el punto de venta predeterminado y para los repartidores el punto de venta al que están asignados)',
   `correo` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `token_fbm` varchar(255) DEFAULT NULL COMMENT 'Token de Firebase para notificaciones push',
   `estado` enum('activo','suspendido') NOT NULL DEFAULT 'activo' COMMENT '0 = Activa, 1 = Suspendida',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rol` enum('ADMIN','GERENTE','CLIENTE','REPARTIDOR') NOT NULL DEFAULT 'CLIENTE',
@@ -868,7 +867,7 @@ CREATE TABLE `usuarios` (
   KEY `FK_usuarios_puntos_venta` (`pv_id`),
   CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`per_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_usuarios_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -877,7 +876,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (9,17,1,'admin@gmail.com','admin','activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592','activo','2025-10-17 17:31:27','CLIENTE'),(21,35,NULL,'repartidor@gmail.com','repartidor','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente','activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592','activo','2025-11-02 18:52:36','CLIENTE');
+INSERT INTO `usuarios` VALUES (9,17,1,'admin@gmail.com','admin',NULL,'activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592',NULL,'activo','2025-10-17 17:31:27','CLIENTE'),(21,35,NULL,'repartidor@gmail.com','repartidor','ffxF9YQHSi-uv0C7ZXlRf1:APA91bFkViPjLHvZDfUVL59zZ3tUy7nRvxeWZJUSjp58VpjcGoXTgGLhv6xFLKZqyU_8yhgpBuF8K47UsNyIehhHHq8Jd81T89HVs33z3g3Djdm6-zRBmBI','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente',NULL,'activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592',NULL,'activo','2025-11-02 18:52:36','CLIENTE'),(33,48,NULL,'repartidor2@gmail.com','repartidor',NULL,'activo','2025-11-13 15:50:43','REPARTIDOR');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -900,7 +899,7 @@ CREATE TABLE `vehiculos` (
   `factor_uso_max` decimal(4,2) NOT NULL DEFAULT '0.80' COMMENT 'Porcentaje máximo de uso permitido',
   PRIMARY KEY (`id`),
   UNIQUE KEY `placa` (`placa`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -909,7 +908,7 @@ CREATE TABLE `vehiculos` (
 
 LOCK TABLES `vehiculos` WRITE;
 /*!40000 ALTER TABLE `vehiculos` DISABLE KEYS */;
-INSERT INTO `vehiculos` VALUES (1,'JDIHDI773','Italika','110 AT',1,'moto',55.00,0.180,0.20);
+INSERT INTO `vehiculos` VALUES (1,'JDIHDI773','Italika','110 AT',1,'moto',55.00,0.180,0.20),(3,'TSK-92A1','Italika','FT150',1,'moto',45.00,0.160,0.80),(4,'RJB-57M9','Nissan','NP300',1,'camioneta',350.00,1.250,0.80),(5,'XMN-44Z8','Honda','Dio 110',1,'moto',60.00,0.200,0.80);
 /*!40000 ALTER TABLE `vehiculos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -959,4 +958,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-11 15:40:03
+-- Dump completed on 2025-11-14  1:43:55

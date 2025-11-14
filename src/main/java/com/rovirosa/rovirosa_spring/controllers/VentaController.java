@@ -66,6 +66,5 @@ public class VentaController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(true, "Compras obtenidas exitosamente", ventas));
     }
-    
 
 }

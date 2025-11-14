@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoPostDTO;
-import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoCreateDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoDeleteDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoResponseDTO;

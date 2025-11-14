@@ -45,8 +45,5 @@ public class RepartidorAsignacion implements Serializable {
 
     @Column(name = "fecha_fin")
     private LocalDate fechaFin;
-
-    @Column(name = "activo", nullable = false)
-    private Boolean activo;
     
 }

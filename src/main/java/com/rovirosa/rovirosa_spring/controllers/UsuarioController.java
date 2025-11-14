@@ -76,8 +76,8 @@ public class UsuarioController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/change-status/{id}/{estado}")
-    public ResponseEntity<ApiResponse<String>> changeStatus(@PathVariable String id, @PathVariable String estado) {
-        int rowsAffected = usuarioService.changeStatus(Integer.parseInt(id), estado);
+    public ResponseEntity<ApiResponse<String>> changeStatus(@PathVariable Integer id, @PathVariable String estado) {
+        int rowsAffected = usuarioService.changeStatus(id, estado);
         if (rowsAffected > 0) {
             return ResponseEntity.ok(new ApiResponse<>(true, "Usuario actualizado exitosamente", null));
         } else {

@@ -6,6 +6,7 @@ public class LoginResponseDTO {
 
     private Integer id;
     private Integer clienteId;
+    private Integer repartidorId;
     private Integer puntoVenta_Id;
     private String token;
     private String estado;
@@ -26,6 +27,13 @@ public class LoginResponseDTO {
     }
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRepartidorId() {
+        return repartidorId;
+    }
+    public void setRepartidorId(Integer repartidorId) {
+        this.repartidorId = repartidorId;
     }
 
     public Integer getPuntoVenta_Id() {

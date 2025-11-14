@@ -14,8 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "rutas_detalle")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RutaDetalle implements Serializable {
@@ -42,69 +48,5 @@ public class RutaDetalle implements Serializable {
 
     @Column(name = "ref", nullable = false)
     private String ref;
-
-
-    // Constructor vacío
-    public RutaDetalle() {}
-
-    // Constructor con parámetros
-    public RutaDetalle(Integer id, Ruta ruta, Venta venta, BigDecimal lat, BigDecimal lng, String ref) {
-        this.id = id;
-        this.ruta = ruta;
-        this.venta = venta;
-        this.lat = lat;
-        this.lng = lng;
-        this.ref = ref;
-    }
-
-    // Getters y Setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Ruta getRuta() {
-        return ruta;
-    }
-
-    public void setRuta(Ruta ruta) {
-        this.ruta = ruta;
-    }
-
-    public Venta getVenta() {
-        return venta;
-    }
-
-    public void setVenta(Venta venta) {
-        this.venta = venta;
-    }
-
-    public BigDecimal getLat() {
-        return lat;
-    }
-
-    public void setLat(BigDecimal lat) {
-        this.lat = lat;
-    }
-
-    public BigDecimal getLng() {
-        return lng;
-    }
-
-    public void setLng(BigDecimal lng) {
-        this.lng = lng;
-    }
-
-    public String getRef() {
-        return ref;
-    }
-    public void setRef(String ref) {
-        this.ref = ref;
-    }
-    
 
 }

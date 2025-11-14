@@ -1,7 +1,6 @@
 package com.rovirosa.rovirosa_spring.services;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleQueryByRepartidorIdDTO
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaQueryClienteDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaResponseClienteDTO;
-import com.rovirosa.rovirosa_spring.controllers.public_routes.AuthController;
 import com.rovirosa.rovirosa_spring.models.Cliente;
 import com.rovirosa.rovirosa_spring.models.DetalleVenta;
 import com.rovirosa.rovirosa_spring.models.Pago;
@@ -33,7 +31,6 @@ import com.rovirosa.rovirosa_spring.repositories.DetalleVentaRepository;
 import com.rovirosa.rovirosa_spring.repositories.PagoRepository;
 import com.rovirosa.rovirosa_spring.repositories.ProductoRepository;
 import com.rovirosa.rovirosa_spring.repositories.RepartidorAsignacionRepository;
-import com.rovirosa.rovirosa_spring.repositories.RepartidorRepository;
 import com.rovirosa.rovirosa_spring.repositories.RutaDetalleRepository;
 import com.rovirosa.rovirosa_spring.repositories.RutaRepository;
 import com.rovirosa.rovirosa_spring.repositories.VentaRepository;
@@ -42,8 +39,6 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class VentaService {
-
-    private final AuthController authController;
 
     @Autowired
     private VentaRepository ventaRep;
@@ -60,18 +55,12 @@ public class VentaService {
     @Autowired
     private RutaDetalleRepository rutaDetalleRepository;
     @Autowired
-    private VentaRepository ventaRepository;
-    @Autowired
     private RepartidorAsignacionRepository repartidorAsignRep;
     @Autowired
     private ProductoRepository productoRep;
 
     private static final int RADIO_TIERRA_KM = 6371;
     private static final double RADIO_MAX_ENTREGA_KM = 0.36;
-
-    VentaService(AuthController authController) {
-        this.authController = authController;
-    } // 360 metros
 
     @Transactional
     public void crearVenta(VentaPostDTO ventaDTO, MultipartFile comprobante) {

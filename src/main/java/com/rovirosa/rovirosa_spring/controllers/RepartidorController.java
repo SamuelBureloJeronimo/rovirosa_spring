@@ -1,5 +1,7 @@
 package com.rovirosa.rovirosa_spring.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -7,9 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleQueryByRepartidorIdDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Vehiculo.VehiculoAsignToRepDTO;
+import com.rovirosa.rovirosa_spring.models.Repartidor;
 import com.rovirosa.rovirosa_spring.services.RepartidorService;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -19,14 +30,46 @@ public class RepartidorController {
     @Autowired
     private RepartidorService repartidorService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE', 'REPARTIDOR')")
-    @GetMapping("/rutas")
-    public ResponseEntity<ApiResponse<String>> getDistancia(){
-        //double distancia = repartidorService.calcularDistancia(17.759576223228915, -92.60354532756537, 17.758046253795616, -92.60054111480713);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Distancia calculada exitosamente", 1 + " km"));
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/vehiculo")
+    public ResponseEntity<ApiResponse<Integer>> asignarVehiculoRepartidor(
+        @Valid @RequestBody VehiculoAsignToRepDTO dto) {
+            System.out.println(dto.getRepartidorId() + " " + dto.getVehiculoId());
+        Integer result = repartidorService.asignVehiculoRepartidor(dto.getRepartidorId(), dto.getVehiculoId());
+        if (result == 1) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Vehículo asignado correctamente", result));
+        } else {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Error al asignar vehículo", null));
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR')")
+    @GetMapping("/rutas/{repartidorId}")
+    public ResponseEntity<ApiResponse<List<RutaDetalleQueryByRepartidorIdDTO>>> getDistancia(@PathVariable Integer repartidorId){
+        return ResponseEntity.ok(new ApiResponse<>(true, "Distancia calculada exitosamente", repartidorService.getRutaDetalleByRepartidorId(repartidorId)));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR')")
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Repartidor>> getRepById(@PathVariable Integer id) {
+        Repartidor rep = repartidorService.getRepById(id);
+        if (rep == null) {
+            return ResponseEntity.ok(new ApiResponse<>(false, "Repartidor no encontrado", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Repartidor obtenido exitosamente", rep));
+
+    }
+
+    @GetMapping("/curp/{curp}")
+    public ResponseEntity<ApiResponse<Repartidor>> getRepByCurp(@PathVariable String curp) {
+        Repartidor rep = repartidorService.getRepByCurp(curp);
+        if (rep == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Repartidor no encontrado", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Repartidor obtenido exitosamente", rep));
+
     }
     
     
-
 
 }
