@@ -1,8 +1,11 @@
 package com.rovirosa.rovirosa_spring.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerentePvQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioByRolPostDTO;
 import com.rovirosa.rovirosa_spring.models.GerentePv;
 import com.rovirosa.rovirosa_spring.models.Persona;
@@ -23,6 +26,14 @@ public class GerentePvService {
     private PersonaRepository personaRep;
     @Autowired
     private UsuarioRepository usuarioRep;
+
+    public GerentePvQueryDTO getGerentePvById(String curp) {
+        return gerenteRep.findByUsuario_Persona_Curp(curp);
+    }
+
+    public List<GerentePvQueryDTO> getAllGerentesPv() {
+        return gerenteRep.findAllProjectedBy();
+    }
 
     @Transactional
     public GerentePv createGerentePv(UsuarioByRolPostDTO dto) {
@@ -58,6 +69,25 @@ public class GerentePvService {
 
         return gerenteRep.save(gerente);
 
+    }
+
+    @Transactional
+    public void assignPuntoVentaToGerente(Integer gerenteId, Integer pvId) {
+        GerentePv gerente = gerenteRep.findById(gerenteId)
+                .orElseThrow(() -> new RuntimeException("GerentePv not found with id: " + gerenteId));
+        PuntoVenta pv = new PuntoVenta();
+        pv.setId(pvId);
+        gerente.setPuntoVenta(pv);
+        gerenteRep.save(gerente);
+    }
+    
+
+    @Transactional
+    public void removePuntoVentaFromGerente(Integer idGerente) {
+        GerentePv gerente = gerenteRep.findById(idGerente)
+                .orElseThrow(() -> new RuntimeException("GerentePv not found with id: " + idGerente));
+        gerente.setPuntoVenta(null);
+        gerenteRep.save(gerente);
     }
 
 }

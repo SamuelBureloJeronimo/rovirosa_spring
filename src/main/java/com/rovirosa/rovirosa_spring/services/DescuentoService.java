@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.Descuento.BannerQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Descuento.DescuentoPostDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Descuento.PromocionesDTO;
 import com.rovirosa.rovirosa_spring.models.Categoria;
 import com.rovirosa.rovirosa_spring.models.DescuentoCategoria;
 import com.rovirosa.rovirosa_spring.models.DescuentoConfig;
@@ -19,6 +20,8 @@ import com.rovirosa.rovirosa_spring.repositories.DescuentoCategoriaRepository;
 import com.rovirosa.rovirosa_spring.repositories.DescuentoConfigRepository;
 import com.rovirosa.rovirosa_spring.repositories.DescuentoMarcaRepository;
 import com.rovirosa.rovirosa_spring.repositories.DescuentoProductoRepository;
+import com.rovirosa.rovirosa_spring.repositories.MarcaRepository;
+import com.rovirosa.rovirosa_spring.repositories.ProductoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -33,16 +36,32 @@ public class DescuentoService {
     private DescuentoMarcaRepository descMarcaRep;
     @Autowired
     private DescuentoProductoRepository descuentoProductoRep;
+    @Autowired
+    private ProductoRepository productoRep;
+
+    @Autowired
+    private MarcaRepository marcaRep;
 
     @Autowired
     private StorageService storageService;
+
+    public PromocionesDTO getDescuentos() {
+        List<DescuentoProducto> descuentosProducto = descuentoProductoRep.findAll();
+        List<DescuentoMarca> descuentosMarca = descMarcaRep.findAll();
+        List<DescuentoCategoria> descuentosCategoria = descCategRep.findAll();
+        PromocionesDTO promocionesDTO = new PromocionesDTO();
+        promocionesDTO.setDescuentosProducto(descuentosProducto);
+        promocionesDTO.setDescuentosMarca(descuentosMarca);
+        promocionesDTO.setDescuentosCategoria(descuentosCategoria);
+        return promocionesDTO;
+    }
 
     public List<BannerQueryDTO> getAllBanners() {
         return desConfigRep.findAllBanners();
     }
 
     @Transactional
-    public void aplicarToProducto(DescuentoPostDTO dto, MultipartFile banner) {
+    public Boolean aplicarToProducto(DescuentoPostDTO dto, MultipartFile banner) {
         DescuentoConfig config = getConfigFromDTO(dto);
 
         String prefix = "descuentos/";
@@ -53,8 +72,9 @@ public class DescuentoService {
 
         config = desConfigRep.save(config);
 
-        Producto producto = new Producto();
-        producto.setId(dto.getId());
+        Producto producto = productoRep.findById(dto.getId()).orElse(null);
+        if (producto == null)
+            return false;
 
         DescuentoProducto descuentoProducto = new DescuentoProducto();
         descuentoProducto.setConfig(config);
@@ -65,11 +85,20 @@ public class DescuentoService {
         if (banner != null && !banner.isEmpty())
             storageService.store(banner, prefix, fileName);
 
+        return true;
+
     }
 
     @Transactional
     public void aplicarToMarca(DescuentoPostDTO dto, MultipartFile banner) {
         DescuentoConfig config = getConfigFromDTO(dto);
+
+        System.out.println(dto.getId());
+        System.out.println(dto.getTipo());
+        System.out.println(dto.getValor());
+        System.out.println(dto.getObjetivo());
+        System.out.println(dto.getFechaIn());
+        System.out.println(dto.getFechaFin());
 
         String prefix = "descuentos/";
         String fileName = storageService.generateFileName();
@@ -79,8 +108,7 @@ public class DescuentoService {
 
         config = desConfigRep.save(config);
 
-        Marca marca = new Marca();
-        marca.setId(dto.getId());
+        Marca marca = marcaRep.getReferenceById(dto.getId());
 
         DescuentoMarca descuentoMarca = new DescuentoMarca();
         descuentoMarca.setConfig(config);
@@ -125,6 +153,16 @@ public class DescuentoService {
         config.setFechaIn(dto.getFechaIn());
         config.setFechaFin(dto.getFechaFin());
         return config;
+    }
+
+    @Transactional
+    public void eliminarDescuento(Integer idConfig) {
+        DescuentoConfig config = desConfigRep.findById(idConfig)
+                .orElseThrow(() -> new RuntimeException("DescuentoConfig not found with id: " + idConfig));
+        if (config.getBanner() != null) {
+            storageService.delete(config.getBanner());
+        }
+        desConfigRep.deleteById(idConfig);
     }
 
 }

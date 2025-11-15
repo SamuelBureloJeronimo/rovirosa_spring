@@ -82,25 +82,68 @@ public class CatalogoPvService {
 
             DescuentoConfigQueryDTO descProd = descProductoRepo.findByProducto_Id(item.getProducto_Id());
             if (descProd != null) {
-                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descProd.getConfig_Valor(),
-                        descProd.getConfig_Tipo());
-                res.add(response);
-                continue;
+                if(descProd.getConfig_FechaFin() != null) {
+                    if(descProd.getConfig_FechaFin().isBefore(java.time.LocalDate.now())) {
+                        // Descuento expirado, continuar para buscar otro descuento
+                        System.out.println("Descuento de producto expirado para el producto: " + item.getProducto_Id());
+                    } else {
+                        // Descuento válido
+                        CatalogoResponseDTO response = new CatalogoResponseDTO(item, descProd.getConfig_Valor(),
+                                descProd.getConfig_Tipo());
+                        res.add(response);
+                        continue;
+                    }
+                } else {
+                    // Descuento sin fecha de fin, se asume válido
+                    CatalogoResponseDTO response = new CatalogoResponseDTO(item, descProd.getConfig_Valor(),
+                            descProd.getConfig_Tipo());
+                    res.add(response);
+                    continue;
+                }
             }
+            
             DescuentoConfigQueryDTO descMarca = descMarcaRepo.findByMarca_Id(item.getProducto_Marca().getId());
             if (descMarca != null) {
-                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descMarca.getConfig_Valor(),
-                        descMarca.getConfig_Tipo());
-                res.add(response);
-                continue;
+                if(descMarca.getConfig_FechaFin() != null) {
+                    if(descMarca.getConfig_FechaFin().isBefore(java.time.LocalDate.now())) {
+                        // Descuento expirado, continuar para buscar otro descuento
+                        System.out.println("Descuento de marca expirado para la marca: " + item.getProducto_Marca().getId());
+                    } else {
+                        // Descuento válido
+                        CatalogoResponseDTO response = new CatalogoResponseDTO(item, descMarca.getConfig_Valor(),
+                                descMarca.getConfig_Tipo());
+                        res.add(response);
+                        continue;
+                    }
+                } else {
+                    // Descuento sin fecha de fin, se asume válido
+                    CatalogoResponseDTO response = new CatalogoResponseDTO(item, descMarca.getConfig_Valor(),
+                            descMarca.getConfig_Tipo());
+                    res.add(response);
+                    continue;
+                }
             }
             DescuentoConfigQueryDTO descCateg = descCategRepo
                     .findByCategoria_Id(item.getProducto_Marca().getCategoria().getId());
             if (descCateg != null) {
-                CatalogoResponseDTO response = new CatalogoResponseDTO(item, descCateg.getConfig_Valor(),
-                        descCateg.getConfig_Tipo());
-                res.add(response);
-                continue;
+                if(descCateg.getConfig_FechaFin() != null) {
+                    if(descCateg.getConfig_FechaFin().isBefore(java.time.LocalDate.now())) {
+                        // Descuento expirado, continuar para buscar otro descuento
+                        System.out.println("Descuento de marca expirado para la marca: " + item.getProducto_Marca().getId());
+                    } else {
+                        // Descuento válido
+                        CatalogoResponseDTO response = new CatalogoResponseDTO(item, descCateg.getConfig_Valor(),
+                                descCateg.getConfig_Tipo());
+                        res.add(response);
+                        continue;
+                    }
+                } else {
+                    // Descuento sin fecha de fin, se asume válido
+                    CatalogoResponseDTO response = new CatalogoResponseDTO(item, descCateg.getConfig_Valor(),
+                            descCateg.getConfig_Tipo());
+                    res.add(response);
+                    continue;
+                }
             }
             CatalogoResponseDTO response = new CatalogoResponseDTO(item, null, null);
             res.add(response);
@@ -127,6 +170,15 @@ public class CatalogoPvService {
                 }
             }
 
+        }
+        return null;
+    }
+    
+    @Transactional
+    public CatalogoQueryDTO updateStock(CatalogoPostDTO dto) {
+        int updatedRows = catalogoPvRep.updateStock(dto.getPuntoVenta_id(), dto.getProducto_id(), dto.getStock());
+        if (updatedRows > 0) {
+            return catalogoPvRep.findFirstCatalogoQueryDTOByProducto_IdAndPuntoVenta_Id(dto.getProducto_id(), dto.getPuntoVenta_id());
         }
         return null;
     }

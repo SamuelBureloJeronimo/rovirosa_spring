@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,20 @@ public class CatalogoController {
                 }
                 return ResponseEntity.status(201).body(
                                 new ApiResponse<CatalogoQueryDTO>(true, "Producto agregado exitosamente.",
+                                                response));
+        }
+
+        @PreAuthorize("hasRole('ADMIN')")
+        @PutMapping("/update-stock")
+        public ResponseEntity<ApiResponse<CatalogoQueryDTO>> updateStock(@RequestBody CatalogoPostDTO dto) {
+                CatalogoQueryDTO response = catalogoService.updateStock(dto);
+                if (response == null) {
+                        return ResponseEntity.status(400).body(
+                                        new ApiResponse<CatalogoQueryDTO>(false,
+                                                        "Error al actualizar el stock.", null));
+                }
+                return ResponseEntity.status(200).body(
+                                new ApiResponse<CatalogoQueryDTO>(true, "Stock actualizado exitosamente.",
                                                 response));
         }
 

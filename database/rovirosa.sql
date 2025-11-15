@@ -74,7 +74,7 @@ CREATE TABLE `catalogo_pv` (
 
 LOCK TABLES `catalogo_pv` WRITE;
 /*!40000 ALTER TABLE `catalogo_pv` DISABLE KEYS */;
-INSERT INTO `catalogo_pv` VALUES (1,1,1,0,0),(2,2,1,0,0),(4,4,1,0,0),(5,5,1,29,0),(6,6,1,2,0),(7,7,1,36,0),(8,8,1,65,0),(33,1,6,10,0),(34,4,6,37,0);
+INSERT INTO `catalogo_pv` VALUES (2,2,1,25,0),(4,4,1,60,0),(5,5,1,29,0),(6,6,1,20,0),(7,7,1,36,0),(8,8,1,65,0),(33,1,6,10,0),(34,4,6,37,0);
 /*!40000 ALTER TABLE `catalogo_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +209,7 @@ CREATE TABLE `descuentos_categ` (
   KEY `FK_descuento_categ_descuentos_config` (`config_id`),
   CONSTRAINT `FK_descuento_categ_categorias` FOREIGN KEY (`categ_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_descuento_categ_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +218,7 @@ CREATE TABLE `descuentos_categ` (
 
 LOCK TABLES `descuentos_categ` WRITE;
 /*!40000 ALTER TABLE `descuentos_categ` DISABLE KEYS */;
-INSERT INTO `descuentos_categ` VALUES (1,4,4);
+INSERT INTO `descuentos_categ` VALUES (4,4,26);
 /*!40000 ALTER TABLE `descuentos_categ` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,7 +238,7 @@ CREATE TABLE `descuentos_config` (
   `fech_fin` date DEFAULT NULL COMMENT 'Fecha de fin del descuento',
   `banner` varchar(100) DEFAULT NULL COMMENT 'Si no sube un banner no se muestra en la pantalla de inicio',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +247,7 @@ CREATE TABLE `descuentos_config` (
 
 LOCK TABLES `descuentos_config` WRITE;
 /*!40000 ALTER TABLE `descuentos_config` DISABLE KEYS */;
-INSERT INTO `descuentos_config` VALUES (3,'porcentaje',10,'marca','2025-10-22',NULL,NULL),(4,'porcentaje',12,'categoria','2025-10-24','2025-10-30',NULL),(9,'fijo',23,'producto','2025-10-22',NULL,'descuentos/ede55c59-5df7-4dc5-8db3-d5c4867518b1.jpg');
+INSERT INTO `descuentos_config` VALUES (17,'fijo',12,'producto','2025-11-15',NULL,NULL),(18,'porcentaje',10,'producto','2025-11-15',NULL,NULL),(24,'porcentaje',5,'marca','2025-11-15','2025-11-17','descuentos/07266ffb-10dd-4e11-b9ea-b8add7a05401.jpg'),(26,'fijo',21,'categoria','2025-11-15',NULL,'descuentos/7b8cf00c-776a-415c-bb08-d7e4b7918609.jpg');
 /*!40000 ALTER TABLE `descuentos_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,8 +266,8 @@ CREATE TABLE `descuentos_marca` (
   KEY `FK_descuento_marca_descuentos_marca` (`marca_id`),
   KEY `FK_descuento_marca_descuentos_config` (`config_id`),
   CONSTRAINT `FK_descuento_marca_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_descuento_marca_descuentos_marca` FOREIGN KEY (`marca_id`) REFERENCES `descuentos_marca` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK_descuento_marca_descuentos_marca` FOREIGN KEY (`marca_id`) REFERENCES `marcas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -276,7 +276,7 @@ CREATE TABLE `descuentos_marca` (
 
 LOCK TABLES `descuentos_marca` WRITE;
 /*!40000 ALTER TABLE `descuentos_marca` DISABLE KEYS */;
-INSERT INTO `descuentos_marca` VALUES (3,3,3);
+INSERT INTO `descuentos_marca` VALUES (11,3,24);
 /*!40000 ALTER TABLE `descuentos_marca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +296,7 @@ CREATE TABLE `descuentos_producto` (
   KEY `FK_descuentos_producto_descuentos_config` (`config_id`),
   CONSTRAINT `FK_descuentos_producto_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_descuentos_producto_productos` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,7 +305,6 @@ CREATE TABLE `descuentos_producto` (
 
 LOCK TABLES `descuentos_producto` WRITE;
 /*!40000 ALTER TABLE `descuentos_producto` DISABLE KEYS */;
-INSERT INTO `descuentos_producto` VALUES (5,6,9);
 /*!40000 ALTER TABLE `descuentos_producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +476,7 @@ CREATE TABLE `gerentes_pv` (
 
 LOCK TABLES `gerentes_pv` WRITE;
 /*!40000 ALTER TABLE `gerentes_pv` DISABLE KEYS */;
-INSERT INTO `gerentes_pv` VALUES (3,22,1,NULL);
+INSERT INTO `gerentes_pv` VALUES (3,22,6,NULL);
 /*!40000 ALTER TABLE `gerentes_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -739,7 +738,7 @@ CREATE TABLE `repart_asign` (
   KEY `pv_id` (`pv_id`),
   CONSTRAINT `repartidor_asignacion_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`),
   CONSTRAINT `repartidor_asignacion_ibfk_2` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -748,6 +747,7 @@ CREATE TABLE `repart_asign` (
 
 LOCK TABLES `repart_asign` WRITE;
 /*!40000 ALTER TABLE `repart_asign` DISABLE KEYS */;
+INSERT INTO `repart_asign` VALUES (19,8,1,'2025-11-14',NULL),(20,8,6,'2025-11-14',NULL);
 /*!40000 ALTER TABLE `repart_asign` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -779,7 +779,7 @@ CREATE TABLE `repartidores` (
 
 LOCK TABLES `repartidores` WRITE;
 /*!40000 ALTER TABLE `repartidores` DISABLE KEYS */;
-INSERT INTO `repartidores` VALUES (7,21,5,NULL,NULL,'en_espera'),(8,33,4,NULL,NULL,NULL);
+INSERT INTO `repartidores` VALUES (7,21,4,NULL,NULL,'en_espera'),(8,33,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `repartidores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -876,7 +876,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (9,17,1,'admin@gmail.com','admin',NULL,'activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592',NULL,'activo','2025-10-17 17:31:27','CLIENTE'),(21,35,NULL,'repartidor@gmail.com','repartidor','ffxF9YQHSi-uv0C7ZXlRf1:APA91bFkViPjLHvZDfUVL59zZ3tUy7nRvxeWZJUSjp58VpjcGoXTgGLhv6xFLKZqyU_8yhgpBuF8K47UsNyIehhHHq8Jd81T89HVs33z3g3Djdm6-zRBmBI','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente',NULL,'activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592',NULL,'activo','2025-11-02 18:52:36','CLIENTE'),(33,48,NULL,'repartidor2@gmail.com','repartidor',NULL,'activo','2025-11-13 15:50:43','REPARTIDOR');
+INSERT INTO `usuarios` VALUES (9,17,6,'admin@gmail.com','admin',NULL,'activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592',NULL,'activo','2025-10-17 17:31:27','CLIENTE'),(21,35,NULL,'repartidor@gmail.com','repartidor','ffxF9YQHSi-uv0C7ZXlRf1:APA91bFkViPjLHvZDfUVL59zZ3tUy7nRvxeWZJUSjp58VpjcGoXTgGLhv6xFLKZqyU_8yhgpBuF8K47UsNyIehhHHq8Jd81T89HVs33z3g3Djdm6-zRBmBI','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente',NULL,'activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592',NULL,'activo','2025-11-02 18:52:36','CLIENTE'),(33,48,NULL,'repartidor2@gmail.com','repartidor',NULL,'activo','2025-11-13 15:50:43','REPARTIDOR');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -958,4 +958,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-14  1:43:55
+-- Dump completed on 2025-11-15 14:11:36
