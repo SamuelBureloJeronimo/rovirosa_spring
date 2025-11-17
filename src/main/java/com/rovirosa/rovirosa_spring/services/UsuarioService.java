@@ -22,6 +22,8 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private CarritoService carritoService;
 
     public List<UsuarioSimpleResponseDTO> getUsuariosByRol(String rol) {
 
@@ -48,6 +50,7 @@ public class UsuarioService {
 
         PuntoVenta pvRef = entityManager.getReference(PuntoVenta.class, pvId);
         usuario.setPuntoVenta(pvRef);
+        carritoService.clearCartByUserId(userId);
         usuarioRepository.save(usuario);
     }
 

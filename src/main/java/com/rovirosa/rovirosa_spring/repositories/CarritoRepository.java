@@ -18,6 +18,8 @@ public interface CarritoRepository extends JpaRepository<Carrito, Integer> {
 
     CarritoQueryByClienteDTO findProjectedById(Integer id);
 
+    void deleteByUsuario_Id(Integer usuarioId);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Carrito c WHERE c.usuario.id = :usuarioId AND c.catalogo.id = :catalogoId")

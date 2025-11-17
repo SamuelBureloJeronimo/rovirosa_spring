@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +30,7 @@ import com.rovirosa.rovirosa_spring.services.AuthService;
 import com.rovirosa.rovirosa_spring.services.EmailService;
 import jakarta.validation.Valid;
 
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -45,7 +45,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDTO>> login(@Valid @RequestBody LoginPostDTO loginDTO) {
         LoginResponseDTO res = authServ.login(loginDTO);

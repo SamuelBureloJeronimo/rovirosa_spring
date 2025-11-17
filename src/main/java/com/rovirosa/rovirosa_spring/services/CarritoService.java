@@ -103,4 +103,8 @@ public class CarritoService {
 
         return res;
     }
+
+    public void clearCartByUserId(Integer userId) {
+        carritoRepository.deleteByUsuario_Id(userId);
+    }
 }

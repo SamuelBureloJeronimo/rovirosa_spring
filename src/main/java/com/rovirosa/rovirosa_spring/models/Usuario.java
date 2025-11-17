@@ -39,7 +39,7 @@ public class Usuario implements Serializable {
     private String password;
 
     @Column(name = "token_fbm", nullable = true, length = 255)
-    private String tokenFbm;
+    private String tokenFmc;
 
     @Column(name = "estado", nullable = false, length = 255)
     private String estado = "activo";

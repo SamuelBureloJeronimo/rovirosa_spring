@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public interface RutaDetalleQueryByRepartidorIdDTO {
     Integer getId();
+    Integer getRuta_Id();
     
     Integer getVenta_Id();
     String getVenta_FechaInicio();

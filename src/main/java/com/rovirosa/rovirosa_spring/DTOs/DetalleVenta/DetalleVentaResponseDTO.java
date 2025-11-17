@@ -4,6 +4,7 @@ public interface DetalleVentaResponseDTO {
 
     Integer getId();
     String getProductoImagen();
+    String getProductoNombre();
     Integer getCantIn();
     Integer getCantFin();
     Double getPrecioUnit();

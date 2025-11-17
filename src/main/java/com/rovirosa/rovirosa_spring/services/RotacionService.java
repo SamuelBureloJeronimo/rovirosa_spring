@@ -14,6 +14,8 @@ import com.rovirosa.rovirosa_spring.repositories.PuntoVentaRepository;
 import com.rovirosa.rovirosa_spring.repositories.RepartidorAsignacionRepository;
 import com.rovirosa.rovirosa_spring.repositories.RepartidorRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class RotacionService {
 
@@ -24,6 +26,7 @@ public class RotacionService {
     @Autowired
     private PuntoVentaRepository puntoVentaRep;
 
+    @Transactional
     public void asignToPv(RotacionPostDTO dto) {
 
         System.out.println(dto.getPuntoVentaId());
@@ -37,12 +40,15 @@ public class RotacionService {
         Repartidor repa = repartidorRep.getReferenceById(dto.getRepartidorId());
         PuntoVenta pv = puntoVentaRep.getReferenceById(dto.getPuntoVentaId());
 
+        repa.getUsuario().setPuntoVenta(pv);
+
         repAsign.setRep(repa);
         repAsign.setPuntoVenta(pv);
 
         repAsign.setFechaIn(dto.getFechaInicio());
         repAsign.setFechaFin(dto.getFechaFin());
 
+        repartidorRep.save(repa);
         repAsignRep.save(repAsign);
     }
 

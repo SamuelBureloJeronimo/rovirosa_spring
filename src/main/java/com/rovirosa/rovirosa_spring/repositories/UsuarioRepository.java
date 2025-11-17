@@ -21,6 +21,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     UsuarioQueryDTO findProjectedById(Integer id);
 
+    Usuario findByTokenFmc(String token);
+
+    @Modifying
+    @Query("UPDATE Usuario p SET p.tokenFmc = null WHERE p.tokenFmc = :token")
+    int removeToken(@Param("token") String token);
+
     List<UsuarioQueryDTO> findByRol(String rol);
 
     @Modifying

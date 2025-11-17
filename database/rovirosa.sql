@@ -34,7 +34,7 @@ CREATE TABLE `carrito` (
   KEY `fk_carrito_catalogo` (`catalogo_id`),
   CONSTRAINT `fk_carrito_catalogo` FOREIGN KEY (`catalogo_id`) REFERENCES `catalogo_pv` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_carrito_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16');
+INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(239,32,8,2,'2025-11-17 04:05:46','2025-11-17 04:05:47');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +74,7 @@ CREATE TABLE `catalogo_pv` (
 
 LOCK TABLES `catalogo_pv` WRITE;
 /*!40000 ALTER TABLE `catalogo_pv` DISABLE KEYS */;
-INSERT INTO `catalogo_pv` VALUES (2,2,1,25,0),(4,4,1,60,0),(5,5,1,29,0),(6,6,1,20,0),(7,7,1,36,0),(8,8,1,65,0),(33,1,6,10,0),(34,4,6,37,0);
+INSERT INTO `catalogo_pv` VALUES (2,2,1,0,0),(4,4,1,0,0),(5,5,1,26,0),(6,6,1,17,0),(7,7,1,16,0),(8,8,1,49,0),(33,1,6,4,0),(34,4,6,22,0);
 /*!40000 ALTER TABLE `catalogo_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -328,7 +328,7 @@ CREATE TABLE `detalles_venta` (
   KEY `FK_detalles_venta_ventas` (`vnta_id`),
   CONSTRAINT `FK_detalles_venta_producto` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_detalles_venta_ventas` FOREIGN KEY (`vnta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +337,7 @@ CREATE TABLE `detalles_venta` (
 
 LOCK TABLES `detalles_venta` WRITE;
 /*!40000 ALTER TABLE `detalles_venta` DISABLE KEYS */;
-INSERT INTO `detalles_venta` VALUES (17,25,1,5,NULL,23.82,2.38);
+INSERT INTO `detalles_venta` VALUES (78,69,7,1,NULL,33.00,21.00),(79,70,4,1,NULL,239.00,11.95),(80,71,4,2,NULL,239.00,11.95),(81,72,7,2,NULL,33.00,21.00),(82,72,8,3,NULL,34.00,21.00),(83,73,4,1,NULL,239.00,11.95),(84,74,8,2,NULL,34.00,21.00);
 /*!40000 ALTER TABLE `detalles_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,7 +390,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (1,17.74748539,-92.61013526,''),(2,17.76364885,-92.59267079,''),(7,17.76405609,-92.59525008,''),(8,17.75535681,-92.58530146,''),(9,17.76455310,-92.59483297,''),(10,17.76363734,-92.59165994,''),(14,17.76084206,-92.59733415,''),(15,17.76446564,-92.59152140,''),(17,17.75950992,-92.59327040,''),(18,17.76337798,-92.59217243,''),(19,17.76255966,-92.59218810,''),(20,17.76237979,-92.59881699,''),(21,17.76284780,-92.59082261,''),(22,17.76451976,-92.59435825,''),(25,17.76223207,-92.59787038,''),(26,17.75965531,-92.60268181,''),(27,17.76523092,-92.59827881,''),(29,17.76034735,-92.60186323,'Casa color azul con blanco.'),(30,17.75886835,-92.60434033,'Casa color azul con blanco.'),(31,17.75822595,-92.60296399,'asasasasasasasasa'),(32,17.75822570,-92.60319055,'ertrertererte'),(33,17.75757141,-92.60327433,'ASASAAS'),(34,17.75843902,-92.60392840,'ssddsfsdf'),(35,17.75839031,-92.60331586,'ASASASA'),(36,17.76151661,-92.60259750,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(37,17.76430707,-92.58864793,'');
+INSERT INTO `direcciones` VALUES (1,17.74748539,-92.61013526,''),(2,17.76364885,-92.59267079,''),(7,17.76405609,-92.59525008,''),(8,17.75535681,-92.58530146,''),(9,17.76455310,-92.59483297,''),(10,17.76363734,-92.59165994,''),(14,17.76084206,-92.59733415,''),(15,17.76446564,-92.59152140,''),(17,17.75950992,-92.59327040,''),(18,17.76337798,-92.59217243,''),(19,17.76255966,-92.59218810,''),(20,17.76237979,-92.59881699,''),(21,17.76284780,-92.59082261,''),(22,17.76451976,-92.59435825,''),(25,17.76223207,-92.59787038,''),(26,17.75965531,-92.60268181,''),(27,17.76523092,-92.59827881,''),(29,17.76034735,-92.60186323,'Casa color azul con blanco.'),(30,17.75886835,-92.60434033,'Casa color azul con blanco.'),(31,17.75822595,-92.60296399,'asasasasasasasasa'),(32,17.75822570,-92.60319055,'ertrertererte'),(33,17.75757141,-92.60327433,'ASASAAS'),(34,17.75843902,-92.60392840,'ssddsfsdf'),(35,17.75839031,-92.60331586,'ASASASA'),(36,17.75356505,-92.60450747,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(37,17.76430707,-92.58864793,'');
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -613,7 +613,7 @@ CREATE TABLE `pagos` (
   `compr` varchar(100) DEFAULT NULL COMMENT 'Descripción de la compra',
   `estado` enum('pendiente','pagado','rechazado') NOT NULL DEFAULT 'pendiente',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -622,7 +622,7 @@ CREATE TABLE `pagos` (
 
 LOCK TABLES `pagos` WRITE;
 /*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
-INSERT INTO `pagos` VALUES (12,'transferencia',215.10,NULL,NULL,NULL,'pendiente'),(14,'terminal',21.44,NULL,NULL,NULL,'pendiente'),(15,'efectivo',215.10,NULL,NULL,NULL,'pendiente'),(16,'terminal',215.10,NULL,NULL,NULL,'pendiente'),(24,'terminal',21.44,NULL,NULL,NULL,'pendiente'),(25,'terminal',21.44,NULL,NULL,NULL,'pendiente'),(26,'transferencia',21.44,NULL,NULL,NULL,'pendiente'),(27,'link_mp',21.44,NULL,NULL,NULL,'pendiente'),(28,'link_mp',21.44,NULL,NULL,NULL,'pendiente'),(29,'terminal',215.10,NULL,NULL,NULL,'pendiente'),(30,'efectivo',107.19,NULL,NULL,NULL,'pendiente');
+INSERT INTO `pagos` VALUES (74,'efectivo',12.00,NULL,NULL,NULL,'pendiente'),(75,'efectivo',227.05,NULL,NULL,NULL,'pendiente'),(76,'link_mp',454.10,NULL,NULL,NULL,'pendiente'),(77,'link_mp',63.00,NULL,NULL,NULL,'pendiente'),(78,'transferencia',227.05,NULL,NULL,NULL,'pendiente'),(79,'efectivo',26.00,NULL,NULL,NULL,'pendiente');
 /*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -738,7 +738,7 @@ CREATE TABLE `repart_asign` (
   KEY `pv_id` (`pv_id`),
   CONSTRAINT `repartidor_asignacion_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`),
   CONSTRAINT `repartidor_asignacion_ibfk_2` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -747,7 +747,7 @@ CREATE TABLE `repart_asign` (
 
 LOCK TABLES `repart_asign` WRITE;
 /*!40000 ALTER TABLE `repart_asign` DISABLE KEYS */;
-INSERT INTO `repart_asign` VALUES (19,8,1,'2025-11-14',NULL),(20,8,6,'2025-11-14',NULL);
+INSERT INTO `repart_asign` VALUES (22,7,1,'2025-11-17',NULL),(23,8,6,'2025-11-17',NULL);
 /*!40000 ALTER TABLE `repart_asign` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -779,7 +779,7 @@ CREATE TABLE `repartidores` (
 
 LOCK TABLES `repartidores` WRITE;
 /*!40000 ALTER TABLE `repartidores` DISABLE KEYS */;
-INSERT INTO `repartidores` VALUES (7,21,4,NULL,NULL,'en_espera'),(8,33,NULL,NULL,NULL,NULL);
+INSERT INTO `repartidores` VALUES (7,21,3,17.762103,-92.604020,'cargando'),(8,33,1,17.762109,-92.604015,'cargando');
 /*!40000 ALTER TABLE `repartidores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -799,7 +799,7 @@ CREATE TABLE `rutas` (
   PRIMARY KEY (`id`),
   KEY `repartidor_id` (`rep_id`),
   CONSTRAINT `rutas_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -808,7 +808,7 @@ CREATE TABLE `rutas` (
 
 LOCK TABLES `rutas` WRITE;
 /*!40000 ALTER TABLE `rutas` DISABLE KEYS */;
-INSERT INTO `rutas` VALUES (7,7,'2025-11-11 21:37:41',NULL,'pendiente');
+INSERT INTO `rutas` VALUES (29,7,'2025-11-17 09:28:45',NULL,'pendiente'),(30,NULL,'2025-11-17 09:31:11',NULL,'pendiente'),(32,8,'2025-11-17 09:47:33',NULL,'pendiente'),(33,7,'2025-11-17 09:53:29',NULL,'pendiente'),(34,8,'2025-11-17 09:53:30',NULL,'pendiente'),(35,NULL,'2025-11-17 10:06:10',NULL,'pendiente');
 /*!40000 ALTER TABLE `rutas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -831,7 +831,7 @@ CREATE TABLE `rutas_detalle` (
   KEY `venta_id` (`venta_id`),
   CONSTRAINT `ruta_detalle_ibfk_1` FOREIGN KEY (`ruta_id`) REFERENCES `rutas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `ruta_detalle_ibfk_2` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -840,7 +840,7 @@ CREATE TABLE `rutas_detalle` (
 
 LOCK TABLES `rutas_detalle` WRITE;
 /*!40000 ALTER TABLE `rutas_detalle` DISABLE KEYS */;
-INSERT INTO `rutas_detalle` VALUES (7,7,25,17.76151661,-92.60259750,'Mi casa esta cerca de la laguna mata de capilin afuera.');
+INSERT INTO `rutas_detalle` VALUES (46,33,69,17.75897668,-92.60266393,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(47,34,70,17.75897668,-92.60266393,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(48,34,71,17.75856846,-92.60187600,'Mata de mango afuera'),(49,33,72,17.75972712,-92.60170943,'Casa amarrilla'),(50,34,73,17.75925666,-92.60010515,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(51,35,74,17.75356505,-92.60450747,'Mi casa esta cerca de la laguna mata de capilin afuera.');
 /*!40000 ALTER TABLE `rutas_detalle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -876,7 +876,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (9,17,6,'admin@gmail.com','admin',NULL,'activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592',NULL,'activo','2025-10-17 17:31:27','CLIENTE'),(21,35,NULL,'repartidor@gmail.com','repartidor','ffxF9YQHSi-uv0C7ZXlRf1:APA91bFkViPjLHvZDfUVL59zZ3tUy7nRvxeWZJUSjp58VpjcGoXTgGLhv6xFLKZqyU_8yhgpBuF8K47UsNyIehhHHq8Jd81T89HVs33z3g3Djdm6-zRBmBI','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente',NULL,'activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592',NULL,'activo','2025-11-02 18:52:36','CLIENTE'),(33,48,NULL,'repartidor2@gmail.com','repartidor',NULL,'activo','2025-11-13 15:50:43','REPARTIDOR');
+INSERT INTO `usuarios` VALUES (9,17,6,'admin@gmail.com','admin',NULL,'activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592',NULL,'activo','2025-10-17 17:31:27','CLIENTE'),(21,35,1,'repartidor@gmail.com','repartidor','dv7b7SphSs2_-9OX5eA8Dw:APA91bEj9yy6kv0Xh29u1yj5eGHFjegybk5guisHl3mniivQFSDmqtouIm9560xJmKn5MTwuablX8XKuJh7ktR_dnoRat3w1f4gaCVmdoeEMLUelYtNp1eA','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente',NULL,'activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592',NULL,'activo','2025-11-02 18:52:36','CLIENTE'),(33,48,6,'repartidor2@gmail.com','repartidor','ffxF9YQHSi-uv0C7ZXlRf1:APA91bFkViPjLHvZDfUVL59zZ3tUy7nRvxeWZJUSjp58VpjcGoXTgGLhv6xFLKZqyU_8yhgpBuF8K47UsNyIehhHHq8Jd81T89HVs33z3g3Djdm6-zRBmBI','activo','2025-11-13 15:50:43','REPARTIDOR');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -908,7 +908,7 @@ CREATE TABLE `vehiculos` (
 
 LOCK TABLES `vehiculos` WRITE;
 /*!40000 ALTER TABLE `vehiculos` DISABLE KEYS */;
-INSERT INTO `vehiculos` VALUES (1,'JDIHDI773','Italika','110 AT',1,'moto',55.00,0.180,0.20),(3,'TSK-92A1','Italika','FT150',1,'moto',45.00,0.160,0.80),(4,'RJB-57M9','Nissan','NP300',1,'camioneta',350.00,1.250,0.80),(5,'XMN-44Z8','Honda','Dio 110',1,'moto',60.00,0.200,0.80);
+INSERT INTO `vehiculos` VALUES (1,'JDIHDI773','Italika','110 AT',1,'moto',55.00,0.180,0.80),(3,'TSK-92A1','Italika','FT150',1,'moto',45.00,0.160,0.80),(4,'RJB-57M9','Nissan','NP300',1,'camioneta',350.00,1.250,0.80),(5,'XMN-44Z8','Honda','Dio 110',1,'moto',60.00,0.200,0.80);
 /*!40000 ALTER TABLE `vehiculos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -936,7 +936,7 @@ CREATE TABLE `ventas` (
   CONSTRAINT `FK_ventas_clientes` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`),
   CONSTRAINT `FK_ventas_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -945,7 +945,7 @@ CREATE TABLE `ventas` (
 
 LOCK TABLES `ventas` WRITE;
 /*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
-INSERT INTO `ventas` VALUES (25,9,6,30,'2025-11-11 21:37:41','2025-11-11 21:37:40',NULL,'Pendiente',NULL);
+INSERT INTO `ventas` VALUES (69,9,1,74,'2025-11-17 09:53:29','2025-11-17 09:53:28',NULL,'Pendiente',NULL),(70,9,6,75,'2025-11-17 09:53:30','2025-11-17 09:53:30',NULL,'Pendiente',NULL),(71,9,6,76,'2025-11-17 09:56:39','2025-11-17 09:56:38',NULL,'Pendiente',NULL),(72,9,1,77,'2025-11-17 09:56:39','2025-11-17 09:56:39',NULL,'Pendiente',NULL),(73,9,6,78,'2025-11-17 09:59:10','2025-11-17 09:59:10',NULL,'Pendiente',NULL),(74,9,1,79,'2025-11-17 10:06:10','2025-11-17 10:06:09',NULL,'Pendiente',NULL);
 /*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -958,4 +958,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-15 14:11:36
+-- Dump completed on 2025-11-17  9:29:10
