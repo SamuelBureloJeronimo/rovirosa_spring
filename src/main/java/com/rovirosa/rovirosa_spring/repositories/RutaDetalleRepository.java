@@ -11,6 +11,8 @@ public interface RutaDetalleRepository extends JpaRepository<RutaDetalle, Intege
 
     List<RutaDetalleQueryByRepartidorIdDTO> findByRuta_Repartidor_Id(Integer repId);
 
+    List<RutaDetalleQueryByRepartidorIdDTO> findByRuta_PuntoVenta_Id(Integer pvId);
+
     RutaDetalleQueryByRepartidorIdDTO findFirstById(Integer id);
     
 }

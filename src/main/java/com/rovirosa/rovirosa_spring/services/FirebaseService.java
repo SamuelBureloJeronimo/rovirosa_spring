@@ -17,6 +17,7 @@ public class FirebaseService {
     @Autowired
     private UsuarioRepository userRep;
 
+    @Transactional
     public String sendNotification(String token, String title, String body) {
         try {
             Message message = Message.builder()

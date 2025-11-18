@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerenteAsignToPvDTO;
 import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerentePvQueryDTO;
+import com.rovirosa.rovirosa_spring.models.Ruta;
 import com.rovirosa.rovirosa_spring.services.GerentePvService;
+import com.rovirosa.rovirosa_spring.services.RutaService;
 
 import jakarta.validation.Valid;
 
@@ -26,6 +28,17 @@ public class GerentePvController {
 
     @Autowired
     private GerentePvService gerentePvService;
+
+    @Autowired
+    private RutaService rutaService;
+
+    @PreAuthorize("hasAnyRole('ADMIN','GERENTE')")
+    @GetMapping("/get-all-rutas/{pvId}")
+    public ResponseEntity<ApiResponse<List<Ruta>>> getRutasByGerente(@PathVariable Integer pvId) {
+        List<Ruta> data = rutaService.getAllRutasByPvId(pvId);
+        ApiResponse<List<Ruta>> apiResponse = new ApiResponse<>(true, "Rutas obtenidas", data);
+        return ResponseEntity.ok(apiResponse);
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping

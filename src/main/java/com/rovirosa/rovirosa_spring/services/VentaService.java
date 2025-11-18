@@ -155,6 +155,9 @@ public class VentaService {
                                         + RESET);
                         // Crear ruta sin repartidor
                         Ruta nuevaRuta = new Ruta();
+                        PuntoVenta pv = new PuntoVenta();
+                        pv.setId(ventaDTO.getPvId());
+                        nuevaRuta.setPuntoVenta(pv);
                         nuevaRuta.setEstado("pendiente");
                         nuevaRuta = rutaRepository.save(nuevaRuta);
 
@@ -191,12 +194,15 @@ public class VentaService {
                         // Si tiene vehiculo, verificar que tenga espacio disponible
                         BigDecimal capacidadKg_Vehiculo = repartidor.getVehiculo().getCapacidadKg();
                         BigDecimal volumenM3_Vehiculo = repartidor.getVehiculo().getVolumenM3();
-                        capacidadKg_Vehiculo = capacidadKg_Vehiculo.multiply(BigDecimal.valueOf(repartidor.getVehiculo().getFactorUsoMax()));
-                        volumenM3_Vehiculo = volumenM3_Vehiculo.multiply(BigDecimal.valueOf(repartidor.getVehiculo().getFactorUsoMax()));
+                        capacidadKg_Vehiculo = capacidadKg_Vehiculo
+                                        .multiply(BigDecimal.valueOf(repartidor.getVehiculo().getFactorUsoMax()));
+                        volumenM3_Vehiculo = volumenM3_Vehiculo
+                                        .multiply(BigDecimal.valueOf(repartidor.getVehiculo().getFactorUsoMax()));
 
                         System.out.println(
                                         AZUL + "[VEHICULO]: Capacidad Kg: " + capacidadKg_Vehiculo + " Volumen M3: "
-                                                        + volumenM3_Vehiculo + " Factor de uso MAX: " + repartidor.getVehiculo().getFactorUsoMax() + RESET);
+                                                        + volumenM3_Vehiculo + " Factor de uso MAX: "
+                                                        + repartidor.getVehiculo().getFactorUsoMax() + RESET);
 
                         // Obtener todos los pedidos que va entregar en camino a su ruta.
                         List<RutaDetalleQueryByRepartidorIdDTO> rutasActivas = rutaDetalleRepository
@@ -283,6 +289,9 @@ public class VentaService {
                                                         + venta.getId() + RESET);
                                         // Seleccionar la ruta activa
                                         Ruta ruta = new Ruta();
+                                        PuntoVenta pv = new PuntoVenta();
+                                        pv.setId(ventaDTO.getPvId());
+                                        ruta.setPuntoVenta(pv);
                                         ruta.setId(rutaId);
                                         // Nuevo punto de entrega en la ruta
                                         Integer idRutaDetalle = this.createRutaDetalleVenta(ruta, ventaDTO, venta);
@@ -368,6 +377,9 @@ public class VentaService {
 
                                 // Crear ruta sin repartidor
                                 Ruta nuevaRuta = new Ruta();
+                                PuntoVenta pv = new PuntoVenta();
+                                pv.setId(ventaDTO.getPvId());
+                                nuevaRuta.setPuntoVenta(pv);
                                 nuevaRuta.setEstado("pendiente");
                                 nuevaRuta.setRepartidor(repartidor);
                                 nuevaRuta = rutaRepository.save(nuevaRuta);
@@ -408,8 +420,13 @@ public class VentaService {
                                 // Enviar notificación al repartidor
                                 String tokenFMC = repartidor.getUsuario().getTokenFmc();
                                 System.out.println(AMARILLO + "Token FCM repartidor: " + tokenFMC + RESET);
-                                this.firebaseService.sendNotification(tokenFMC, "🚚 - Nuevo pedido asignado",
-                                                "Se te ha asignado un nuevo pedido cerca de tu ruta actual.");
+                                try {
+                                        this.firebaseService.sendNotification(tokenFMC, "🚚 - Nuevo pedido asignado",
+                                                        "Se te ha asignado un nuevo pedido cerca de tu ruta actual.");
+                                } catch (Exception e) {
+                                        System.out.println(ROJO + "Error enviando notificación FCM: " + e.getMessage()
+                                                        + RESET);
+                                }
 
                                 System.out.println(AZUL + "Proceso de asignación de ruta y repartidor finalizado."
                                                 + RESET);
@@ -425,6 +442,9 @@ public class VentaService {
                                                 + RESET);
                 // Crear ruta sin repartidor
                 Ruta nuevaRuta = new Ruta();
+                PuntoVenta pv = new PuntoVenta();
+                pv.setId(ventaDTO.getPvId());
+                nuevaRuta.setPuntoVenta(pv);
                 nuevaRuta.setEstado("pendiente");
                 nuevaRuta = rutaRepository.save(nuevaRuta);
 
