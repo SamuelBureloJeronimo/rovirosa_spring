@@ -316,6 +316,23 @@ public class VentaService {
 
                                         // Enviar notificación al repartidor
                                         String tokenFMC = repartidor.getUsuario().getTokenFmc();
+                                        if (tokenFMC != null && !tokenFMC.isEmpty()) {
+                                                System.out.println(
+                                                                AMARILLO + "Token FCM repartidor: " + tokenFMC + RESET);
+                                                try {
+                                                        this.firebaseService.sendNotification(tokenFMC,
+                                                                        "🚚 - Nuevo pedido asignado",
+                                                                        "Se te ha asignado un nuevo pedido cerca de tu ruta actual.");
+                                                } catch (Exception e) {
+                                                        System.out.println(ROJO + "Error enviando notificación FCM: "
+                                                                        + e.getMessage()
+                                                                        + RESET);
+                                                }
+                                        } else {
+                                                System.out.println(ROJO
+                                                                + "El repartidor no tiene token FCM, no se puede enviar notificación."
+                                                                + RESET);
+                                        }
                                         System.out.println("Token FCM repartidor: " + tokenFMC);
                                         this.firebaseService.sendNotification(tokenFMC, "🚚 - Nuevo pedido asignado",
                                                         "Se te ha asignado un nuevo pedido cerca de tu ruta actual.");
@@ -419,13 +436,17 @@ public class VentaService {
 
                                 // Enviar notificación al repartidor
                                 String tokenFMC = repartidor.getUsuario().getTokenFmc();
-                                System.out.println(AMARILLO + "Token FCM repartidor: " + tokenFMC + RESET);
-                                try {
-                                        this.firebaseService.sendNotification(tokenFMC, "🚚 - Nuevo pedido asignado",
-                                                        "Se te ha asignado un nuevo pedido cerca de tu ruta actual.");
-                                } catch (Exception e) {
-                                        System.out.println(ROJO + "Error enviando notificación FCM: " + e.getMessage()
-                                                        + RESET);
+                                if (tokenFMC != null && !tokenFMC.isEmpty()) {
+                                        System.out.println(AMARILLO + "Token FCM repartidor: " + tokenFMC + RESET);
+                                        try {
+                                                this.firebaseService.sendNotification(tokenFMC,
+                                                                "🚚 - Nuevo pedido asignado",
+                                                                "Se te ha asignado un nuevo pedido cerca de tu ruta actual.");
+                                        } catch (Exception e) {
+                                                System.out.println(ROJO + "Error enviando notificación FCM: "
+                                                                + e.getMessage()
+                                                                + RESET);
+                                        }
                                 }
 
                                 System.out.println(AZUL + "Proceso de asignación de ruta y repartidor finalizado."
