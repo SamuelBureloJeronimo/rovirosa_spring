@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rovirosa.rovirosa_spring.DTOs.DetalleVenta.DetalleVentaResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorGetVehDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorUpdatePosDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleQueryByRepartidorIdDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
@@ -38,6 +39,11 @@ public class RepartidorService {
     @Transactional
     public Integer actualizarPosicionRepartidor(Integer repartidorId, RepartidorUpdatePosDTO dto) {
         return repartidorRep.updatePosition(repartidorId, dto.getLatitud(), dto.getLongitud());
+    }
+
+    public RepartidorGetVehDTO getVehiculoByRepartidorId(Integer repartidorId) {
+         RepartidorGetVehDTO repartidor = repartidorRep.findFirstById(repartidorId);
+         return repartidor;
     }
 
     @Transactional

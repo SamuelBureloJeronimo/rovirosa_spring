@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorGetVehDTO;
 import com.rovirosa.rovirosa_spring.models.Repartidor;
 
 public interface RepartidorRepository extends JpaRepository<Repartidor, Integer> {
@@ -14,6 +15,8 @@ public interface RepartidorRepository extends JpaRepository<Repartidor, Integer>
     Repartidor findByUsuario_Id(Integer usuarioId);
 
     Repartidor findByUsuario_Persona_Curp(String curp);
+
+    RepartidorGetVehDTO findFirstById(Integer id);
 
     @Modifying
     @Query("UPDATE Repartidor p SET p.lat = :latitud, p.lng = :longitud WHERE p.id = :id")

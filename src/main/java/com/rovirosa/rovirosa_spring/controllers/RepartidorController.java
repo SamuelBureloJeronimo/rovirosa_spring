@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorGetVehDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorUpdatePosDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignacionQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
@@ -23,8 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 
 @RestController
@@ -67,7 +66,15 @@ public class RepartidorController {
     public ResponseEntity<ApiResponse<List<RepartidorAsignacionQueryDTO>>> getRepartidoresByPvId(@PathVariable Integer pvId){
         List<RepartidorAsignacionQueryDTO> repartidores = rotacionService.getRotacionByPvId(pvId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Repartidores obtenidos exitosamente", repartidores));
-    }   
+    } 
+    
+    @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR','GERENTE')")
+    @GetMapping("/get-vehiculo/{repId}")
+    public ResponseEntity<ApiResponse<RepartidorGetVehDTO>> getVehiculoByRepartidorId(@PathVariable Integer repId){
+        RepartidorGetVehDTO vehiculo = repartidorService.getVehiculoByRepartidorId(repId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Vehículo obtenido exitosamente", vehiculo));
+    }
+    
     
 
     @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR','GERENTE')")

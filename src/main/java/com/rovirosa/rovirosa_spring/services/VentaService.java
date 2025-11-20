@@ -202,7 +202,8 @@ public class VentaService {
                         System.out.println(
                                         AZUL + "[VEHICULO]: Capacidad Kg: " + capacidadKg_Vehiculo + " Volumen M3: "
                                                         + volumenM3_Vehiculo + " Factor de uso MAX: "
-                                                        + repartidor.getVehiculo().getFactorUsoMax() + RESET);
+                                                        + repartidor.getVehiculo().getFactorUsoMax()
+                                                        + " - Cantidades ya con el factor de uso aplicado" + RESET);
 
                         // Obtener todos los pedidos que va entregar en camino a su ruta.
                         List<RutaDetalleQueryByRepartidorIdDTO> rutasActivas = rutaDetalleRepository
@@ -333,9 +334,6 @@ public class VentaService {
                                                                 + "El repartidor no tiene token FCM, no se puede enviar notificación."
                                                                 + RESET);
                                         }
-                                        System.out.println("Token FCM repartidor: " + tokenFMC);
-                                        this.firebaseService.sendNotification(tokenFMC, "🚚 - Nuevo pedido asignado",
-                                                        "Se te ha asignado un nuevo pedido cerca de tu ruta actual.");
                                         System.out.println(
                                                         AZUL + "Proceso de asignación de ruta y repartidor finalizado."
                                                                         + RESET);
@@ -347,7 +345,7 @@ public class VentaService {
                                                 + RESET);
 
                         }
-                        System.out.println(ROJO + "Repartidor no tiene espacio suficiente o no esta cerca, saltando..."
+                        System.out.println(ROJO + "Repartidor no esta cerca, saltando..."
                                         + RESET);
                 }
 

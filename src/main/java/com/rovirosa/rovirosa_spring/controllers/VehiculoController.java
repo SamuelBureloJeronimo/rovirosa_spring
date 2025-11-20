@@ -36,6 +36,7 @@ public class VehiculoController {
                 vehiculoService.saveVehiculo(vehiculo)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Vehiculo>>> getAllVehiculos() {
         return ResponseEntity.ok(

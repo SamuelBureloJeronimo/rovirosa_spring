@@ -12,7 +12,6 @@ import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerenteAsignToPvDTO;
 import com.rovirosa.rovirosa_spring.DTOs.GerentePv.GerentePvQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaQueryDTO;
-import com.rovirosa.rovirosa_spring.models.Ruta;
 import com.rovirosa.rovirosa_spring.services.GerentePvService;
 import com.rovirosa.rovirosa_spring.services.RutaService;
 
