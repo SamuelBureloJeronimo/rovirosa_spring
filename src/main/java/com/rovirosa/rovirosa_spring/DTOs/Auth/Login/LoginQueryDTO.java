@@ -5,6 +5,7 @@ public interface LoginQueryDTO {
     String getRol();
     String getTokenFmc();
     Integer getPuntoVenta_Id();
+    Integer getPuntoVenta_Config_MontoMin();
     String getCorreo();
     String getEstado();
 }

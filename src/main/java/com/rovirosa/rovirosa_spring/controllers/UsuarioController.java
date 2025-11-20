@@ -85,7 +85,7 @@ public class UsuarioController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','GERENTE')")
     @GetMapping("/{rol}")
     public ResponseEntity<ApiResponse<List<UsuarioSimpleResponseDTO>>> getUsuariosByRol(@PathVariable String rol) {
         List<UsuarioSimpleResponseDTO> usuarios = usuarioService.getUsuariosByRol(rol);

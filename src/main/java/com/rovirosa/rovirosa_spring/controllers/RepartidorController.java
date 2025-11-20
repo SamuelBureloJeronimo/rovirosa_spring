@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorUpdatePosDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignacionQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Vehiculo.VehiculoAsignToRepDTO;
 import com.rovirosa.rovirosa_spring.models.Repartidor;
 import com.rovirosa.rovirosa_spring.services.RepartidorService;
+import com.rovirosa.rovirosa_spring.services.RotacionService;
 
 import jakarta.validation.Valid;
 
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -29,6 +33,8 @@ public class RepartidorController {
 
     @Autowired
     private RepartidorService repartidorService;
+    @Autowired
+    private RotacionService rotacionService;
 
     @PutMapping("/position/{repId}")
     @PreAuthorize("hasRole('REPARTIDOR')")
@@ -56,7 +62,15 @@ public class RepartidorController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @GetMapping("/by-pv/{pvId}")
+    public ResponseEntity<ApiResponse<List<RepartidorAsignacionQueryDTO>>> getRepartidoresByPvId(@PathVariable Integer pvId){
+        List<RepartidorAsignacionQueryDTO> repartidores = rotacionService.getRotacionByPvId(pvId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Repartidores obtenidos exitosamente", repartidores));
+    }   
+    
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR','GERENTE')")
     @GetMapping("/rutas/{repartidorId}")
     public ResponseEntity<ApiResponse<List<RutaDetalleResponseDTO>>> getDistancia(@PathVariable Integer repartidorId){
         return ResponseEntity.ok(new ApiResponse<>(true, "Distancia calculada exitosamente", repartidorService.getRutaDetalleByRepartidorId(repartidorId)));

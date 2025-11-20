@@ -41,13 +41,6 @@ public class GerentePvController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PreAuthorize("hasRole('ADMIN','GERENTE')")
-    @GetMapping("/get-ruta-detail/{rutaId}")
-    public ResponseEntity<ApiResponse<RutaQueryDTO>> getRutaDetailById(@PathVariable Integer rutaId) {
-        RutaQueryDTO data = rutaService.getRutaDetailById(rutaId);
-        ApiResponse<RutaQueryDTO> apiResponse = new ApiResponse<>(true, "Detalle de ruta obtenido", data);
-        return ResponseEntity.ok(apiResponse);
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping

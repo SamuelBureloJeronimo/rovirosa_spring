@@ -2,12 +2,16 @@ package com.rovirosa.rovirosa_spring.DTOs.Usuarios;
 
 import com.rovirosa.rovirosa_spring.models.Persona;
 
-public class UsuarioSimpleResponseDTO implements UsuarioQueryDTO {
+import lombok.Data;
+
+@Data
+public class UsuarioSimpleResponseDTO {
 
     private Integer id;
     private String correo;
     private String estado;
     private String rol;
+    private Integer puntoVenta_Id;
 
     private Persona persona;
 
@@ -17,6 +21,11 @@ public class UsuarioSimpleResponseDTO implements UsuarioQueryDTO {
         this.estado = usuario.getEstado();
         this.rol = usuario.getRol();
         this.persona = usuario.getPersona();
+        if (usuario.getPuntoVenta_Id() != null) {
+            this.puntoVenta_Id = usuario.getPuntoVenta_Id();
+        } else {
+            this.puntoVenta_Id = null;
+        }
     }
 
     public UsuarioSimpleResponseDTO(Integer id, String correo, String estado, String rol, Persona persona) {
@@ -27,29 +36,4 @@ public class UsuarioSimpleResponseDTO implements UsuarioQueryDTO {
         this.persona = persona;
     }
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public String getCorreo() {
-        return correo;
-    }
-
-    @Override
-    public String getEstado() {
-        return estado;
-    }
-
-    @Override
-    public String getRol() {
-        return rol;
-    }
-
-    @Override
-    public Persona getPersona() {
-        return persona;
-    }
-    
 }

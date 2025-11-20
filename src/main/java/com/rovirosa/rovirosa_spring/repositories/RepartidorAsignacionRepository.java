@@ -16,6 +16,8 @@ public interface RepartidorAsignacionRepository extends JpaRepository<Repartidor
 
     List<RepartidorAsignacionQueryDTO> findAllBy();
 
+    List<RepartidorAsignacionQueryDTO> findAllByPuntoVenta_Id(Integer pvId);
+
     @Query("SELECT ra.rep FROM RepartidorAsignacion ra WHERE ra.puntoVenta.id = :id AND ra.rep.estado IN :estados")
     List<Repartidor> findRepartidoresActivos(@Param("id") Integer pvId, @Param("estados") List<String> estados);
 }

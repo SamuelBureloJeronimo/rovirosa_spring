@@ -34,7 +34,7 @@ CREATE TABLE `carrito` (
   KEY `fk_carrito_catalogo` (`catalogo_id`),
   CONSTRAINT `fk_carrito_catalogo` FOREIGN KEY (`catalogo_id`) REFERENCES `catalogo_pv` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_carrito_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(242,32,7,2,'2025-11-19 09:35:21','2025-11-19 09:38:26'),(243,32,8,2,'2025-11-19 09:35:22','2025-11-19 09:38:27'),(244,32,34,3,'2025-11-19 09:35:27','2025-11-19 09:38:25');
+INSERT INTO `carrito` VALUES (67,11,4,1,'2025-10-23 10:06:16','2025-10-28 10:04:22'),(68,11,5,2,'2025-10-28 10:04:11','2025-10-28 10:04:16'),(246,32,2,4,'2025-11-19 16:35:40','2025-11-19 16:43:46');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +74,7 @@ CREATE TABLE `catalogo_pv` (
 
 LOCK TABLES `catalogo_pv` WRITE;
 /*!40000 ALTER TABLE `catalogo_pv` DISABLE KEYS */;
-INSERT INTO `catalogo_pv` VALUES (2,2,1,0,0),(4,4,1,0,0),(5,5,1,26,0),(6,6,1,17,0),(7,7,1,13,0),(8,8,1,44,0),(33,1,6,0,0),(34,4,6,14,0);
+INSERT INTO `catalogo_pv` VALUES (2,2,1,19,0),(4,4,1,13,0),(5,5,1,26,0),(6,6,1,17,0),(7,7,1,9,0),(8,8,1,40,0),(33,1,6,0,0),(34,4,6,8,0);
 /*!40000 ALTER TABLE `catalogo_pv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +209,7 @@ CREATE TABLE `descuentos_categ` (
   KEY `FK_descuento_categ_descuentos_config` (`config_id`),
   CONSTRAINT `FK_descuento_categ_categorias` FOREIGN KEY (`categ_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_descuento_categ_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,6 +218,7 @@ CREATE TABLE `descuentos_categ` (
 
 LOCK TABLES `descuentos_categ` WRITE;
 /*!40000 ALTER TABLE `descuentos_categ` DISABLE KEYS */;
+INSERT INTO `descuentos_categ` VALUES (5,2,27);
 /*!40000 ALTER TABLE `descuentos_categ` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +238,7 @@ CREATE TABLE `descuentos_config` (
   `fech_fin` date DEFAULT NULL COMMENT 'Fecha de fin del descuento',
   `banner` varchar(100) DEFAULT NULL COMMENT 'Si no sube un banner no se muestra en la pantalla de inicio',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +247,7 @@ CREATE TABLE `descuentos_config` (
 
 LOCK TABLES `descuentos_config` WRITE;
 /*!40000 ALTER TABLE `descuentos_config` DISABLE KEYS */;
-INSERT INTO `descuentos_config` VALUES (17,'fijo',12,'producto','2025-11-15',NULL,NULL),(18,'porcentaje',10,'producto','2025-11-15',NULL,NULL);
+INSERT INTO `descuentos_config` VALUES (17,'fijo',12,'producto','2025-11-15',NULL,NULL),(18,'porcentaje',10,'producto','2025-11-15',NULL,NULL),(27,'porcentaje',5,'categoria','2025-11-19',NULL,'descuentos/5537bd52-834b-4d8a-bd1e-04382e0517ef.jpg');
 /*!40000 ALTER TABLE `descuentos_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,7 +327,7 @@ CREATE TABLE `detalles_venta` (
   KEY `FK_detalles_venta_ventas` (`vnta_id`),
   CONSTRAINT `FK_detalles_venta_producto` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_detalles_venta_ventas` FOREIGN KEY (`vnta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -335,7 +336,7 @@ CREATE TABLE `detalles_venta` (
 
 LOCK TABLES `detalles_venta` WRITE;
 /*!40000 ALTER TABLE `detalles_venta` DISABLE KEYS */;
-INSERT INTO `detalles_venta` VALUES (90,78,7,1,NULL,33.00,0.00),(91,78,8,1,NULL,34.00,0.00),(92,79,4,2,NULL,239.00,0.00),(93,80,7,2,NULL,33.00,0.00),(94,80,8,2,NULL,34.00,0.00),(95,81,4,3,NULL,239.00,0.00);
+INSERT INTO `detalles_venta` VALUES (90,78,7,1,NULL,33.00,0.00),(91,78,8,1,NULL,34.00,0.00),(92,79,4,2,NULL,239.00,0.00),(93,80,7,2,NULL,33.00,0.00),(94,80,8,2,NULL,34.00,0.00),(95,81,4,3,NULL,239.00,0.00),(96,82,7,2,NULL,33.00,0.00),(97,82,8,2,NULL,34.00,0.00),(98,83,4,3,NULL,239.00,0.00),(99,84,7,2,NULL,33.00,0.00),(100,84,8,2,NULL,34.00,0.00),(101,84,2,1,NULL,17.90,0.90),(102,85,4,3,NULL,239.00,11.95);
 /*!40000 ALTER TABLE `detalles_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -611,7 +612,7 @@ CREATE TABLE `pagos` (
   `compr` varchar(100) DEFAULT NULL COMMENT 'Descripción de la compra',
   `estado` enum('pendiente','pagado','rechazado') NOT NULL DEFAULT 'pendiente',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -620,7 +621,7 @@ CREATE TABLE `pagos` (
 
 LOCK TABLES `pagos` WRITE;
 /*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
-INSERT INTO `pagos` VALUES (83,'link_mp',67.00,NULL,NULL,NULL,'pendiente'),(84,'link_mp',478.00,NULL,NULL,NULL,'pendiente'),(85,'efectivo',134.00,NULL,NULL,NULL,'pendiente'),(86,'efectivo',717.00,NULL,NULL,NULL,'pendiente');
+INSERT INTO `pagos` VALUES (83,'link_mp',67.00,NULL,NULL,NULL,'pendiente'),(84,'link_mp',478.00,NULL,NULL,NULL,'pendiente'),(85,'efectivo',134.00,NULL,NULL,NULL,'pendiente'),(86,'efectivo',717.00,NULL,NULL,NULL,'pendiente'),(87,'terminal',134.00,NULL,NULL,NULL,'pendiente'),(88,'terminal',717.00,NULL,NULL,NULL,'pendiente'),(89,'transferencia',151.01,NULL,NULL,NULL,'pendiente'),(90,'transferencia',681.15,NULL,NULL,NULL,'pendiente');
 /*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -777,7 +778,7 @@ CREATE TABLE `repartidores` (
 
 LOCK TABLES `repartidores` WRITE;
 /*!40000 ALTER TABLE `repartidores` DISABLE KEYS */;
-INSERT INTO `repartidores` VALUES (7,21,3,17.777827,-92.608378,'cargando'),(8,33,1,17.777738,-92.608340,'cargando');
+INSERT INTO `repartidores` VALUES (7,21,3,17.777827,-92.608378,'cargando'),(8,33,1,17.777840,-92.608365,'cargando');
 /*!40000 ALTER TABLE `repartidores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -800,7 +801,7 @@ CREATE TABLE `rutas` (
   KEY `FK_rutas_puntos_venta` (`pv_id`),
   CONSTRAINT `FK_rutas_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `rutas_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -809,7 +810,7 @@ CREATE TABLE `rutas` (
 
 LOCK TABLES `rutas` WRITE;
 /*!40000 ALTER TABLE `rutas` DISABLE KEYS */;
-INSERT INTO `rutas` VALUES (39,1,7,'2025-11-19 15:35:46',NULL,'pendiente'),(40,6,8,'2025-11-19 15:35:48',NULL,'pendiente'),(41,6,NULL,'2025-11-19 15:38:49',NULL,'pendiente');
+INSERT INTO `rutas` VALUES (39,1,7,'2025-11-19 15:35:46',NULL,'pendiente'),(40,6,8,'2025-11-19 15:35:48',NULL,'pendiente'),(41,6,NULL,'2025-11-19 15:38:49',NULL,'pendiente'),(42,6,NULL,'2025-11-19 18:55:46',NULL,'pendiente'),(43,1,NULL,'2025-11-19 22:17:12',NULL,'pendiente'),(44,6,NULL,'2025-11-19 22:17:12',NULL,'pendiente');
 /*!40000 ALTER TABLE `rutas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -832,7 +833,7 @@ CREATE TABLE `rutas_detalle` (
   KEY `venta_id` (`venta_id`),
   CONSTRAINT `ruta_detalle_ibfk_1` FOREIGN KEY (`ruta_id`) REFERENCES `rutas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `ruta_detalle_ibfk_2` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -841,7 +842,7 @@ CREATE TABLE `rutas_detalle` (
 
 LOCK TABLES `rutas_detalle` WRITE;
 /*!40000 ALTER TABLE `rutas_detalle` DISABLE KEYS */;
-INSERT INTO `rutas_detalle` VALUES (55,39,78,17.75945995,-92.60087173,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(56,40,79,17.75945995,-92.60087173,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(57,39,80,17.75945995,-92.60205504,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(58,41,81,17.75945995,-92.60205504,'Mi casa esta cerca de la laguna mata de capilin afuera.');
+INSERT INTO `rutas_detalle` VALUES (55,39,78,17.75945995,-92.60087173,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(56,40,79,17.75945995,-92.60087173,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(57,39,80,17.75945995,-92.60205504,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(58,41,81,17.75945995,-92.60205504,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(59,39,82,17.75867107,-92.60183164,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(60,42,83,17.75867107,-92.60183164,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(61,43,84,17.75915922,-92.60116473,'Mi casa esta cerca de la laguna mata de capilin afuera.'),(62,44,85,17.75915922,-92.60116473,'Mi casa esta cerca de la laguna mata de capilin afuera.');
 /*!40000 ALTER TABLE `rutas_detalle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -877,7 +878,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (9,17,6,'admin@gmail.com','admin',NULL,'activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592',NULL,'activo','2025-10-17 17:31:27','CLIENTE'),(21,35,1,'repartidor@gmail.com','repartidor','d8vG0jz6TAuLAe-z1CCjfW:APA91bF3u1So7O_q2U6Evr5QJ2JGuCy5rSucAPsLqd-aMDqF9k7Gmt9evaSgY6nRofc54A5iMJwFnEnb52c6hl692OZPR9UZBfOY2cne0JMPvuu66xRFT-0','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente',NULL,'activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592',NULL,'activo','2025-11-02 18:52:36','CLIENTE'),(33,48,6,'repartidor2@gmail.com','repartidor',NULL,'activo','2025-11-13 15:50:43','REPARTIDOR'),(34,49,6,'gerente2@gmail.com','gerente',NULL,'activo','2025-11-19 16:02:02','GERENTE');
+INSERT INTO `usuarios` VALUES (9,17,1,'admin@gmail.com','admin',NULL,'activo','2025-09-27 23:09:49','ADMIN'),(11,25,1,'cliente@gmail.com','numeroPI141592',NULL,'activo','2025-10-17 17:31:27','CLIENTE'),(21,35,1,'repartidor@gmail.com','repartidor','fiklAl7aQz-GVTTQ_CP81k:APA91bFRI3_6ut4uDbVP3ARoPxqHJ7l6GGY6rVWu6rMt-00DJ4tc2Q02WF7epxMVh7Jh8Q5h0-q_ZXjOlhyHYfMMvKD4_k9lRGsAA9-6Plb4ceAfjTzH8V8','activo','2025-10-29 17:16:50','REPARTIDOR'),(22,36,1,'gerente@gmail.com','gerente',NULL,'activo','2025-10-29 17:20:04','GERENTE'),(32,47,1,'samuelbj0608@gmail.com','numeroPI141592',NULL,'activo','2025-11-02 18:52:36','CLIENTE'),(33,48,6,'repartidor2@gmail.com','repartidor','d8vG0jz6TAuLAe-z1CCjfW:APA91bF3u1So7O_q2U6Evr5QJ2JGuCy5rSucAPsLqd-aMDqF9k7Gmt9evaSgY6nRofc54A5iMJwFnEnb52c6hl692OZPR9UZBfOY2cne0JMPvuu66xRFT-0','activo','2025-11-13 15:50:43','REPARTIDOR'),(34,49,6,'gerente2@gmail.com','gerente',NULL,'activo','2025-11-19 16:02:02','GERENTE');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -937,7 +938,7 @@ CREATE TABLE `ventas` (
   CONSTRAINT `FK_ventas_clientes` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`),
   CONSTRAINT `FK_ventas_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -946,7 +947,7 @@ CREATE TABLE `ventas` (
 
 LOCK TABLES `ventas` WRITE;
 /*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
-INSERT INTO `ventas` VALUES (78,9,1,83,'2025-11-19 15:35:46','2025-11-19 15:35:45',NULL,'Pendiente',NULL),(79,9,6,84,'2025-11-19 15:35:48','2025-11-19 15:35:47',NULL,'Pendiente',NULL),(80,9,1,85,'2025-11-19 15:38:47','2025-11-19 15:38:47',NULL,'Pendiente',NULL),(81,9,6,86,'2025-11-19 15:38:49','2025-11-19 15:38:48',NULL,'Pendiente',NULL);
+INSERT INTO `ventas` VALUES (78,9,1,83,'2025-11-19 15:35:46','2025-11-19 15:35:45',NULL,'Pendiente',NULL),(79,9,6,84,'2025-11-19 15:35:48','2025-11-19 15:35:47',NULL,'Pendiente',NULL),(80,9,1,85,'2025-11-19 15:38:47','2025-11-19 15:38:47',NULL,'Pendiente',NULL),(81,9,6,86,'2025-11-19 15:38:49','2025-11-19 15:38:48',NULL,'Pendiente',NULL),(82,9,1,87,'2025-11-19 18:55:44','2025-11-19 18:55:44',NULL,'Pendiente',NULL),(83,9,6,88,'2025-11-19 18:55:46','2025-11-19 18:55:45',NULL,'Pendiente',NULL),(84,9,1,89,'2025-11-19 22:17:12','2025-11-19 22:17:11',NULL,'Pendiente',NULL),(85,9,6,90,'2025-11-19 22:17:12','2025-11-19 22:17:12',NULL,'Pendiente',NULL);
 /*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -959,4 +960,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-19 10:39:38
+-- Dump completed on 2025-11-19 19:03:48

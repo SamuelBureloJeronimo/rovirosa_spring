@@ -56,6 +56,10 @@ public class RotacionService {
         return repAsignRep.findAllBy();
     }
 
+    public List<RepartidorAsignacionQueryDTO> getRotacionByPvId(Integer pvId) {
+        return repAsignRep.findAllByPuntoVenta_Id(pvId);
+    }
+
     public void eliminarRotacion(Integer id) {
         repAsignRep.deleteById(id);
     }

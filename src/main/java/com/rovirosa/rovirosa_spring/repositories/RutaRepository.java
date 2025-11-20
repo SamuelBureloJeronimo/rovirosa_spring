@@ -18,6 +18,7 @@ public interface RutaRepository extends JpaRepository<Ruta, Integer> {
                     r.fechaIn AS fechaIn,
                     r.fechaFin AS fechaFin,
                     r.estado AS estado,
+                    rep.id AS repartidor_Id,
                     p.nombre AS repartidor_Nombre,
                     p.app AS repartidor_App,
                     p.apm AS repartidor_Apm

@@ -10,6 +10,7 @@ public interface RutaQueryDTO {
 
     String getEstado();
 
+    String getRepartidor_Id();
     String getRepartidor_Nombre();
     String getRepartidor_App();
     String getRepartidor_Apm();

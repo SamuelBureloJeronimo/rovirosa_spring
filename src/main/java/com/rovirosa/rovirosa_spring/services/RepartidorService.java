@@ -34,7 +34,7 @@ public class RepartidorService {
     private RutaDetalleRepository rutaDetalleRep;
     @Autowired
     private DetalleVentaRepository detalleServ;
-
+    
     @Transactional
     public Integer actualizarPosicionRepartidor(Integer repartidorId, RepartidorUpdatePosDTO dto) {
         return repartidorRep.updatePosition(repartidorId, dto.getLatitud(), dto.getLongitud());
