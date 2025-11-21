@@ -13,11 +13,16 @@ import lombok.NoArgsConstructor;
 public class RutaDetalleResponseDTO {
 
     private Integer id;
+    private Integer rutaId;
     private Integer venta_Id;
+    private String rutaEstado;
     private String venta_FechaInicio;
     private String venta_Pago_Metodo;
     private Double venta_Pago_PagaCon;
     private Double venta_Pago_Monto;
+    private String venta_Pago_Estado;
+    private String venta_Comp;
+    private String venta_Estado;
     private BigDecimal lat;
     private BigDecimal lng;
     private String ref;
@@ -26,11 +31,16 @@ public class RutaDetalleResponseDTO {
 
     public RutaDetalleResponseDTO(RutaDetalleQueryByRepartidorIdDTO dto) {
         this.id = dto.getId();
+        this.rutaId = dto.getRuta_Id();
+        this.rutaEstado = dto.getRuta_Estado();
         this.venta_Id = dto.getVenta_Id();
+        this.venta_Estado = dto.getVenta_Estado();
+        this.venta_Pago_Estado = dto.getVenta_Pago_Estado();
         this.venta_FechaInicio = dto.getVenta_FechaInicio();
         this.venta_Pago_Metodo = dto.getVenta_Pago_Metodo();
         this.venta_Pago_PagaCon = dto.getVenta_Pago_PagaCon();
         this.venta_Pago_Monto = dto.getVenta_Pago_Monto();
+        this.venta_Comp = dto.getVenta_Pago_Compr();
         this.lat = dto.getLat();
         this.lng = dto.getLng();
         this.ref = dto.getRef();

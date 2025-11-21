@@ -2,7 +2,6 @@ package com.rovirosa.rovirosa_spring.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Catalogo.CatalogoQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.DetalleVenta.DetalleVentaDTO;
 import com.rovirosa.rovirosa_spring.DTOs.DetalleVenta.DetalleVentaResponseDTO;
@@ -80,6 +80,15 @@ public class VentaService {
         public static final String AZUL = "\u001B[34m";
         public static final String MORADO = "\u001B[35m";
         public static final String CIAN = "\u001B[36m";
+
+        @Transactional
+        public ApiResponse<Void> entregarVenta(Integer ventaId) {
+                Integer result = ventaRep.updateEstadoVentaToEntregado(ventaId, LocalDateTime.now().toString());
+                if (result == 0) {
+                        return new ApiResponse<>(false, "No se pudo actualizar el estado de la venta", null);
+                }
+                return new ApiResponse<>(true, "Venta entregada exitosamente", null);
+        }
 
         @Transactional
         public void crearVenta(VentaPostDTO ventaDTO, MultipartFile comprobante) {

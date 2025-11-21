@@ -4,6 +4,7 @@ public interface VentaQueryClienteDTO {
 
     Integer getId();
     String getFechaInicio();
+    String getUpdated();
     String getFechaFin();
     String getEstado();
     Integer getCalif();

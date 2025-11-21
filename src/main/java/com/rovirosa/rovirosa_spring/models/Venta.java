@@ -1,6 +1,8 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -45,6 +47,9 @@ public class Venta implements Serializable {
 
     @Column(name = "fecha_inic", nullable = false)
     private String fechaInicio;
+
+    @Column(name = "updated", nullable = true)
+    private String updated = LocalDateTime.now().toString();
 
     @Column(name = "fecha_fin", nullable = true)
     private String fechaFin;

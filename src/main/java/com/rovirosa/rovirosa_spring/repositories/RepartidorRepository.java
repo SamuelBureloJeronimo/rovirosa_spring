@@ -19,6 +19,10 @@ public interface RepartidorRepository extends JpaRepository<Repartidor, Integer>
     RepartidorGetVehDTO findFirstById(Integer id);
 
     @Modifying
+    @Query("UPDATE Repartidor p SET p.estado = :estado WHERE p.id = :id")
+    Integer updateEstadoRepartidor(@Param("id") Integer id, @Param("estado") String estado);
+
+    @Modifying
     @Query("UPDATE Repartidor p SET p.lat = :latitud, p.lng = :longitud WHERE p.id = :id")
     Integer updatePosition(@Param("id") Integer id, @Param("latitud") BigDecimal latitud, @Param("longitud") BigDecimal longitud);
 

@@ -13,10 +13,12 @@ import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorGetVehDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorUpdatePosDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignacionQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaStartPutDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Vehiculo.VehiculoAsignToRepDTO;
 import com.rovirosa.rovirosa_spring.models.Repartidor;
 import com.rovirosa.rovirosa_spring.services.RepartidorService;
 import com.rovirosa.rovirosa_spring.services.RotacionService;
+import com.rovirosa.rovirosa_spring.services.RutaService;
 
 import jakarta.validation.Valid;
 
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/api/repartidores")
@@ -34,12 +35,33 @@ public class RepartidorController {
     private RepartidorService repartidorService;
     @Autowired
     private RotacionService rotacionService;
+    @Autowired
+    private RutaService rutaService;
+
+    @PutMapping("/start-route")
+    @PreAuthorize("hasRole('REPARTIDOR')")
+    public ResponseEntity<ApiResponse<String>> iniciarRutaRepartidor(
+            @Valid @RequestBody RutaStartPutDTO dto) {
+
+        ApiResponse<String> response = rutaService.IniciarRutaRepartidor(dto);
+        // Si la respuesta es un error, devolver bad request
+        if (response.isSuccess() == false)
+            return ResponseEntity.badRequest().body(response);
+        // Si no, devolver ok
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasRole('REPARTIDOR')")
+    @GetMapping("/entregar-pedido")
+    public ResponseEntity<ApiResponse<String>> entregarPedido() {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Pedido entregado exitosamente", "OK"));
+    }
 
     @PutMapping("/position/{repId}")
     @PreAuthorize("hasRole('REPARTIDOR')")
     public ResponseEntity<ApiResponse<Integer>> actualizarPosicionRepartidor(
-        @PathVariable Integer repId,
-        @Valid @RequestBody RepartidorUpdatePosDTO dto) {
+            @PathVariable Integer repId,
+            @Valid @RequestBody RepartidorUpdatePosDTO dto) {
         Integer result = repartidorService.actualizarPosicionRepartidor(repId, dto);
         if (result == 1) {
             return ResponseEntity.ok(new ApiResponse<>(true, "Posición actualizada correctamente", result));
@@ -51,8 +73,8 @@ public class RepartidorController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/vehiculo")
     public ResponseEntity<ApiResponse<Integer>> asignarVehiculoRepartidor(
-        @Valid @RequestBody VehiculoAsignToRepDTO dto) {
-            System.out.println(dto.getRepartidorId() + " " + dto.getVehiculoId());
+            @Valid @RequestBody VehiculoAsignToRepDTO dto) {
+        System.out.println(dto.getRepartidorId() + " " + dto.getVehiculoId());
         Integer result = repartidorService.asignVehiculoRepartidor(dto.getRepartidorId(), dto.getVehiculoId());
         if (result == 1) {
             return ResponseEntity.ok(new ApiResponse<>(true, "Vehículo asignado correctamente", result));
@@ -63,24 +85,24 @@ public class RepartidorController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @GetMapping("/by-pv/{pvId}")
-    public ResponseEntity<ApiResponse<List<RepartidorAsignacionQueryDTO>>> getRepartidoresByPvId(@PathVariable Integer pvId){
+    public ResponseEntity<ApiResponse<List<RepartidorAsignacionQueryDTO>>> getRepartidoresByPvId(
+            @PathVariable Integer pvId) {
         List<RepartidorAsignacionQueryDTO> repartidores = rotacionService.getRotacionByPvId(pvId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Repartidores obtenidos exitosamente", repartidores));
-    } 
-    
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR','GERENTE')")
     @GetMapping("/get-vehiculo/{repId}")
-    public ResponseEntity<ApiResponse<RepartidorGetVehDTO>> getVehiculoByRepartidorId(@PathVariable Integer repId){
+    public ResponseEntity<ApiResponse<RepartidorGetVehDTO>> getVehiculoByRepartidorId(@PathVariable Integer repId) {
         RepartidorGetVehDTO vehiculo = repartidorService.getVehiculoByRepartidorId(repId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Vehículo obtenido exitosamente", vehiculo));
     }
-    
-    
 
     @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR','GERENTE')")
     @GetMapping("/rutas/{repartidorId}")
-    public ResponseEntity<ApiResponse<List<RutaDetalleResponseDTO>>> getDistancia(@PathVariable Integer repartidorId){
-        return ResponseEntity.ok(new ApiResponse<>(true, "Distancia calculada exitosamente", repartidorService.getRutaDetalleByRepartidorId(repartidorId)));
+    public ResponseEntity<ApiResponse<List<RutaDetalleResponseDTO>>> getDistancia(@PathVariable Integer repartidorId) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Distancia calculada exitosamente",
+                repartidorService.getRutaDetalleByRepartidorId(repartidorId)));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR')")
@@ -104,7 +126,5 @@ public class RepartidorController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Repartidor obtenido exitosamente", rep));
 
     }
-    
-    
 
 }
