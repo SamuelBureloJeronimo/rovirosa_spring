@@ -32,16 +32,17 @@ CREATE TABLE IF NOT EXISTS `carrito` (
   KEY `fk_carrito_catalogo` (`catalogo_id`),
   CONSTRAINT `fk_carrito_catalogo` FOREIGN KEY (`catalogo_id`) REFERENCES `catalogo_pv` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_carrito_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=263 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=320 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.carrito: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.carrito: ~8 rows (aproximadamente)
 DELETE FROM `carrito`;
 INSERT INTO `carrito` (`id`, `user_id`, `catalogo_id`, `cantidad`, `created`, `updated`) VALUES
 	(67, 11, 4, 1, '2025-10-23 10:06:16', '2025-10-28 10:04:22'),
 	(68, 11, 5, 2, '2025-10-28 10:04:11', '2025-10-28 10:04:16'),
-	(260, 32, 50, 1, '2025-11-20 23:17:10', '2025-11-20 23:17:10'),
-	(261, 32, 48, 1, '2025-11-20 23:17:11', '2025-11-20 23:17:11'),
-	(262, 32, 52, 1, '2025-11-20 23:17:11', '2025-11-20 23:17:11');
+	(313, 32, 35, 1, '2025-11-25 20:15:38', '2025-11-25 20:15:38'),
+	(314, 32, 49, 1, '2025-11-25 20:17:58', '2025-11-25 20:17:58'),
+	(315, 32, 51, 1, '2025-11-25 20:17:59', '2025-11-25 20:17:59'),
+	(317, 32, 53, 2, '2025-11-25 20:18:01', '2025-11-25 20:18:04');
 
 -- Volcando estructura para tabla rovirosa.catalogo_pv
 CREATE TABLE IF NOT EXISTS `catalogo_pv` (
@@ -57,40 +58,40 @@ CREATE TABLE IF NOT EXISTS `catalogo_pv` (
   CONSTRAINT `FK_catalogo_pv` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.catalogo_pv: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.catalogo_pv: ~35 rows (aproximadamente)
 DELETE FROM `catalogo_pv`;
 INSERT INTO `catalogo_pv` (`id`, `prd_id`, `pv_id`, `stock`, `vendidos`) VALUES
-	(2, 2, 1, 3, 0),
-	(4, 4, 1, 12, 0),
-	(5, 5, 1, 26, 0),
-	(6, 6, 1, 17, 0),
-	(7, 7, 1, 8, 0),
-	(8, 8, 1, 39, 0),
+	(2, 2, 1, 0, 0),
+	(4, 4, 1, 9, 0),
+	(5, 5, 1, 24, 0),
+	(6, 6, 1, 16, 0),
+	(7, 7, 1, 7, 0),
+	(8, 8, 1, 38, 0),
 	(33, 1, 6, 0, 0),
-	(34, 4, 6, 3, 0),
-	(35, 2, 6, 98, 0),
-	(36, 5, 6, 198, 0),
+	(34, 4, 6, 0, 0),
+	(35, 2, 6, 90, 0),
+	(36, 5, 6, 186, 0),
 	(37, 6, 6, 45, 0),
 	(38, 7, 6, 5, 0),
 	(39, 8, 6, 65, 0),
 	(40, 1763617797, 1, 100, 0),
 	(41, 1763617797, 6, 100, 0),
-	(42, 1763617839, 1, 100, 0),
-	(43, 1763617839, 6, 100, 0),
-	(44, 1763617882, 1, 100, 0),
-	(45, 1763617882, 6, 100, 0),
+	(42, 1763617839, 1, 93, 0),
+	(43, 1763617839, 6, 95, 0),
+	(44, 1763617882, 1, 93, 0),
+	(45, 1763617882, 6, 95, 0),
 	(46, 1763618175, 1, 120, 0),
-	(47, 1763618175, 6, 120, 0),
+	(47, 1763618175, 6, 114, 0),
 	(48, 1763618211, 1, 119, 0),
-	(49, 1763618211, 6, 120, 0),
-	(50, 1763618295, 1, 119, 0),
-	(51, 1763618295, 6, 119, 0),
-	(52, 1763618473, 1, 79, 0),
-	(53, 1763618473, 6, 90, 0),
-	(54, 1763618550, 1, 80, 0),
+	(49, 1763618211, 6, 116, 0),
+	(50, 1763618295, 1, 118, 0),
+	(51, 1763618295, 6, 115, 0),
+	(52, 1763618473, 1, 75, 0),
+	(53, 1763618473, 6, 80, 0),
+	(54, 1763618550, 1, 78, 0),
 	(55, 1763618550, 6, 90, 0),
 	(56, 1763618585, 1, 80, 0),
-	(57, 1763618585, 6, 90, 0),
+	(57, 1763618585, 6, 85, 0),
 	(58, 1763618790, 1, 120, 0),
 	(59, 1763618790, 6, 120, 0),
 	(60, 1763618988, 1, 132, 0),
@@ -103,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.categorias: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.categorias: ~3 rows (aproximadamente)
 DELETE FROM `categorias`;
 INSERT INTO `categorias` (`id`, `nombre`) VALUES
 	(2, 'Cerveza'),
@@ -245,22 +246,15 @@ CREATE TABLE IF NOT EXISTS `detalles_venta` (
   KEY `FK_detalles_venta_ventas` (`vnta_id`),
   CONSTRAINT `FK_detalles_venta_producto` FOREIGN KEY (`prd_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_detalles_venta_ventas` FOREIGN KEY (`vnta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla rovirosa.detalles_venta: ~8 rows (aproximadamente)
 DELETE FROM `detalles_venta`;
 INSERT INTO `detalles_venta` (`id`, `vnta_id`, `prd_id`, `cant_in`, `cant_fin`, `precio_unit`, `desc_unit`) VALUES
-	(111, 93, 4, 1, NULL, 239.00, 11.95),
-	(114, 95, 2, 2, NULL, 17.90, 0.90),
-	(115, 95, 7, 1, NULL, 33.00, 0.00),
-	(116, 96, 7, 1, NULL, 33.00, 0.00),
-	(117, 96, 8, 2, NULL, 34.00, 0.00),
-	(118, 96, 5, 1, NULL, 239.00, 11.95),
-	(119, 97, 5, 1, NULL, 239.00, 11.95),
-	(120, 97, 1763618295, 1, NULL, 135.00, 6.75),
-	(121, 98, 1763618295, 1, NULL, 135.00, 6.75),
-	(122, 98, 1763618211, 1, NULL, 28.00, 1.40),
-	(123, 98, 1763618473, 1, NULL, 29.00, 1.45);
+	(179, 121, 2, 1, NULL, 17.90, 0.90),
+	(180, 121, 1763618211, 1, NULL, 28.00, 1.40),
+	(181, 121, 1763618295, 1, NULL, 135.00, 6.75),
+	(182, 121, 1763618473, 2, NULL, 29.00, 1.45);
 
 -- Volcando estructura para tabla rovirosa.dias_laborales
 CREATE TABLE IF NOT EXISTS `dias_laborales` (
@@ -326,7 +320,7 @@ INSERT INTO `direcciones` (`id`, `lat`, `lng`, `ref`) VALUES
 	(33, 17.75757141, -92.60327433, 'ASASAAS'),
 	(34, 17.75843902, -92.60392840, 'ssddsfsdf'),
 	(35, 17.75839031, -92.60331586, 'ASASASA'),
-	(36, 17.74243311, -92.62220552, 'Mi casa esta cerca de la laguna mata de capilin afuera.'),
+	(36, 17.76063181, -92.59615343, 'Mi casa esta cerca de la laguna mata de capilin afuera.'),
 	(37, 17.76430707, -92.58864793, '');
 
 -- Volcando estructura para tabla rovirosa.empresa_config
@@ -336,15 +330,16 @@ CREATE TABLE IF NOT EXISTS `empresa_config` (
   `logo` varchar(255) NOT NULL COMMENT 'Logo de la empresa',
   `descrip` varchar(255) DEFAULT NULL COMMENT 'Descripción de la empresa',
   `monto_min` int NOT NULL DEFAULT '150' COMMENT 'Monto mínimo para todos los puntos de venta',
-  `email_app` varchar(100) DEFAULT NULL COMMENT 'Email de la aplicación',
-  `codigo_app` varchar(25) DEFAULT NULL COMMENT 'Código de la aplicación (lrhm upio jpnh tvpv)',
+  `comision` int NOT NULL DEFAULT '150',
+  `email_app` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Email de la aplicación',
+  `codigo_app` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Código de la aplicación (lrhm upio jpnh tvpv)',
   PRIMARY KEY (`rfc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.empresa_config: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.empresa_config: ~1 rows (aproximadamente)
 DELETE FROM `empresa_config`;
-INSERT INTO `empresa_config` (`rfc`, `nombre`, `logo`, `descrip`, `monto_min`, `email_app`, `codigo_app`) VALUES
-	('DRO700527V91', 'Corchito', 'f1a4d39d-b08f-4926-9779-c0346069fdef.jpg', 'Ser la mejor empresa concesionaria en la provisión de los productos más vanguardistas y de alta calidad de Grupo Modelo.', 150, 'samuelbj0608@gmail.com', 'xafj attx njcu mgqk');
+INSERT INTO `empresa_config` (`rfc`, `nombre`, `logo`, `descrip`, `monto_min`, `comision`, `email_app`, `codigo_app`) VALUES
+	('DRO700527V91', 'Corchito', 'f1a4d39d-b08f-4926-9779-c0346069fdef.jpg', 'Ser la mejor empresa concesionaria en la provisión de los productos más vanguardistas y de alta calidad de Grupo Modelo.', 150, 15, 'samuelbj0608@gmail.com', 'xafj attx njcu mgqk');
 
 -- Volcando estructura para tabla rovirosa.estados_envio
 CREATE TABLE IF NOT EXISTS `estados_envio` (
@@ -444,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `marcas` (
   CONSTRAINT `FK_marcas_categoria` FOREIGN KEY (`categ_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.marcas: ~19 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.marcas: ~10 rows (aproximadamente)
 DELETE FROM `marcas`;
 INSERT INTO `marcas` (`id`, `categ_id`, `nombre`, `logo`) VALUES
 	(2, 2, 'Modelo', 'marcas/c5820529-6f94-4b08-9ded-7ec4a468fe94.jpg'),
@@ -482,16 +477,12 @@ CREATE TABLE IF NOT EXISTS `pagos` (
   `compr` varchar(100) DEFAULT NULL COMMENT 'Descripción de la compra',
   `estado` enum('pendiente','pagado','rechazado') NOT NULL DEFAULT 'pendiente',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.pagos: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.pagos: ~0 rows (aproximadamente)
 DELETE FROM `pagos`;
 INSERT INTO `pagos` (`id`, `metodo`, `monto`, `paga_con`, `fecha`, `compr`, `estado`) VALUES
-	(98, 'terminal', 227.05, NULL, NULL, NULL, 'pendiente'),
-	(100, 'efectivo', 67.01, NULL, NULL, NULL, 'pendiente'),
-	(101, 'link_mp', 328.05, NULL, NULL, NULL, 'pendiente'),
-	(102, 'transferencia', 355.30, NULL, NULL, 'comprobantes/', 'pendiente'),
-	(104, 'transferencia', 182.40, NULL, NULL, NULL, 'pendiente');
+	(127, 'transferencia', 226.96, NULL, NULL, NULL, 'pendiente');
 
 -- Volcando estructura para tabla rovirosa.personas
 CREATE TABLE IF NOT EXISTS `personas` (
@@ -532,7 +523,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
   CONSTRAINT `FK_productos_marcas` FOREIGN KEY (`marca_id`) REFERENCES `marcas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1763618989 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.productos: ~12 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.productos: ~18 rows (aproximadamente)
 DELETE FROM `productos`;
 INSERT INTO `productos` (`id`, `marca_id`, `imagen`, `nombre`, `precio`, `peso_kg`, `vol_m3`) VALUES
 	(1, 3, 'productos/ff495738-70fe-44e8-9763-d1efcf8131df.jpg', 'Corona Extra 355ml', 25.00, 0.60000000, 0.00065000),
@@ -545,7 +536,7 @@ INSERT INTO `productos` (`id`, `marca_id`, `imagen`, `nombre`, `precio`, `peso_k
 	(1763617797, 3, 'productos/d8d60726-8b27-43ba-b7c5-e087a57e976b.jpg', 'Corona Light 355ml', 24.00, 0.58000000, 0.00065000),
 	(1763617839, 3, 'productos/6c8b7143-c57e-44e9-86a0-884353c7be60.jpg', 'Corona Mega 1.2L', 42.00, 1.40000000, 0.00120000),
 	(1763617882, 3, 'productos/452adcf3-eab3-4081-9581-8d1399553c92.jpg', 'Corona Familiar 940ml', 38.00, 1.25000000, 0.00100000),
-	(1763618175, 3, 'productos/5d749bc7-453b-4fb6-97f0-8154717532df.jpg', 'Corona Cero 355ml', 26.00, 26.00000000, 0.00065000),
+	(1763618175, 3, 'productos/5d749bc7-453b-4fb6-97f0-8154717532df.jpg', 'Corona Cero 355ml', 26.00, 0.40000000, 0.00065000),
 	(1763618211, 2, 'productos/84706ce7-b136-42e8-ab82-a0869b219d65.jpg', 'Modelo Especial 355ml', 28.00, 0.62000000, 0.00066000),
 	(1763618295, 2, 'productos/53d1bdc0-4d2f-43f6-b8c7-c0caa0f8959c.jpg', 'Cerveza Especial 6 Pack Nr 355 Ml', 135.00, 3.72000000, 0.00396000),
 	(1763618473, 2, 'productos/b77b8d3b-c0b4-4a5e-bd62-4edfd6036d30.jpg', 'Negra Modelo 355ml', 29.00, 0.63000000, 0.00066000),
@@ -593,8 +584,8 @@ CREATE TABLE IF NOT EXISTS `repartidores` (
 -- Volcando datos para la tabla rovirosa.repartidores: ~2 rows (aproximadamente)
 DELETE FROM `repartidores`;
 INSERT INTO `repartidores` (`id`, `user_id`, `veh_id`, `lat`, `lng`, `estado`) VALUES
-	(7, 21, 3, 17.762123, -92.604020, 'en_ruta'),
-	(8, 33, 1, 17.762093, -92.604013, 'en_ruta');
+	(7, 21, 3, 17.762119, -92.604010, 'en_espera'),
+	(8, 33, 1, 17.761953, -92.604024, 'en_ruta');
 
 -- Volcando estructura para tabla rovirosa.repart_asign
 CREATE TABLE IF NOT EXISTS `repart_asign` (
@@ -629,14 +620,12 @@ CREATE TABLE IF NOT EXISTS `rutas` (
   KEY `FK_rutas_puntos_venta` (`pv_id`),
   CONSTRAINT `FK_rutas_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `rutas_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.rutas: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.rutas: ~1 rows (aproximadamente)
 DELETE FROM `rutas`;
 INSERT INTO `rutas` (`id`, `pv_id`, `rep_id`, `fech_in`, `fech_fin`, `estado`) VALUES
-	(50, 6, 8, '2025-11-20 05:31:09', NULL, 'en_ruta'),
-	(51, 6, NULL, '2025-11-20 21:25:20', NULL, 'pendiente'),
-	(52, 1, 7, '2025-11-21 05:18:56', NULL, 'en_ruta');
+	(68, 6, 8, '2025-11-26 14:21:16', NULL, 'en_ruta');
 
 -- Volcando estructura para tabla rovirosa.rutas_detalle
 CREATE TABLE IF NOT EXISTS `rutas_detalle` (
@@ -651,16 +640,12 @@ CREATE TABLE IF NOT EXISTS `rutas_detalle` (
   KEY `venta_id` (`venta_id`),
   CONSTRAINT `ruta_detalle_ibfk_1` FOREIGN KEY (`ruta_id`) REFERENCES `rutas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `ruta_detalle_ibfk_2` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.rutas_detalle: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.rutas_detalle: ~0 rows (aproximadamente)
 DELETE FROM `rutas_detalle`;
 INSERT INTO `rutas_detalle` (`id`, `ruta_id`, `venta_id`, `lat`, `lng`, `ref`) VALUES
-	(70, 50, 93, 17.75971507, -92.59709967, 'Mi casa esta cerca de la laguna mata de capilin afuera.'),
-	(72, 50, 95, 17.75971507, -92.59709967, 'Mi casa esta cerca de la laguna mata de capilin afuera.'),
-	(73, 50, 96, 17.75970923, -92.59462284, 'Mi casa esta cerca de la laguna mata de capilin afuera.'),
-	(74, 51, 97, 17.75988542, -92.59414673, 'Mi casa esta cerca de la laguna mata de capilin afuera.'),
-	(75, 52, 98, 17.74243311, -92.62220552, 'Mi casa esta cerca de la laguna mata de capilin afuera.');
+	(96, 68, 121, 17.76038271, -92.60178975, 'Mi casa esta cerca de la laguna mata de capilin afuera.');
 
 -- Volcando estructura para tabla rovirosa.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
@@ -684,12 +669,12 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 -- Volcando datos para la tabla rovirosa.usuarios: ~7 rows (aproximadamente)
 DELETE FROM `usuarios`;
 INSERT INTO `usuarios` (`id`, `per_id`, `pv_id`, `correo`, `password`, `token_fbm`, `estado`, `created`, `rol`) VALUES
-	(9, 17, 6, 'admin@gmail.com', 'admin', 'fF-PWrCEQA-2A9LpjhpKFR:APA91bGDQaAjBWU7N5-hsBrDibnXjs1eiNlUZjCeOqMbVuDwU4V4pjsORz-1hTiRH09TyCPOACgBhgRY5Ju5wi9Z6AlaXPxMP4PDn6_ZAWqXqYDuWL1pAHs', 'activo', '2025-09-27 23:09:49', 'ADMIN'),
+	(9, 17, 6, 'admin@gmail.com', 'admin', NULL, 'activo', '2025-09-27 23:09:49', 'ADMIN'),
 	(11, 25, 1, 'cliente@gmail.com', 'numeroPI141592', NULL, 'activo', '2025-10-17 17:31:27', 'CLIENTE'),
-	(21, 35, 1, 'repartidor@gmail.com', 'repartidor', NULL, 'activo', '2025-10-29 17:16:50', 'REPARTIDOR'),
+	(21, 35, 1, 'repartidor@gmail.com', 'repartidor', 'dmSTaHKyRiOb-6O5WwZS34:APA91bGx75DP_yMkTcDkR1KzCAWmJa9qtlEik3hY-YeEIxmhU_MV2tCSY_CrTYL193xyWOqO9i3iNRahLKrqcLSEfi9Xofg7pOvg-SzLQoH0yhX5rS0qU_8', 'activo', '2025-10-29 17:16:50', 'REPARTIDOR'),
 	(22, 36, 1, 'gerente@gmail.com', 'gerente', NULL, 'activo', '2025-10-29 17:20:04', 'GERENTE'),
-	(32, 47, 1, 'samuelbj0608@gmail.com', 'numeroPI141592', 'dmSTaHKyRiOb-6O5WwZS34:APA91bGx75DP_yMkTcDkR1KzCAWmJa9qtlEik3hY-YeEIxmhU_MV2tCSY_CrTYL193xyWOqO9i3iNRahLKrqcLSEfi9Xofg7pOvg-SzLQoH0yhX5rS0qU_8', 'activo', '2025-11-02 18:52:36', 'CLIENTE'),
-	(33, 48, 6, 'repartidor2@gmail.com', 'repartidor', NULL, 'activo', '2025-11-13 15:50:43', 'REPARTIDOR'),
+	(32, 47, 6, 'samuelbj0608@gmail.com', 'numeroPI141592', 'eHA_86oETh6R7SaFX6QlOa:APA91bFGPpQ2XrJn3s3ag7RM_oKWh_rOIqONMgTA1mEUJpk0kwT4cin5zJTpedmOTbBYq7krs9-oEnWkU_EIgHqL1q42yYQEplinOLxBBjCr9H-YJYongb8', 'activo', '2025-11-02 18:52:36', 'CLIENTE'),
+	(33, 48, 6, 'repartidor2@gmail.com', 'repartidor', 'fF-PWrCEQA-2A9LpjhpKFR:APA91bGDQaAjBWU7N5-hsBrDibnXjs1eiNlUZjCeOqMbVuDwU4V4pjsORz-1hTiRH09TyCPOACgBhgRY5Ju5wi9Z6AlaXPxMP4PDn6_ZAWqXqYDuWL1pAHs', 'activo', '2025-11-13 15:50:43', 'REPARTIDOR'),
 	(34, 49, 6, 'gerente2@gmail.com', 'gerente', NULL, 'activo', '2025-11-19 16:02:02', 'GERENTE');
 
 -- Volcando estructura para tabla rovirosa.vehiculos
@@ -733,16 +718,12 @@ CREATE TABLE IF NOT EXISTS `ventas` (
   CONSTRAINT `FK_ventas_clientes` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `FK_ventas_pagos` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`),
   CONSTRAINT `FK_ventas_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.ventas: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.ventas: ~0 rows (aproximadamente)
 DELETE FROM `ventas`;
 INSERT INTO `ventas` (`id`, `cliente_id`, `pv_id`, `pago_id`, `fecha_inic`, `updated`, `fecha_fin`, `estado`, `calif`) VALUES
-	(93, 9, 6, 98, '2025-11-20 05:31:09', '2025-11-21 03:17:09', NULL, 'En_camino', NULL),
-	(95, 9, 6, 100, '2025-11-20 05:37:43', '2025-11-21 03:17:09', NULL, 'En_camino', NULL),
-	(96, 9, 6, 101, '2025-11-20 05:38:49', '2025-11-21 03:17:09', NULL, 'En_camino', NULL),
-	(97, 9, 6, 102, '2025-11-20 21:25:20', '2025-11-20 21:25:19', NULL, 'Pendiente', NULL),
-	(98, 9, 1, 104, '2025-11-21 05:18:56', '2025-11-21 06:04:56', '2025-11-21 06:04:56', 'Entregado', NULL);
+	(121, 9, 6, 127, '2025-11-26 14:21:16', '2025-11-26 14:23:11', NULL, 'En_camino', NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
