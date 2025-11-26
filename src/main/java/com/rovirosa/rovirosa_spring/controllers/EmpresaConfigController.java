@@ -81,6 +81,7 @@ public class EmpresaConfigController {
     public ResponseEntity<ApiResponse<String>> updateConfig(
             @RequestParam(required = false) String rfc, @RequestParam(required = false) String nom,
             @RequestParam(required = false) Integer montoMin,
+            @RequestParam(required = false) Integer comision,
             @RequestParam(required = false) String descrip,
             @RequestPart(name = "logo", required = false) MultipartFile logo) {
 
@@ -94,6 +95,7 @@ public class EmpresaConfigController {
         configDTO.setRfc(rfc);
         configDTO.setNombre(nom);
         configDTO.setMontoMin(montoMin);
+        configDTO.setComision(comision);
         configDTO.setDescrip(descrip);
 
         empresaConfigService.updateConfig(configDTO, logo);

@@ -51,12 +51,6 @@ public class RepartidorController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasRole('REPARTIDOR')")
-    @GetMapping("/entregar-pedido")
-    public ResponseEntity<ApiResponse<String>> entregarPedido() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Pedido entregado exitosamente", "OK"));
-    }
-
     @PutMapping("/position/{repId}")
     @PreAuthorize("hasRole('REPARTIDOR')")
     public ResponseEntity<ApiResponse<Integer>> actualizarPosicionRepartidor(
@@ -103,6 +97,17 @@ public class RepartidorController {
     public ResponseEntity<ApiResponse<List<RutaDetalleResponseDTO>>> getDistancia(@PathVariable Integer repartidorId) {
         return ResponseEntity.ok(new ApiResponse<>(true, "Distancia calculada exitosamente",
                 repartidorService.getRutaDetalleByRepartidorId(repartidorId)));
+    }
+
+    @PreAuthorize("hasRole('REPARTIDOR')")
+    @PutMapping("/finish-route")
+        public ResponseEntity<ApiResponse<String>> finalizarRutaRepartidor(
+            @Valid @RequestBody RutaStartPutDTO dto) {
+        ApiResponse<String> response = rutaService.finalizarRutaRepartidor(dto);
+        // Si la respuesta es un error, devolver bad request
+        if (response.isSuccess() == false)
+            return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR')")

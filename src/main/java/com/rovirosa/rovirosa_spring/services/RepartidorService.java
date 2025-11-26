@@ -108,8 +108,14 @@ public class RepartidorService {
     }
 
     public List<RutaDetalleResponseDTO> getRutaDetalleByRepartidorId(Integer repartidorId) {
-        
-        List<RutaDetalleQueryByRepartidorIdDTO> res = rutaDetalleRep.findByRuta_Repartidor_Id(repartidorId);
+        // Buscar los detalles de ruta con estado "pendiente"
+        List<RutaDetalleQueryByRepartidorIdDTO> res = rutaDetalleRep.findByRuta_Repartidor_IdAndRuta_Estado(repartidorId, "en_ruta");
+        // Buscar al repartidor por su id
+        Repartidor rep = repartidorRep.findById(repartidorId).orElse(null);
+        if (rep != null && rep.getVehiculo() != null && (rep.getEstado().equalsIgnoreCase("en_espera") || rep.getEstado().equalsIgnoreCase("cargando"))) {
+            res.addAll(rutaDetalleRep.findByRuta_Repartidor_IdAndRuta_Estado(repartidorId, "pendiente"));
+        }
+
         List<RutaDetalleResponseDTO> rutaDetalles = new ArrayList<>();
         
         for (RutaDetalleQueryByRepartidorIdDTO dto : res) {

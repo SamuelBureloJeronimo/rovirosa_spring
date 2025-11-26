@@ -31,6 +31,43 @@ public class RutaService {
     }
 
     @Transactional
+    public ApiResponse<String> finalizarRutaRepartidor(RutaStartPutDTO dto) {
+        ApiResponse<String> response = new ApiResponse<>();
+        // Actualizar el estado del repartdior a "disponible".
+        Integer result = repRep.updateEstadoRepartidor(dto.getRepId(), "en_espera");
+        if(result == 0) {
+            response.setSuccess(false);
+            response.setMessage("No se pudo actualizar el estado del repartidor");
+            return response;
+        }
+        System.out.println("Repartidor actualizado a disponible");
+        // Actualizar el estado de la ruta a "finalizada".
+        result = rutaRep.updateEstadoRuta(dto.getRutaId(), "finalizada");
+        if(result == 0) {
+            response.setSuccess(false);
+            response.setMessage("No se pudo actualizar el estado de la ruta");
+            return response;
+        }
+        System.out.println("Ruta actualizada a finalizada");
+        // Actualizar el estado de cada venta a "Entregado".
+        for(Integer ventaId : dto.getVentasId()) {
+            // Llamar al servicio de venta para actualizar el estado.
+            result = ventaRep.updateEstadoVenta(ventaId, "Entregado");
+            if(result == 0) {
+                response.setSuccess(false);
+                response.setMessage("No se pudo actualizar el estado de la venta ID: " + ventaId);
+                return response;
+            }
+            System.out.println("Venta ID " + ventaId + " actualizada a Entregado");
+        }
+
+        System.out.println("Todas las ventas actualizadas a Entregado");
+        response.setSuccess(true);
+        response.setMessage("Ruta finalizada correctamente");
+        return response;
+    }
+
+    @Transactional
     public ApiResponse<String> IniciarRutaRepartidor(RutaStartPutDTO dto) {
         ApiResponse<String> response = new ApiResponse<>();
         // Actualizar el estado del repartdior a "en_ruta".

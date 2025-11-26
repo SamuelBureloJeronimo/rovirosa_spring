@@ -19,9 +19,10 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
 
     @Query("""
                 SELECT u.tokenFmc
-                FROM Cliente c
+                FROM Venta v
+                JOIN v.cliente c
                 JOIN c.usuario u
-                WHERE c.id = :id
+                WHERE v.id = :id
             """)
     Optional<String> findTokenFmcByClienteId(@Param("id") Integer id);
 

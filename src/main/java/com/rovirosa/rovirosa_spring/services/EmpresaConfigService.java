@@ -65,6 +65,9 @@ public class EmpresaConfigService {
         if (configDTO.getDescrip() != null)
             existingConfig.setDescrip(configDTO.getDescrip());
 
+        if (configDTO.getComision() != null)
+            existingConfig.setComision(configDTO.getComision());
+
         if (configDTO.getMontoMin() != null)
             existingConfig.setMontoMin(configDTO.getMontoMin());
 

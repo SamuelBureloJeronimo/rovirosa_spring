@@ -15,6 +15,7 @@ public class LoginResponseDTO {
     private String estado;
     private String rol;
     private Integer montoMin;
+    private Integer comision;
 
     public LoginResponseDTO(LoginQueryDTO dto, JwtUtil jwtUtil, Integer clienteId) {
         if(dto.getEstado().equals("activo"))
@@ -25,6 +26,7 @@ public class LoginResponseDTO {
         this.estado = dto.getEstado();
         this.rol = dto.getRol();
         this.montoMin = dto.getPuntoVenta_Config_MontoMin();
+        this.comision = dto.getPuntoVenta_Config_Comision();
     }
 
 }

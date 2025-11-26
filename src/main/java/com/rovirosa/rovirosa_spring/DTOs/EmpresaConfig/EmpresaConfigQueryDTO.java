@@ -7,5 +7,6 @@ public interface EmpresaConfigQueryDTO {
     public String getLogo();
     public String getDescrip();
     public Integer getMontoMin();
+    public Integer getComision();
 
 }

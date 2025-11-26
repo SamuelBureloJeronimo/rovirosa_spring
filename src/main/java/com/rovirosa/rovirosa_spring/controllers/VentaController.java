@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaResponseClienteDTO;
 import com.rovirosa.rovirosa_spring.services.VentaService;
@@ -68,6 +69,16 @@ public class VentaController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(true, "Compras obtenidas exitosamente", ventas));
     }
+
+    @GetMapping("/get-pedido/{id}")
+    public ResponseEntity<ApiResponse<RutaDetalleResponseDTO>> getVentaById(
+        @PathVariable Integer id
+    ) {
+        RutaDetalleResponseDTO venta = ventaService.getVentaById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(true, "Venta obtenida exitosamente", venta));
+    }
+    
 
     @PreAuthorize("hasRole('REPARTIDOR')")
     @PutMapping("/entregar/{ventaId}")

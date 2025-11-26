@@ -17,6 +17,7 @@ public class RutaDetalleResponseDTO {
     private Integer venta_Id;
     private String rutaEstado;
     private String venta_FechaInicio;
+    private Integer venta_Pago_Id;
     private String venta_Pago_Metodo;
     private Double venta_Pago_PagaCon;
     private Double venta_Pago_Monto;
@@ -36,6 +37,7 @@ public class RutaDetalleResponseDTO {
         this.venta_Id = dto.getVenta_Id();
         this.venta_Estado = dto.getVenta_Estado();
         this.venta_Pago_Estado = dto.getVenta_Pago_Estado();
+        this.venta_Pago_Id = dto.getVenta_Pago_Id();
         this.venta_FechaInicio = dto.getVenta_FechaInicio();
         this.venta_Pago_Metodo = dto.getVenta_Pago_Metodo();
         this.venta_Pago_PagaCon = dto.getVenta_Pago_PagaCon();

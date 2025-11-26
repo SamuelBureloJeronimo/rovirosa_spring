@@ -48,7 +48,7 @@ public class StorageService implements IStorage {
         try {
 
             validateFile(file);
-            
+
             String filename = name;
             Path destinationFile = buildDestinationPath(filename, prefix);
 
@@ -150,6 +150,14 @@ public class StorageService implements IStorage {
     }
 
     private void saveFileDirectly(MultipartFile file, Path destinationFile) throws IOException {
+
+        // 1️⃣ Crear la carpeta si NO existe
+        Path parentDir = destinationFile.getParent();
+        if (parentDir != null) {
+            Files.createDirectories(parentDir); // No falla si ya existe
+        }
+
+        // 2️⃣ Guardar el archivo
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
         }

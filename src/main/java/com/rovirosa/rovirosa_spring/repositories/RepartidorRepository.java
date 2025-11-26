@@ -1,6 +1,7 @@
 package com.rovirosa.rovirosa_spring.repositories;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,6 +18,8 @@ public interface RepartidorRepository extends JpaRepository<Repartidor, Integer>
     Repartidor findByUsuario_Persona_Curp(String curp);
 
     RepartidorGetVehDTO findFirstById(Integer id);
+
+    List<RepartidorGetVehDTO> findByUsuario_PuntoVenta_Id(Integer pvId);
 
     @Modifying
     @Query("UPDATE Repartidor p SET p.estado = :estado WHERE p.id = :id")

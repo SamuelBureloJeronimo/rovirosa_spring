@@ -1,5 +1,6 @@
 package com.rovirosa.rovirosa_spring.DTOs.Carrito;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.rovirosa.rovirosa_spring.models.Marca;
@@ -18,6 +19,8 @@ public interface CarritoQueryByClienteDTO {
     String getCatalogo_Producto_Nombre();
     String getCatalogo_Producto_Imagen();
     Double getCatalogo_Producto_Precio();    
+    Double getCatalogo_Producto_PesoKg();    
+    BigDecimal getCatalogo_Producto_VolM3();    
     
     Marca getCatalogo_Producto_Marca();
 

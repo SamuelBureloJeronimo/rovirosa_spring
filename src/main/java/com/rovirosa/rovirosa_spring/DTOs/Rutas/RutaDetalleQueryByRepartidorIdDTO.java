@@ -11,6 +11,7 @@ public interface RutaDetalleQueryByRepartidorIdDTO {
     String getVenta_Estado();
     String getVenta_FechaInicio();
     
+    Integer getVenta_Pago_Id();
     String getVenta_Pago_Metodo();
     Double getVenta_Pago_PagaCon();
     Double getVenta_Pago_Monto();

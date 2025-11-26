@@ -5,8 +5,14 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "empresa_config")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EmpresaConfig implements Serializable {
@@ -29,82 +35,14 @@ public class EmpresaConfig implements Serializable {
     @Column(name = "monto_min", nullable = false)
     private Integer montoMin;
 
+    @Column(name = "comision", nullable = false)
+    private Integer comision;
+
     @Column(name = "email_app", length = 150)
     private String emailApp;
 
     @Column(name = "codigo_app", length = 50)
     private String codigoApp;
 
-    // Constructor vacío
-    public EmpresaConfig() {
-    }
-
-    // Constructor con parámetros
-    public EmpresaConfig(String rfc, String nombre, String logo, String descrip,
-                         Integer montoMin, String emailApp, String codigoApp) {
-        this.rfc = rfc;
-        this.nombre = nombre;
-        this.logo = logo;
-        this.descrip = descrip;
-        this.montoMin = montoMin;
-        this.emailApp = emailApp;
-        this.codigoApp = codigoApp;
-    }
-
-    // Getters y Setters
-    public String getRfc() {
-        return rfc;
-    }
-
-    public void setRfc(String rfc) {
-        this.rfc = rfc;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public String getDescrip() {
-        return descrip;
-    }
-
-    public void setDescrip(String descrip) {
-        this.descrip = descrip;
-    }
-
-    public Integer getMontoMin() {
-        return montoMin;
-    }
-
-    public void setMontoMin(Integer montoMin) {
-        this.montoMin = montoMin;
-    }
-
-    public String getEmailApp() {
-        return emailApp;
-    }
-
-    public void setEmailApp(String emailApp) {
-        this.emailApp = emailApp;
-    }
-
-    public String getCodigoApp() {
-        return codigoApp;
-    }
-
-    public void setCodigoApp(String codigoApp) {
-        this.codigoApp = codigoApp;
-    }
+   
 }
