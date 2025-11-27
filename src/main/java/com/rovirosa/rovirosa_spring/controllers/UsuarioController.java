@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Usuarios.ChangeCorreoDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Usuarios.MyPerfilDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioByRolPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioSimpleResponseDTO;
@@ -70,8 +72,17 @@ public class UsuarioController {
             return ResponseEntity.ok(new ApiResponse<>(true, "Gerente creado exitosamente", repartidorDTO));
         }
         return ResponseEntity.status(400).body(
-                new ApiResponse<>(false, "Rol no soportado para este endpoint", null)
-        );
+                new ApiResponse<>(false, "Rol no soportado para este endpoint", null));
+    }
+
+    @PutMapping("/update-correo")
+    public ResponseEntity<ApiResponse<Void>> changeEmail(@RequestBody ChangeCorreoDTO usuarioDto) {
+        ApiResponse<Void> res = usuarioService.changeCorreo(usuarioDto.getId(), usuarioDto.getNuevoCorreo());
+        if (res.isSuccess()) {
+            return ResponseEntity.ok(res);
+        } else {
+            return ResponseEntity.status(404).body(res);
+        }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -102,6 +113,15 @@ public class UsuarioController {
         ApiResponse<UsuarioQueryDTO> response = new ApiResponse<>(true, "Punto de venta actualizado exitosamente",
                 null);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/perfil/{id}")
+    public ResponseEntity<ApiResponse<MyPerfilDTO>> getPerfil(
+            @PathVariable Integer id) {
+        ApiResponse<MyPerfilDTO> perfil = usuarioService.getPerfilById(id);
+        if (!perfil.isSuccess())
+            return ResponseEntity.status(404).body(perfil);
+        return ResponseEntity.ok(perfil);
     }
 
 }

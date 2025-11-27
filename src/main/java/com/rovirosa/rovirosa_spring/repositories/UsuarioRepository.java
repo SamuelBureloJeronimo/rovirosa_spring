@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginQueryDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Usuarios.MyPerfilDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioQueryDTO;
 import com.rovirosa.rovirosa_spring.models.Usuario;
 
@@ -23,6 +24,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Usuario findByTokenFmc(String token);
 
+    MyPerfilDTO findPerfilById(Integer id);
+
     @Modifying
     @Query("UPDATE Usuario p SET p.tokenFmc = null WHERE p.tokenFmc = :token")
     int removeToken(@Param("token") String token);
@@ -32,4 +35,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Modifying
     @Query("UPDATE Usuario p SET p.estado = :estatus WHERE p.id = :id")
     int changeStatus(@Param("id") Integer id, @Param("estatus") String estatus);
+
+    @Modifying
+    @Query("UPDATE Usuario u SET u.correo = :correo WHERE u.id = :id")
+    int changeCorreo(@Param("id") Integer id, @Param("correo") String correo);
 }
