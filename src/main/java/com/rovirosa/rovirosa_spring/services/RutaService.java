@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaStartPutDTO;
+import com.rovirosa.rovirosa_spring.models.Venta;
 import com.rovirosa.rovirosa_spring.repositories.RepartidorRepository;
 import com.rovirosa.rovirosa_spring.repositories.RutaRepository;
 import com.rovirosa.rovirosa_spring.repositories.VentaRepository;
@@ -24,7 +25,7 @@ public class RutaService {
     @Autowired
     private VentaRepository ventaRep;
     @Autowired
-    private FirebaseService firebaseService;
+    private NotificacionService notificacionService;
 
     public List<RutaQueryDTO> getAllRutasByPvId(Integer pvId) {
         return rutaRep.findRutasActivas(List.of("pendiente", "en_ruta"), pvId);
@@ -34,8 +35,8 @@ public class RutaService {
     public ApiResponse<String> finalizarRutaRepartidor(RutaStartPutDTO dto) {
         ApiResponse<String> response = new ApiResponse<>();
         // Actualizar el estado del repartdior a "disponible".
-        Integer result = repRep.updateEstadoRepartidor(dto.getRepId(), "en_espera");
-        if(result == 0) {
+        Integer result = repRep.updateEstado(dto.getRepId(), "en_espera");
+        if (result == 0) {
             response.setSuccess(false);
             response.setMessage("No se pudo actualizar el estado del repartidor");
             return response;
@@ -43,17 +44,17 @@ public class RutaService {
         System.out.println("Repartidor actualizado a disponible");
         // Actualizar el estado de la ruta a "finalizada".
         result = rutaRep.updateEstadoRuta(dto.getRutaId(), "finalizada");
-        if(result == 0) {
+        if (result == 0) {
             response.setSuccess(false);
             response.setMessage("No se pudo actualizar el estado de la ruta");
             return response;
         }
         System.out.println("Ruta actualizada a finalizada");
         // Actualizar el estado de cada venta a "Entregado".
-        for(Integer ventaId : dto.getVentasId()) {
+        for (Integer ventaId : dto.getVentasId()) {
             // Llamar al servicio de venta para actualizar el estado.
             result = ventaRep.updateEstadoVenta(ventaId, "Entregado");
-            if(result == 0) {
+            if (result == 0) {
                 response.setSuccess(false);
                 response.setMessage("No se pudo actualizar el estado de la venta ID: " + ventaId);
                 return response;
@@ -64,6 +65,7 @@ public class RutaService {
         System.out.println("Todas las ventas actualizadas a Entregado");
         response.setSuccess(true);
         response.setMessage("Ruta finalizada correctamente");
+        //Buscar los pedidos con estado pendiente y emep
         return response;
     }
 
@@ -71,8 +73,8 @@ public class RutaService {
     public ApiResponse<String> IniciarRutaRepartidor(RutaStartPutDTO dto) {
         ApiResponse<String> response = new ApiResponse<>();
         // Actualizar el estado del repartdior a "en_ruta".
-        Integer result = repRep.updateEstadoRepartidor(dto.getRepId(), "en_ruta");
-        if(result == 0) {
+        Integer result = repRep.updateEstado(dto.getRepId(), "en_ruta");
+        if (result == 0) {
             response.setSuccess(false);
             response.setMessage("No se pudo actualizar el estado del repartidor");
             return response;
@@ -80,33 +82,27 @@ public class RutaService {
         System.out.println("Repartidor actualizado a en_ruta");
         // Actualizar el estado de la ruta a "en_ruta".
         result = rutaRep.updateEstadoRuta(dto.getRutaId(), "en_ruta");
-        if(result == 0) {
+        if (result == 0) {
             response.setSuccess(false);
             response.setMessage("No se pudo actualizar el estado de la ruta");
             return response;
         }
         System.out.println("Ruta actualizada a en_ruta");
         // Actualizar el estado de cada venta a "En_camino".
-        for(Integer ventaId : dto.getVentasId()) {
+        for (Integer ventaId : dto.getVentasId()) {
             // Llamar al servicio de venta para actualizar el estado.
             result = ventaRep.updateEstadoVenta(ventaId, "En_camino");
-            if(result == 0) {
+            if (result == 0) {
                 response.setSuccess(false);
                 response.setMessage("No se pudo actualizar el estado de la venta ID: " + ventaId);
                 return response;
             }
             System.out.println("Venta ID " + ventaId + " actualizada a En_camino");
             // Notificar al cliente que su pedido está en camino.
-            String tokenFmc = ventaRep.findTokenFmcByClienteId(ventaId).orElse(null);
-            System.out.println("Token FCM del cliente de la venta ID " + ventaId + ": " + tokenFmc);
-            if(tokenFmc != null) {
-                firebaseService.sendNotification(
-                    tokenFmc,
-                    "🚚 Tu pedido está en camino",
-                    "El repartidor está en camino. ¡Prepárate para recibir tu pedido!"
-                );
-                System.out.println("Notificación enviada al cliente de la venta ID " + ventaId);
-            }
+            Venta tokenFmc = ventaRep.findById(ventaId).orElse(null);
+            if (tokenFmc != null)
+                notificacionService.create(tokenFmc.getId(), "Pedido en camino",
+                        "Tu pedido está en camino y llegará pronto.");
         }
 
         System.out.println("Todas las ventas actualizadas y notificaciones enviadas");
@@ -114,5 +110,5 @@ public class RutaService {
         response.setMessage("Ruta iniciada correctamente");
         return response;
     }
-    
+
 }

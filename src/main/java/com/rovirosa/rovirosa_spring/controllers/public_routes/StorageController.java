@@ -65,6 +65,28 @@ public class StorageController {
                 .body(file);
     }
 
+    @GetMapping("/chat_ventas/{carpeta}/{filename}")
+    public ResponseEntity<Resource> getChatImages(@PathVariable String carpeta, @PathVariable String filename) throws IOException {
+        Resource file = storageService.loadAsResource(filename, "chat_ventas/" + carpeta + "/");
+        String contentType = Files.probeContentType(file.getFile().toPath());
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_TYPE, contentType)
+                .body(file);
+    }
+
+    @GetMapping("/comprobantes/{filename}")
+    public ResponseEntity<Resource> getComprobante(@PathVariable String filename) throws IOException {
+        Resource file = storageService.loadAsResource(filename, "comprobantes/");
+        String contentType = Files.probeContentType(file.getFile().toPath());
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_TYPE, contentType)
+                .body(file);
+    }
+
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> getBrandLogo(@PathVariable String filename) throws IOException {
         Resource file = storageService.loadAsResource(filename, "");

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.CreateAccount.CreateAccountDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Auth.Login.LoginQueryDTO;
@@ -159,6 +160,20 @@ public class AuthService {
     public Boolean existCurp(String curp) {
         // Busca por curp
         return this.userRep.existsByPersona_Curp(curp);
+    }
+
+    @Transactional
+    public ApiResponse<String> updatePassword(String correo, String newPassword) {
+        ApiResponse<String> response = new ApiResponse<>();
+        int result = userRep.recoveyPassword(correo, newPassword);
+        if (result == 0) {
+            response.setSuccess(false);
+            response.setMessage("No se pudo actualizar la contraseña");
+            return response;
+        }
+        response.setSuccess(true);
+        response.setMessage("Contraseña actualizada correctamente");
+        return response;
     }
 
     public List<String> getCoords() {

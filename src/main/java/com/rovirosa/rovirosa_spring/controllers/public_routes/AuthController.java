@@ -29,7 +29,7 @@ import com.rovirosa.rovirosa_spring.clases.CodigoVerificacion;
 import com.rovirosa.rovirosa_spring.services.AuthService;
 import com.rovirosa.rovirosa_spring.services.EmailService;
 import jakarta.validation.Valid;
-
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -72,30 +72,28 @@ public class AuthController {
             @RequestPart("ine_front") MultipartFile ineFront,
             @RequestPart("ine_back") MultipartFile ineBack) {
 
+        System.out.println("DTO: " + dto.getCorreo());
+        System.out.println("CURP: " + dto.getCurp());
+        System.out.println("Nombre: " + dto.getNombre());
+        System.out.println("Teléfono: " + dto.getTel());
+        System.out.println("Apellido Paterno: " + dto.getApp());
+        System.out.println("Apellido Materno: " + dto.getApm());
+        System.out.println("Fecha de Nacimiento: " + dto.getFechaNac());
+        System.out.println("Sexo: " + dto.getSexo());
 
-                System.out.println("DTO: " + dto.getCorreo());
-                System.out.println("CURP: " + dto.getCurp());
-                System.out.println("Nombre: " + dto.getNombre());
-                System.out.println("Teléfono: " + dto.getTel());
-                System.out.println("Apellido Paterno: " + dto.getApp());
-                System.out.println("Apellido Materno: " + dto.getApm());
-                System.out.println("Fecha de Nacimiento: " + dto.getFechaNac());
-                System.out.println("Sexo: " + dto.getSexo());
+        System.out.println("Correo: " + dto.getCorreo());
+        System.out.println("Password: " + dto.getPassword());
+        System.out.println("Punto de Venta ID: " + dto.getPuntoVentaId());
 
-                System.out.println("Correo: " + dto.getCorreo());
-                System.out.println("Password: " + dto.getPassword());
-                System.out.println("Punto de Venta ID: " + dto.getPuntoVentaId());
+        System.out.println("Latitud: " + dto.getLat());
+        System.out.println("Longitud: " + dto.getLng());
 
-                System.out.println("Latitud: " + dto.getLat());
-                System.out.println("Longitud: " + dto.getLng());
-
-                System.out.println("INE Front: " + ineFront.getOriginalFilename());
-                System.out.println("INE Back: " + ineBack.getOriginalFilename());
+        System.out.println("INE Front: " + ineFront.getOriginalFilename());
+        System.out.println("INE Back: " + ineBack.getOriginalFilename());
 
         String token = authServ.register(dto, ineFront, ineBack);
         return ResponseEntity.status(200).body(
-                new ApiResponse<>(true, "Usuario registrado exitosamente.", token)
-        );
+                new ApiResponse<>(true, "Usuario registrado exitosamente.", token));
     }
 
     private final Map<String, CodigoVerificacion> codigoStorage = new ConcurrentHashMap<>();
@@ -174,6 +172,22 @@ public class AuthController {
         } else {
             return ResponseEntity.status(200).body(
                     new ApiResponse<>(false, "El correo no está registrado", userExist));
+        }
+    }
+
+    @PutMapping("/recovery-password/{correo}")
+    public ResponseEntity<ApiResponse<String>> updatePassword(
+            @PathVariable String correo,
+            @RequestBody String newPassword) {
+
+        ApiResponse<String> res = authServ.updatePassword(correo, newPassword);
+
+        if (res.isSuccess()) {
+            return ResponseEntity.status(200).body(
+                    new ApiResponse<>(true, "Contraseña actualizada exitosamente", null));
+        } else {
+            return ResponseEntity.status(400).body(
+                    new ApiResponse<>(false, "Error al actualizar la contraseña", null));
         }
     }
 

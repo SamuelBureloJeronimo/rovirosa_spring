@@ -79,6 +79,14 @@ public class RepartidorService {
         return repartidorRep.asignarVehiculo(repartidorId, vehiculoId);
     }
 
+    @Transactional
+    public Integer actualizarEstadoRepartidor(Integer repartidorId, String estado) {
+        if (estado == null)
+            return repartidorRep.updateEstadoNull(repartidorId);
+        
+        return repartidorRep.updateEstado(repartidorId, estado);
+    }
+
     public Repartidor createRepartidor(Integer userId) {
         Usuario usuario = usuarioRep.findById(userId).orElse(null);
         if (usuario == null) {

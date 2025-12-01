@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Notificaciones.NotificacionDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.ChangeCorreoDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Usuarios.ChangePassDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.MyPerfilDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioByRolPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioQueryDTO;
@@ -17,6 +19,7 @@ import com.rovirosa.rovirosa_spring.DTOs.Usuarios.UsuarioSimpleResponseDTO;
 import com.rovirosa.rovirosa_spring.models.GerentePv;
 import com.rovirosa.rovirosa_spring.models.Repartidor;
 import com.rovirosa.rovirosa_spring.services.GerentePvService;
+import com.rovirosa.rovirosa_spring.services.NotificacionService;
 import com.rovirosa.rovirosa_spring.services.RepartidorService;
 import com.rovirosa.rovirosa_spring.services.UsuarioService;
 
@@ -32,6 +35,8 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private NotificacionService notificacionService;
     @Autowired
     private RepartidorService repartidorService;
     @Autowired
@@ -83,6 +88,37 @@ public class UsuarioController {
         } else {
             return ResponseEntity.status(404).body(res);
         }
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<ApiResponse<Void>> updatePassword(@RequestBody ChangePassDTO usuarioDto) {
+        ApiResponse<Void> res = usuarioService.changePassword(usuarioDto.getId(), usuarioDto.getNewPass(),
+                usuarioDto.getActualPass());
+        if (res.isSuccess()) {
+            return ResponseEntity.ok(res);
+        } else {
+            return ResponseEntity.status(404).body(res);
+        }
+    }
+
+    @GetMapping("/notificaciones/{userId}")
+    public ResponseEntity<ApiResponse<List<NotificacionDTO>>> getNotificaciones(@PathVariable Integer userId) {
+        ApiResponse<List<NotificacionDTO>> res = notificacionService.getNotificaciones(userId);
+        if (res.isSuccess()) {
+            return ResponseEntity.ok(res);
+        } else {
+            return ResponseEntity.status(404).body(res);
+        }
+    }
+
+    @PutMapping("/leer-notifiacion/{id}")
+    public ResponseEntity<ApiResponse<Void>> leerNotificacion(@PathVariable Integer id) {
+        ApiResponse<Void> res = notificacionService.leerNotificacion(id);
+        if (res.isSuccess())
+            return ResponseEntity.ok(new ApiResponse<>(true, "Notificación marcada como leída", null));
+        else
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Notificación no encontrada", null));
+
     }
 
     @PreAuthorize("hasRole('ADMIN')")

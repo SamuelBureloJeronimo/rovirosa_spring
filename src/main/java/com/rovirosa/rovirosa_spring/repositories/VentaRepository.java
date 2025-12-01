@@ -1,7 +1,6 @@
 package com.rovirosa.rovirosa_spring.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,15 +15,6 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
     List<VentaQueryClienteDTO> findByCliente_Id(Integer clienteId);
 
     List<Venta> findByPuntoVenta_IdAndEstado(Integer id, String estado);
-
-    @Query("""
-                SELECT u.tokenFmc
-                FROM Venta v
-                JOIN v.cliente c
-                JOIN c.usuario u
-                WHERE v.id = :id
-            """)
-    Optional<String> findTokenFmcByClienteId(@Param("id") Integer id);
 
     @Modifying
     @Query("UPDATE Venta v SET v.estado = :estado WHERE v.id = :id")

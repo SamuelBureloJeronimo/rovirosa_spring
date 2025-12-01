@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorGetVehDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorUpdatePosDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorUpdateStatusDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignacionQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaStartPutDTO;
@@ -49,6 +50,18 @@ public class RepartidorController {
             return ResponseEntity.badRequest().body(response);
         // Si no, devolver ok
         return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'REPARTIDOR','GERENTE')")
+    @PutMapping("/update-status")
+    public ResponseEntity<ApiResponse<Integer>> actualizarEstadoRepartidor(
+            @Valid @RequestBody RepartidorUpdateStatusDTO dto) {
+        Integer result = repartidorService.actualizarEstadoRepartidor(dto.getRepId(), dto.getEstado());
+        if (result == 1) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Estado actualizado correctamente", result));
+        } else {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Error al actualizar estado", null));
+        }
     }
 
     @PutMapping("/position/{repId}")

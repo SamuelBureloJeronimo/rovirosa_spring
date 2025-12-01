@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.ChatVenta.ChatVentaGetDTO;
+import com.rovirosa.rovirosa_spring.DTOs.ChatVenta.ChatVentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaResponseClienteDTO;
+import com.rovirosa.rovirosa_spring.services.ChatVentaService;
 import com.rovirosa.rovirosa_spring.services.VentaService;
 
 import jakarta.validation.Valid;
@@ -30,6 +33,8 @@ public class VentaController {
 
     @Autowired
     private VentaService ventaService;
+    @Autowired
+    private ChatVentaService chatServ;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> crearVenta(
@@ -59,6 +64,30 @@ public class VentaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ApiResponse<>(true, "Venta creada exitosamente", null));
     }
+
+    @PostMapping("/chat/send-message")
+    public ResponseEntity<ApiResponse<ChatVentaGetDTO>> sendMessage(
+        @RequestPart("dto") @Valid ChatVentaPostDTO chatVentaDTO,
+        @RequestPart(value = "archivo", required = false) MultipartFile archivo
+    ) {
+        ApiResponse<ChatVentaGetDTO> response = chatServ.sendMessage(chatVentaDTO, archivo);
+        if(!response.isSuccess())
+            return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.ok(response);
+    }
+    
+    
+
+    @GetMapping("/chat/{ventaId}")
+    public ResponseEntity<ApiResponse<List<ChatVentaGetDTO>>> getChatIdByVentaId(
+        @PathVariable Integer ventaId
+    ) {
+        ApiResponse<List<ChatVentaGetDTO>> messages = chatServ.getMessagesByVentaId(ventaId);
+        if(!messages.isSuccess())
+            return ResponseEntity.badRequest().body(messages);
+        return ResponseEntity.ok(messages);
+    }
+    
 
     @GetMapping("/{clienteId}")
     public ResponseEntity<ApiResponse<List<VentaResponseClienteDTO>>> getVentasByClienteId(

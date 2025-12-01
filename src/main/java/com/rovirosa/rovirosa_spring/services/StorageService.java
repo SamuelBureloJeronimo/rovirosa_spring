@@ -52,6 +52,9 @@ public class StorageService implements IStorage {
             String filename = name;
             Path destinationFile = buildDestinationPath(filename, prefix);
 
+            // 🟦 Crear el directorio si no existe
+            Files.createDirectories(destinationFile.getParent());
+
             if (file.getSize() > 100 * 1024) {
                 compressAndSaveImage(file, destinationFile);
             } else {
@@ -71,6 +74,9 @@ public class StorageService implements IStorage {
 
             String filename = generateFileName();
             Path destinationFile = buildDestinationPath(filename, prefix);
+
+            // 🟦 Crear el directorio si no existe
+            Files.createDirectories(destinationFile.getParent());
 
             if (file.getSize() > 100 * 1024) {
                 compressAndSaveImage(file, destinationFile);

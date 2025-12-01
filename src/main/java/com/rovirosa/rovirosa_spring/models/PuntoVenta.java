@@ -13,8 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "puntos_venta")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PuntoVenta implements Serializable {
@@ -39,69 +45,11 @@ public class PuntoVenta implements Serializable {
     @Column(name = "zona_permitida", nullable = true)
     private String zonaPermitida;
 
-    @Column(name = "estado")
+    @Column(name = "estado", nullable = false)
     private String estado = "habilitado";
 
-    // Constructor vacío
-    public PuntoVenta() {}
+    @Column(name = "color", nullable = false, length = 25)
+    private String color = "#00ff11ff";
 
-    // Constructor con parametros
-    public PuntoVenta(Integer id, String nombre, Direccion direccion, EmpresaConfig config, String estado) {
-        this.id = id;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.config = config;
-        this.estado = estado;
-    }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    public EmpresaConfig getConfig() {
-        return config;
-    }
-
-    public void setConfig(EmpresaConfig config) {
-        this.config = config;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getZonaPermitida() {
-        return zonaPermitida;
-    }
-
-    public void setZonaPermitida(String zonaPermitida) {
-        this.zonaPermitida = zonaPermitida;
-    }
-
-    
-    
 }

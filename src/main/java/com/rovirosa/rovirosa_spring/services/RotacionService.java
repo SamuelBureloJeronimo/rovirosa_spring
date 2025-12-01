@@ -3,8 +3,10 @@ package com.rovirosa.rovirosa_spring.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignacionQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RotacionPostDTO;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
@@ -27,7 +29,14 @@ public class RotacionService {
     private PuntoVentaRepository puntoVentaRep;
 
     @Transactional
-    public void asignToPv(RotacionPostDTO dto) {
+    public ApiResponse<String> asignToPv(RotacionPostDTO dto) {
+
+        Boolean exists = repAsignRep.existsByRep_Id(dto.getRepartidorId());
+
+        if (exists) {
+            // Si ya existe una asignación para este repartidor, lanzar una excepción
+            return new ApiResponse<>(false, "El repartidor ya tiene una asignación activa", null);
+        }
 
         System.out.println(dto.getPuntoVentaId());
         System.out.println(dto.getRepartidorId());
@@ -50,6 +59,7 @@ public class RotacionService {
 
         repartidorRep.save(repa);
         repAsignRep.save(repAsign);
+        return new ApiResponse<>(true, "Repartidor asignado exitosamente", null);
     }
 
     public List<RepartidorAsignacionQueryDTO> getRotacion() {

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.services.PagoService;
@@ -29,7 +30,13 @@ public class PagoController {
             return ResponseEntity.ok(response);
         else 
             return ResponseEntity.status(400).body(response);
-        
+    }
+
+    @PreAuthorize("hasRole('CLIENTE')")
+    @PutMapping("/update-compr/{idPago}")
+    public ResponseEntity<ApiResponse<String>> updateComprobante(@PathVariable Integer idPago, @RequestBody MultipartFile archivo) {
+        ApiResponse<String> response = pagoService.updateComprobante(idPago, archivo);
+        return ResponseEntity.ok(response);
     }
     
 }

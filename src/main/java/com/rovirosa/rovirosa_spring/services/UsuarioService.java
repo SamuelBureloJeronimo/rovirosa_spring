@@ -87,4 +87,17 @@ public class UsuarioService implements IUsuario {
         
     }
 
+    @Transactional
+    @Override
+    public ApiResponse<Void> changePassword(Integer id, String nuevaPassword, String actualPass) {
+        
+        int rowAffected = usuarioRepository.changePassword(id, nuevaPassword, actualPass);
+
+        if (rowAffected > 0)
+            return new ApiResponse<>(true, "Contraseña actualizada exitosamente", null);
+        
+        return new ApiResponse<>(false, "El usuario no existe o la contraseña actual no es la correcta.", null);
+
+    }
+
 }

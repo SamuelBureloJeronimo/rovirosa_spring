@@ -6,6 +6,7 @@ public interface PuntoVentaQueryDTO {
     public Integer getId();
     public String getNombre();
     public String getEstado();
+    public String getColor();
     public String getZonaPermitida();
     public Direccion getDireccion();
 }

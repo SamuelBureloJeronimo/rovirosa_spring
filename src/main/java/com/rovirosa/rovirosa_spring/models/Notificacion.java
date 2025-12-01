@@ -1,6 +1,7 @@
 package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,8 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "notificaciones")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Notificacion implements Serializable {
@@ -35,51 +42,10 @@ public class Notificacion implements Serializable {
     @Column(name = "subtitulo", nullable = false, length = 150)
     private String subtitulo;
 
-    // Constructor vacío
-    public Notificacion() {}
+    @Column(name = "fecha", nullable = false)
+    private LocalDateTime fecha = LocalDateTime.now();
 
-    // Constructor con parámetros
-    public Notificacion(Integer id, Usuario user, String titulo, String subtitulo) {
-        this.id = id;
-        this.user = user;
-        this.titulo = titulo;
-        this.subtitulo = subtitulo; 
-    }
-
-    // Getters y Setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Usuario getUser() {
-        return user;
-    }
-
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getSubtitulo() {
-        return subtitulo;
-    }
-
-    public void setSubtitulo(String subtitulo) {
-        this.subtitulo = subtitulo;
-    }
-
+    @Column(name = "leido", nullable = false)
+    private Boolean leido = false;
     
-
 }

@@ -36,8 +36,13 @@ public class RotacionController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> asignToPv(@RequestBody RotacionPostDTO dto) {
-        rotacionService.asignToPv(dto);
+    public ResponseEntity<ApiResponse<String>> asignToPv(@RequestBody RotacionPostDTO dto) {
+
+        ApiResponse<String> response = rotacionService.asignToPv(dto);
+        
+        if(response.isSuccess() == false)
+            return ResponseEntity.badRequest().body(response);
+
         return ResponseEntity.ok(new ApiResponse<>(true, "Repartidor creado exitosamente", null));
     }
 

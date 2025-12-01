@@ -47,6 +47,6 @@ public class Repartidor implements Serializable {
     private BigDecimal lng;
 
     @Column(name = "estado", nullable = true)
-    private String estado; // ENUM("en_espera", "cargando", "en_ruta", "descansando")
+    private String estado = null; // ENUM("en_espera", "cargando", "en_ruta", "descansando")
 
 }
