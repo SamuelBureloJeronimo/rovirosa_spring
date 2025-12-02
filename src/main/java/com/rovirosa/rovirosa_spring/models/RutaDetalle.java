@@ -33,8 +33,8 @@ public class RutaDetalle implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ruta_id", nullable = false)
-    private Ruta ruta;
+    @JoinColumn(name = "ruta_id", nullable = true)
+    private Ruta ruta = null;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venta_id", nullable = false)
