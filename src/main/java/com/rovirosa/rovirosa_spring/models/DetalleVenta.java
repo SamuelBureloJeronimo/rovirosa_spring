@@ -13,7 +13,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "detalles_venta")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -44,77 +50,5 @@ public class DetalleVenta implements Serializable {
 
     @Column(name = "desc_unit", nullable = false)
     private Double descUnit;
-
-    // Constructor vacío
-    public DetalleVenta() { }
-
-    // Constructor con parámetros
-    public DetalleVenta(Integer id, Venta venta, Producto producto, Integer cantIn, Integer cantFin, Double precioUnit, Double desc) {
-        this.id = id;
-        this.venta = venta;
-        this.producto = producto;
-        this.cantIn = cantIn;
-        this.cantFin = cantFin;
-        this.precioUnit = precioUnit;
-        this.descUnit = desc;
-    }
-
-    // Getters y Setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Venta getVenta() {
-        return venta;
-    }
-
-    public void setVenta(Venta venta) {
-        this.venta = venta;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    public Integer getCantIn() {
-        return cantIn;
-    }
-
-    public void setCantIn(Integer cantIn) {
-        this.cantIn = cantIn;
-    }
-
-    public Integer getCantFin() {
-        return cantFin;
-    }
-
-    public void setCantFin(Integer cantFin) {
-        this.cantFin = cantFin;
-    }
-
-    public Double getPrecioUnit() {
-        return precioUnit;
-    }
-
-    public void setPrecioUnit(Double precioUnit) {
-        this.precioUnit = precioUnit;
-    }
-
-    public Double getDescUnit() {
-        return descUnit;
-    }
-
-    public void setDescUnit(Double desc) {
-        this.descUnit = desc;
-    }
 
 }

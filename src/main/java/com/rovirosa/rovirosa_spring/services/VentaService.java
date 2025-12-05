@@ -6,7 +6,6 @@ import com.rovirosa.rovirosa_spring.DTOs.DetalleVenta.DetalleVentaDTO;
 import com.rovirosa.rovirosa_spring.DTOs.DetalleVenta.DetalleVentaResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoDimencionesDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoQueryDimenDTO;
-import com.rovirosa.rovirosa_spring.DTOs.Repartidor.RepartidorGetVehDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleQueryByRepartidorIdDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaPostDTO;
@@ -192,16 +191,10 @@ public class VentaService {
                                 AMARILLO + "Validando si hay repartidores disponibles..." + RESET);
                 if (repEnEspera.isEmpty() && repCargando.isEmpty()) {
                         System.out.println(
-                                        ROJO + "No hay repartidores disponibles, creando ruta sin repartidor." + RESET);
+                                        ROJO + "No hay repartidores disponibles, creando detalles de la ruta sin ruta principal." + RESET);
                         // Crear ruta sin repartidor
-                        Ruta nuevaRuta = new Ruta();
-                        PuntoVenta pv = new PuntoVenta();
-                        pv.setId(ventaDTO.getPvId());
-                        nuevaRuta.setPuntoVenta(pv);
-                        nuevaRuta.setEstado("pendiente");
-                        nuevaRuta = rutaRepository.save(nuevaRuta);
 
-                        this.createRutaDetalleVenta(nuevaRuta, ventaDTO, venta);
+                        this.createRutaDetalleVenta(null, ventaDTO, venta);
 
                         System.out.println(
                                         AZUL +
@@ -565,18 +558,11 @@ public class VentaService {
 
                 System.out.println(
                                 ROJO +
-                                                "No se pudo asignar el pedido a ningun repartidor, creando ruta sin repartidor."
+                                                "No se pudo asignar el pedido a ningun repartidor, creando cada punto sin ruta."
                                                 +
                                                 RESET);
                 // Crear ruta sin repartidor
-                Ruta nuevaRuta = new Ruta();
-                PuntoVenta pv = new PuntoVenta();
-                pv.setId(ventaDTO.getPvId());
-                nuevaRuta.setPuntoVenta(pv);
-                nuevaRuta.setEstado("pendiente");
-                nuevaRuta = rutaRepository.save(nuevaRuta);
-
-                this.createRutaDetalleVenta(nuevaRuta, ventaDTO, venta);
+                this.createRutaDetalleVenta(null, ventaDTO, venta);
 
                 System.out.println(
                                 AZUL + "Proceso de asignación de ruta y repartidor finalizado." + RESET);

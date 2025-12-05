@@ -12,6 +12,7 @@ public class RutaStartPutDTO {
     Integer rutaId;
     @NotNull("repId no debe ser nulo")
     Integer repId;
+    Integer pvId;
     @NotNull("ventasId no debe ser nulo")
     List<Integer> ventasId;
     

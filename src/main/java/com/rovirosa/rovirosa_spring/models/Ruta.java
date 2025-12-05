@@ -47,7 +47,7 @@ public class Ruta implements Serializable {
     private String fechaFin = null;
 
     @Column(name = "estado", nullable = false)
-    private String estado; // ENUM("pendiente", "en_ruta", "finalizada")
+    private String estado = "Pendiente"; // ENUM("pendiente", "en_ruta", "finalizada")
     
 
 }

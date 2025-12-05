@@ -35,6 +35,10 @@ public interface RutaRepository extends JpaRepository<Ruta, Integer> {
             @Param("pvId") Integer pvId);
 
     @Modifying
+    @Query("UPDATE Ruta r SET r.estado = :estado, r.fechaFin = :fecha WHERE r.id = :id")
+    Integer updateFinishRuta(@Param("id") Integer id, @Param("fecha") String fecha, @Param("estado") String estado);
+
+    @Modifying
     @Query("UPDATE Ruta r SET r.estado = :estado WHERE r.id = :id")
     Integer updateEstadoRuta(@Param("id") Integer id, @Param("estado") String estado);
 
