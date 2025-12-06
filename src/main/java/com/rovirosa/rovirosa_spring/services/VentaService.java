@@ -72,6 +72,8 @@ public class VentaService {
         private RepartidorRepository repartidorRep;
         @Autowired
         private NotificacionService notificacionService;
+        @Autowired
+        private CarritoService carritoService;
 
         @Autowired
         private SimpMessagingTemplate template;
@@ -126,6 +128,7 @@ public class VentaService {
                 Pago pago = new Pago();
                 pago.setMonto(ventaDTO.getPago().getMonto());
                 pago.setMetodo(ventaDTO.getPago().getMetodo());
+                pago.setPagaCon(ventaDTO.getPago().getPagaCon());
 
                 String nameCompr = storageService.generateFileName();
 
@@ -148,6 +151,8 @@ public class VentaService {
                 if (pago.getMetodo().equalsIgnoreCase("transferencia") && comprobante != null) {
                         storageService.store(comprobante, "comprobantes/", nameCompr);
                 }
+                // Limpiar carrito del usuario
+                this.carritoService.clearCartByUserId(ventaDTO.getUserId());
         }
 
         public List<VentaResponseClienteDTO> getVentasByClienteId(Integer clienteId) {
