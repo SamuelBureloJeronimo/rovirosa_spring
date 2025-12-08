@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `carrito` (
   CONSTRAINT `fk_carrito_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=371 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.carrito: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.carrito: ~1 rows (aproximadamente)
 DELETE FROM `carrito`;
 
 -- Volcando estructura para tabla rovirosa.catalogo_pv
@@ -137,10 +137,12 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   KEY `FK_clientes_usuarios` (`user_id`),
   CONSTRAINT `FK_clientes_direcciones` FOREIGN KEY (`dir_id`) REFERENCES `direcciones` (`id`),
   CONSTRAINT `FK_clientes_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla rovirosa.clientes: ~0 rows (aproximadamente)
 DELETE FROM `clientes`;
+INSERT INTO `clientes` (`id`, `user_id`, `dir_id`, `ine_front`, `ine_back`, `stricks`, `p_cancel`, `last_cancel`) VALUES
+	(11, 38, 39, 'ine/54f9217c-5830-42a8-91b6-8bd093c2d960.jpg', 'ine/a1bbd88c-27b2-4112-8d76-f987b645d667.jpg', 0, 0, NULL);
 
 -- Volcando estructura para tabla rovirosa.datos_transferencia
 CREATE TABLE IF NOT EXISTS `datos_transferencia` (
@@ -151,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `datos_transferencia` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.datos_transferencia: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.datos_transferencia: ~0 rows (aproximadamente)
 DELETE FROM `datos_transferencia`;
 INSERT INTO `datos_transferencia` (`id`, `titular`, `banco`, `clave`) VALUES
 	(1, 'Samuel Burelos Jeronimo', 'NU Bank', '638180010199083400');
@@ -168,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `descuentos_categ` (
   CONSTRAINT `FK_descuento_categ_descuentos_config` FOREIGN KEY (`config_id`) REFERENCES `descuentos_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.descuentos_categ: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.descuentos_categ: ~0 rows (aproximadamente)
 DELETE FROM `descuentos_categ`;
 INSERT INTO `descuentos_categ` (`id`, `categ_id`, `config_id`) VALUES
 	(5, 2, 27);
@@ -238,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `detalles_venta` (
   CONSTRAINT `FK_detalles_venta_ventas` FOREIGN KEY (`vnta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.detalles_venta: ~14 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.detalles_venta: ~0 rows (aproximadamente)
 DELETE FROM `detalles_venta`;
 
 -- Volcando estructura para tabla rovirosa.dias_laborales
@@ -276,13 +278,14 @@ CREATE TABLE IF NOT EXISTS `direcciones` (
   `lng` decimal(11,8) NOT NULL COMMENT 'Longitud de la dirección',
   `ref` varchar(255) NOT NULL COMMENT 'Referencia de la dirección',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla rovirosa.direcciones: ~2 rows (aproximadamente)
 DELETE FROM `direcciones`;
 INSERT INTO `direcciones` (`id`, `lat`, `lng`, `ref`) VALUES
 	(1, 17.74748539, -92.61013526, ''),
-	(15, 17.76446564, -92.59152140, '');
+	(15, 17.76446564, -92.59152140, ''),
+	(39, 17.76224554, -92.60406914, 'Casa blanca');
 
 -- Volcando estructura para tabla rovirosa.empresa_config
 CREATE TABLE IF NOT EXISTS `empresa_config` (
@@ -297,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `empresa_config` (
   PRIMARY KEY (`rfc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.empresa_config: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.empresa_config: ~0 rows (aproximadamente)
 DELETE FROM `empresa_config`;
 INSERT INTO `empresa_config` (`rfc`, `nombre`, `logo`, `descrip`, `monto_min`, `comision`, `email_app`, `codigo_app`) VALUES
 	('DRO700527V91', 'Corchito', 'f1a4d39d-b08f-4926-9779-c0346069fdef.jpg', 'Ser la mejor empresa concesionaria en la provisión de los productos más vanguardistas y de alta calidad de Grupo Modelo.', 150, 15, 'samuelbj0608@gmail.com', 'xafj attx njcu mgqk');
@@ -329,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `gerentes_pv` (
   CONSTRAINT `gerentes_pv_ibfk_2` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.gerentes_pv: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.gerentes_pv: ~2 rows (aproximadamente)
 DELETE FROM `gerentes_pv`;
 INSERT INTO `gerentes_pv` (`id`, `user_id`, `pv_id`, `activo`) VALUES
 	(6, 36, 1, NULL);
@@ -456,16 +459,17 @@ CREATE TABLE IF NOT EXISTS `personas` (
   `sexo` enum('MASCULINO','FEMENINO') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `curp` (`curp`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla rovirosa.personas: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla rovirosa.personas: ~6 rows (aproximadamente)
 DELETE FROM `personas`;
 INSERT INTO `personas` (`id`, `curp`, `tel`, `nombre`, `app`, `apm`, `fech_nac`, `sexo`) VALUES
 	(17, 'admin', '9361165168', 'admin', 'admin', 'admin', '2003-08-06', 'MASCULINO'),
 	(35, 'MAHJ030812HTRGRSA5', '9361165168', 'JOSUE', 'MAGAÑA', 'HERNANDEZ', '2003-08-12', 'MASCULINO'),
 	(48, 'MHJU070803HTCRRV1', '9361145615', 'JESUS MIGUEL', 'MARQUEZ', 'MENDEZ', '2003-08-13', 'MASCULINO'),
 	(50, 'VJMS960012HTCRRMA8', '93611456159', 'VICENTE', 'JIMENEZ', 'PEREZ', '1994-01-12', 'MASCULINO'),
-	(51, 'JKBJ010312HTCRRMK9', '9361153424', 'JUAN', 'VELÁZQUEZ', 'JIMÉNEZ ', '1991-11-06', 'MASCULINO');
+	(51, 'JKBJ010312HTCRRMK9', '9361153424', 'JUAN', 'VELÁZQUEZ', 'JIMÉNEZ ', '1991-11-06', 'MASCULINO'),
+	(54, 'BUJS030806HTCRRMA9', '9361165168', 'SAMUEL', 'BURELOS', 'JERONIMO', '2003-08-06', 'MASCULINO');
 
 -- Volcando estructura para tabla rovirosa.productos
 CREATE TABLE IF NOT EXISTS `productos` (
@@ -559,14 +563,13 @@ CREATE TABLE IF NOT EXISTS `repart_asign` (
   KEY `pv_id` (`pv_id`),
   CONSTRAINT `repartidor_asignacion_ibfk_1` FOREIGN KEY (`rep_id`) REFERENCES `repartidores` (`id`),
   CONSTRAINT `repartidor_asignacion_ibfk_2` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla rovirosa.repart_asign: ~3 rows (aproximadamente)
 DELETE FROM `repart_asign`;
 INSERT INTO `repart_asign` (`id`, `rep_id`, `pv_id`, `fecha_inicio`, `fecha_fin`) VALUES
 	(22, 7, 1, '2025-11-17', NULL),
-	(26, 8, 1, '2025-12-06', NULL),
-	(27, 9, 1, '2025-12-06', NULL);
+	(28, 9, 6, '2025-12-08', NULL);
 
 -- Volcando estructura para tabla rovirosa.rutas
 CREATE TABLE IF NOT EXISTS `rutas` (
@@ -621,7 +624,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   KEY `FK_usuarios_puntos_venta` (`pv_id`),
   CONSTRAINT `FK_usuarios_personas` FOREIGN KEY (`per_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_usuarios_puntos_venta` FOREIGN KEY (`pv_id`) REFERENCES `puntos_venta` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla rovirosa.usuarios: ~5 rows (aproximadamente)
 DELETE FROM `usuarios`;
@@ -629,8 +632,9 @@ INSERT INTO `usuarios` (`id`, `per_id`, `pv_id`, `correo`, `password`, `token_fb
 	(9, 17, 6, 'admin@gmail.com', 'admin', 'dc4pgFgtTraylDSAgryPvM:APA91bEyl3El6hR_UOmjUetw2oN6vK-5hl_ISOW83uM_PZbhYWDYY04bFS4_uRuiEKKfZ3uBm6qbHspUfXBGbn0gIs270FjTx4PWxFfC2DcI6zaKEkPIxCw', 'activo', '2025-09-27 23:09:49', 'ADMIN'),
 	(21, 35, 1, 'repartidor@gmail.com', 'repartidor', NULL, 'activo', '2025-10-29 17:16:50', 'REPARTIDOR'),
 	(33, 48, 1, 'repartidor2@gmail.com', 'repartidor', NULL, 'activo', '2025-11-13 15:50:43', 'REPARTIDOR'),
-	(35, 50, 1, 'repartidor3@gmail.com', 'repartidor', NULL, 'activo', '2025-11-30 22:31:49', 'REPARTIDOR'),
-	(36, 51, 1, 'gerente@gmail.com', 'gerente', NULL, 'activo', '2025-12-06 20:56:09', 'GERENTE');
+	(35, 50, 6, 'repartidor3@gmail.com', 'repartidor', NULL, 'activo', '2025-11-30 22:31:49', 'REPARTIDOR'),
+	(36, 51, 1, 'gerente@gmail.com', 'gerente', NULL, 'activo', '2025-12-06 20:56:09', 'GERENTE'),
+	(38, 54, 6, 'samuelbj0608@gmail.com', 'numeroPI14', NULL, 'activo', '2025-12-08 20:38:34', 'CLIENTE');
 
 -- Volcando estructura para tabla rovirosa.vehiculos
 CREATE TABLE IF NOT EXISTS `vehiculos` (

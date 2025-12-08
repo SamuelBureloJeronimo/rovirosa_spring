@@ -65,15 +65,17 @@ public class OcrService {
 
                 boolean curpMatch = text.contains(target);
 
+                validation.put("curp", curpMatch ? "✔ Encontrada" : "❌ No encontrada");
+
                 // Si no se encuentra exacta, buscar subcadenas parecidas (OCR difuso)
                 if (!curpMatch && text.length() > target.length()) {
                     for (int i = 0; i <= text.length() - target.length(); i++) {
                         String candidate = text.substring(i, Math.min(i + target.length(), text.length()));
                         double similarity = similarityRatio(target, candidate);
-                        if (similarity >= 0.85) { // 85% de similitud
+                        if (similarity >= 0.50) { // 50% de similitud
                             curpMatch = true;
-                            System.out.println(
-                                    "⚠ CURP similar encontrada: " + candidate + " (" + (int) (similarity * 100) + "%)");
+                            validation.put("curp", "⚠ Similar encontrada: " + candidate + " (" + (int) (similarity * 100) + "%)");
+                            System.out.println("🔍 CURP similar encontrada: " + candidate + " con similitud " + (similarity * 100) + "%");
                             break;
                         }
                     }
@@ -134,12 +136,6 @@ public class OcrService {
                 validation.put("nombre", match ? "✔ Encontrado" : "❌ No encontrado");
                 if (!match)
                     allMatch = false;
-            }
-
-            // 🔹 Validar Sexo (solo "H" o "M")
-            if (dto.getSexo() != null && !dto.getSexo().isEmpty()) {
-                boolean match = cleanText.contains("SEXO " + dto.getSexo().toUpperCase());
-                validation.put("sexo", match ? "✔ Encontrado" : "❌ No encontrado");
             }
 
             // 🔹 Resultado general
