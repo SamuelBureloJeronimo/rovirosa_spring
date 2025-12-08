@@ -1,7 +1,7 @@
 package com.rovirosa.rovirosa_spring.config;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -16,10 +16,15 @@ public class FirebaseConfig {
 
     @PostConstruct
     public void init() {
-        try {
-            // Ruta relativa al archivo en resources
-            FileInputStream serviceAccount =
-                new FileInputStream("src/main/resources/firebase/firebase-key.json");
+        // intenta cargar desde classpath
+        try (InputStream serviceAccount = getClass().getClassLoader()
+                .getResourceAsStream("firebase/firebase-key.json")) {
+
+            if (serviceAccount == null) {
+                // Mensaje claro para logs: recurso no encontrado en el classpath
+                throw new IllegalStateException("No se encontró 'firebase/firebase-key.json' en el classpath. " +
+                        "Verifica que esté en src/main/resources/firebase y que haya sido empacado en el JAR.");
+            }
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -31,6 +36,10 @@ public class FirebaseConfig {
             }
 
         } catch (IOException e) {
+            // IOException al leer el stream
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            // Por ejemplo IllegalStateException si el recurso no existe
             e.printStackTrace();
         }
     }
