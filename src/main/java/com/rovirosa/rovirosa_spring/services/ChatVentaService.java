@@ -78,23 +78,23 @@ public class ChatVentaService implements IChatVenta {
 
         Integer userId = venta.getCliente().getUsuario().getId();
 
-        // Evitar enviar notificación al mismo usuario que envió el mensaje
+        // Si es el cliente quien envía el mensaje, notificar al repartidor y viceversa
         if (!userId.equals(dto.getUserId())) {
             notificacionService.create(
                     userId,
-                    "Nuevo mensaje en la venta #" + dto.getVentaId(),
-                    dto.getMensaje() != null ? dto.getMensaje() : "Se ha enviado un archivo.");
+                    "Un cliente ha enviado un nuevo mensaje",
+                    dto.getMensaje() != null ? dto.getMensaje() : "Has recibido un nuevo archivo");
         } else {
             Integer rutaId = rutaDetalleRep.findFirstByVenta_Id(dto.getVentaId()).getRuta_Id();
             Ruta ruta = rutaRep.findById(rutaId)
                     .orElseThrow(() -> new RuntimeException("Ruta no encontrada"));
-                    
+
             Integer repartidorUserId = ruta.getRepartidor().getUsuario().getId();
             notificacionService.create(
                     repartidorUserId,
-                    "Nuevo mensaje en la venta #" + dto.getVentaId(),
-                    dto.getMensaje() != null ? dto.getMensaje() : "Se ha enviado un archivo.");
-            
+                    "Un repartidor te ha enviado un nuevo mensaje",
+                    dto.getMensaje() != null ? dto.getMensaje() : "Has recibido un nuevo archivo");
+
         }
 
         return new ApiResponse<>(true, "Message sent successfully", responseDto);

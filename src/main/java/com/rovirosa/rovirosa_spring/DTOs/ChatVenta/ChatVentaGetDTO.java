@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public interface ChatVentaGetDTO {
     
     Integer getId();
+    Integer getVenta_Id();
     String getMensaje();
     LocalDateTime getEnviado();
     String getArchivo();

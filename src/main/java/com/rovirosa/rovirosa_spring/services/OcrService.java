@@ -74,8 +74,10 @@ public class OcrService {
                         double similarity = similarityRatio(target, candidate);
                         if (similarity >= 0.50) { // 50% de similitud
                             curpMatch = true;
-                            validation.put("curp", "⚠ Similar encontrada: " + candidate + " (" + (int) (similarity * 100) + "%)");
-                            System.out.println("🔍 CURP similar encontrada: " + candidate + " con similitud " + (similarity * 100) + "%");
+                            validation.put("curp",
+                                    "⚠ Similar encontrada: " + candidate + " (" + (int) (similarity * 100) + "%)");
+                            System.out.println("🔍 CURP similar encontrada: " + candidate + " con similitud "
+                                    + (similarity * 100) + "%");
                             break;
                         }
                     }
@@ -114,26 +116,36 @@ public class OcrService {
                 }
             }
 
-            // 🔹 Validar Apellido Paterno
+            // 🔹 Validar Apellido Paterno con regex flexible
             if (dto.getApp() != null && !dto.getApp().isEmpty()) {
-                boolean match = cleanText.contains(dto.getApp().toUpperCase());
+
+                boolean match = containsFlexible(cleanText, dto.getApp());
+
                 validation.put("apellidoP", match ? "✔ Encontrado" : "❌ No encontrado");
+
                 if (!match)
                     allMatch = false;
             }
 
-            // 🔹 Validar Apellido Materno
+            // 🔹 Validar Apellido Materno permitiendo nombres compuestos
             if (dto.getApm() != null && !dto.getApm().isEmpty()) {
-                boolean match = cleanText.contains(dto.getApm().toUpperCase());
+                
+                boolean match = containsFlexible(cleanText, dto.getApm());
+            
                 validation.put("apellidoM", match ? "✔ Encontrado" : "❌ No encontrado");
+            
                 if (!match)
                     allMatch = false;
+
             }
 
-            // 🔹 Validar Nombre (puede tener varios nombres)
+            // 🔹 Validar Nombre(s) con regex flexible
             if (dto.getNombre() != null && !dto.getNombre().isEmpty()) {
-                boolean match = cleanText.contains(dto.getNombre().toUpperCase());
+
+                boolean match = containsFlexible(cleanText, dto.getNombre());
+
                 validation.put("nombre", match ? "✔ Encontrado" : "❌ No encontrado");
+
                 if (!match)
                     allMatch = false;
             }
@@ -158,7 +170,6 @@ public class OcrService {
         dto.setApp(dto.getApp().replace('Ñ', 'N'));
         dto.setApm(dto.getApm().replace('Ñ', 'N'));
         dto.setNombre(dto.getNombre().replace('Ñ', 'N'));
-
 
         try {
             // Guardar archivo temporal
@@ -188,6 +199,8 @@ public class OcrService {
             String cleanText = Files.readString(outputFile.toPath()).toUpperCase().trim();
             System.out.println("🔍 Texto OCR limpio: " + cleanText);
 
+            int matchesFound = 0;
+
             // === Lectura QR ===
             BufferedImage bufferedImage = ImageIO.read(tempFile);
             LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
@@ -197,6 +210,8 @@ public class OcrService {
             try {
                 Result result = new MultiFormatReader().decode(bitmap);
                 qrText = result.getText();
+                System.out.println("🔍 Texto QR: " + qrText);
+                matchesFound++;
             } catch (Exception e) {
                 qrText = "";
             }
@@ -204,25 +219,36 @@ public class OcrService {
             // 🔹 Validar Apellido Paterno
             if (dto.getApp() != null && !dto.getApp().isEmpty()) {
                 boolean match = cleanText.contains(dto.getApp().toUpperCase());
+                System.out
+                        .println("🔍 Validando Apellido Paterno: " + dto.getApp().toUpperCase() + " | Match: " + match);
                 validation.put("apellidoP", match ? "✔ Encontrado" : "❌ No encontrado");
                 if (!match)
                     allMatch = false;
+                else
+                    matchesFound++;
             }
 
             // 🔹 Validar Apellido Materno
             if (dto.getApm() != null && !dto.getApm().isEmpty()) {
                 boolean match = cleanText.contains(dto.getApm().toUpperCase());
+                System.out
+                        .println("🔍 Validando Apellido Materno: " + dto.getApm().toUpperCase() + " | Match: " + match);
                 validation.put("apellidoM", match ? "✔ Encontrado" : "❌ No encontrado");
                 if (!match)
                     allMatch = false;
+                else
+                    matchesFound++;
             }
 
             // 🔹 Validar Nombre (puede tener varios nombres)
             if (dto.getNombre() != null && !dto.getNombre().isEmpty()) {
                 boolean match = cleanText.contains(dto.getNombre().toUpperCase());
+                System.out.println("🔍 Validando Nombre: " + dto.getNombre().toUpperCase() + " | Match: " + match);
                 validation.put("nombre", match ? "✔ Encontrado" : "❌ No encontrado");
                 if (!match)
                     allMatch = false;
+                else
+                    matchesFound++;
             }
 
             // Parseo
@@ -231,13 +257,13 @@ public class OcrService {
             if (parsed.isEmpty() || qrText.isEmpty())
                 allMatch = false;
 
-            return new ApiResponse<>(allMatch,
-                    allMatch ? "Todos los datos coinciden" : "No todos los datos coinciden",
+            return new ApiResponse<>(allMatch || matchesFound >= 3,
+                    allMatch ? "Todos los datos coinciden"
+                            : matchesFound >= 3 ? "Algunos datos coinciden" : "No todos los datos coinciden",
                     Map.of(
                             "validacion", validation,
                             "parsed", parsed,
-                            "qrText", qrText
-                    ));
+                            "qrText", qrText));
         } catch (Exception e) {
             return new ApiResponse<>(false, "Error procesando INE: " + e.getMessage(), null);
         }
@@ -264,6 +290,32 @@ public class OcrService {
         }
         int distance = dp[a.length()][b.length()];
         return 1 - ((double) distance / Math.max(a.length(), b.length()));
+    }
+
+    private boolean containsFlexible(String cleanText, String value) {
+
+        // Normalizar OCR: dejar solo letras y espacios
+        String text = cleanText.replaceAll("[^A-Z ]", " ");
+
+        // Dividir el valor en palabras (para nombres o apellidos compuestos)
+        String[] parts = value.toUpperCase().split("\\s+");
+
+        for (String part : parts) {
+            // REGEX que permite cualquier cosa entre letras
+            String regex = ".*" +
+                    part.chars()
+                            .mapToObj(c -> (char) c)
+                            .map(ch -> ch + ".*")
+                            .reduce("", String::concat)
+                    +
+                    ".*";
+
+            if (!text.matches(regex)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private Map<String, String> parseINE(String ocrText) {

@@ -149,7 +149,12 @@ public class VentaService {
                 this.crearRutaVenta(ventaDTO, venta);
 
                 if (pago.getMetodo().equalsIgnoreCase("transferencia") && comprobante != null) {
-                        storageService.store(comprobante, "comprobantes/", nameCompr);
+                        try {
+                                storageService.store(comprobante, "comprobantes/", nameCompr);
+                        } catch (Exception e) {
+                                System.out.println("Error al guardar el comprobante: " + e.getMessage());
+                                e.printStackTrace();
+                        }
                 }
                 // Limpiar carrito del usuario
                 this.carritoService.clearCartByUserId(ventaDTO.getUserId());
@@ -196,7 +201,8 @@ public class VentaService {
                                 AMARILLO + "Validando si hay repartidores disponibles..." + RESET);
                 if (repEnEspera.isEmpty() && repCargando.isEmpty()) {
                         System.out.println(
-                                        ROJO + "No hay repartidores disponibles, creando detalles de la ruta sin ruta principal." + RESET);
+                                        ROJO + "No hay repartidores disponibles, creando detalles de la ruta sin ruta principal."
+                                                        + RESET);
                         // Crear ruta sin repartidor
 
                         this.createRutaDetalleVenta(null, ventaDTO, venta);
