@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignSimpleDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignacionQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RotacionPostDTO;
 import com.rovirosa.rovirosa_spring.services.RotacionService;
@@ -33,6 +34,13 @@ public class RotacionController {
             @RequestParam(required = false) Integer dummyParam) {
         List<RepartidorAsignacionQueryDTO> repartidores = rotacionService.getRotacion();
         return ResponseEntity.ok(new ApiResponse<>(true, "Rotación procesada exitosamente", repartidores));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','REPARTIDOR')")
+    @GetMapping("/by-rep/{id}")
+    public ResponseEntity<ApiResponse<RepartidorAsignSimpleDTO>> getRotacionById(@PathVariable Integer id) {
+        RepartidorAsignSimpleDTO repartidor = rotacionService.getRotacionById(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Rotación procesada exitosamente", repartidor));
     }
 
     @PostMapping

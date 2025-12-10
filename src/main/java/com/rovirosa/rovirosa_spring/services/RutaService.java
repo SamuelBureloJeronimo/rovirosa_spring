@@ -223,7 +223,7 @@ public class RutaService {
 
                 System.out.println("Proceso de asignación de ruta y repartidor finalizado.");
                 System.out.println("============================================================================\n\n");
-                return;
+                continue;
             }
             System.out.println("No hay espacio suficiente para el pedido ID: " + rd.getVenta().getId() +
                     " en el repartidor ID: " + repartidor.getId());

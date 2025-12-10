@@ -24,4 +24,8 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
     @Query("UPDATE Venta v SET v.estado = 'Entregado', v.fechaFin = :fechaFin WHERE v.id = :id")
     Integer updateEstadoVentaToEntregado(@Param("id") Integer id, @Param("fechaFin") String fechaFin);
 
+    @Modifying
+    @Query("UPDATE Venta v SET v.estado = 'Cancelado', v.fechaFin = :fechaFin WHERE v.id = :id")
+    Integer updateEstadoVentaToCancelado(@Param("id") Integer id, @Param("fechaFin") String fechaFin);
+
 }

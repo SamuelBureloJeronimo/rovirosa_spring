@@ -3,10 +3,10 @@ package com.rovirosa.rovirosa_spring.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
+import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignSimpleDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RepartidorAsignacionQueryDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rotacion.RotacionPostDTO;
 import com.rovirosa.rovirosa_spring.models.PuntoVenta;
@@ -68,6 +68,10 @@ public class RotacionService {
 
     public List<RepartidorAsignacionQueryDTO> getRotacionByPvId(Integer pvId) {
         return repAsignRep.findAllByPuntoVenta_Id(pvId);
+    }
+
+    public RepartidorAsignSimpleDTO getRotacionById(Integer id) {
+        return repAsignRep.findFirstByRep_Id(id);
     }
 
     public void eliminarRotacion(Integer id) {

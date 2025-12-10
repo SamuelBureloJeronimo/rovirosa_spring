@@ -1,6 +1,7 @@
 package com.rovirosa.rovirosa_spring.repositories;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,9 +31,9 @@ public interface RepartidorRepository extends JpaRepository<Repartidor, Integer>
     int updateEstadoNull(@Param("id") Integer id);
 
     @Modifying
-    @Query("UPDATE Repartidor p SET p.lat = :latitud, p.lng = :longitud WHERE p.id = :id")
+    @Query("UPDATE Repartidor p SET p.lat = :latitud, p.lng = :longitud, p.updated = :fecha WHERE p.id = :id")
     Integer updatePosition(@Param("id") Integer id, @Param("latitud") BigDecimal latitud,
-            @Param("longitud") BigDecimal longitud);
+            @Param("longitud") BigDecimal longitud, @Param("fecha") LocalDateTime fecha);
 
     @Modifying
     @Query("UPDATE Repartidor p SET p.vehiculo.id = :vhId WHERE p.id = :id")

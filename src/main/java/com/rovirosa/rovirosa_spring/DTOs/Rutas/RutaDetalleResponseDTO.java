@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.rovirosa.rovirosa_spring.DTOs.DetalleVenta.DetalleVentaResponseDTO;
+import com.rovirosa.rovirosa_spring.models.Persona;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class RutaDetalleResponseDTO {
     private String venta_Pago_Estado;
     private String venta_Comp;
     private String venta_Estado;
+    private Persona cliente;
     private BigDecimal lat;
     private BigDecimal lng;
     private String ref;
@@ -34,6 +36,7 @@ public class RutaDetalleResponseDTO {
         this.id = dto.getId();
         this.rutaId = dto.getRuta_Id();
         this.rutaEstado = dto.getRuta_Estado();
+        this.cliente = dto.getVenta_Cliente_Usuario_Persona();
         this.venta_Id = dto.getVenta_Id();
         this.venta_Estado = dto.getVenta_Estado();
         this.venta_Pago_Estado = dto.getVenta_Pago_Estado();

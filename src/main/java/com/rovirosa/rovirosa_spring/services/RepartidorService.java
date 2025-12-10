@@ -1,5 +1,6 @@
 package com.rovirosa.rovirosa_spring.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class RepartidorService {
     
     @Transactional
     public Integer actualizarPosicionRepartidor(Integer repartidorId, RepartidorUpdatePosDTO dto) {
-        return repartidorRep.updatePosition(repartidorId, dto.getLatitud(), dto.getLongitud());
+        return repartidorRep.updatePosition(repartidorId, dto.getLatitud(), dto.getLongitud(), LocalDateTime.now());
     }
 
     public RepartidorGetVehDTO getVehiculoByRepartidorId(Integer repartidorId) {

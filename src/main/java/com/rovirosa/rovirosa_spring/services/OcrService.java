@@ -57,6 +57,7 @@ public class OcrService {
 
             // Resultado de validación
             Map<String, Object> validation = new LinkedHashMap<>();
+            int matchesFound = 0;
             boolean allMatch = true;
 
             // 🔹 Validar CURP y derivar fecha desde ella
@@ -111,6 +112,8 @@ public class OcrService {
                             validation.put("fechaCoincideConCurp", coincide ? "✔ Sí coincide" : "❌ No coincide");
                             if (!coincide)
                                 allMatch = false;
+                            else
+                                matchesFound++;
                         }
                     }
                 }
@@ -125,17 +128,21 @@ public class OcrService {
 
                 if (!match)
                     allMatch = false;
+                else
+                    matchesFound++;
             }
 
             // 🔹 Validar Apellido Materno permitiendo nombres compuestos
             if (dto.getApm() != null && !dto.getApm().isEmpty()) {
-                
+
                 boolean match = containsFlexible(cleanText, dto.getApm());
-            
+
                 validation.put("apellidoM", match ? "✔ Encontrado" : "❌ No encontrado");
-            
+
                 if (!match)
                     allMatch = false;
+                else
+                    matchesFound++;
 
             }
 
@@ -148,11 +155,15 @@ public class OcrService {
 
                 if (!match)
                     allMatch = false;
+                else
+                    matchesFound++;
             }
 
             // 🔹 Resultado general
             if (allMatch)
                 return new ApiResponse<>(true, "Todos los datos coinciden", validation);
+            else if (matchesFound >= 3)
+                return new ApiResponse<>(true, "Algunos datos coinciden", validation);
             else
                 return new ApiResponse<>(false, "No todos los datos coinciden", validation);
 
@@ -216,35 +227,39 @@ public class OcrService {
                 qrText = "";
             }
 
-            // 🔹 Validar Apellido Paterno
+            // 🔹 Validar Apellido Paterno con regex flexible
             if (dto.getApp() != null && !dto.getApp().isEmpty()) {
-                boolean match = cleanText.contains(dto.getApp().toUpperCase());
-                System.out
-                        .println("🔍 Validando Apellido Paterno: " + dto.getApp().toUpperCase() + " | Match: " + match);
+
+                boolean match = containsFlexible(cleanText, dto.getApp());
+
                 validation.put("apellidoP", match ? "✔ Encontrado" : "❌ No encontrado");
+
                 if (!match)
                     allMatch = false;
                 else
                     matchesFound++;
             }
 
-            // 🔹 Validar Apellido Materno
+            // 🔹 Validar Apellido Materno permitiendo nombres compuestos
             if (dto.getApm() != null && !dto.getApm().isEmpty()) {
-                boolean match = cleanText.contains(dto.getApm().toUpperCase());
-                System.out
-                        .println("🔍 Validando Apellido Materno: " + dto.getApm().toUpperCase() + " | Match: " + match);
+
+                boolean match = containsFlexible(cleanText, dto.getApm());
+
                 validation.put("apellidoM", match ? "✔ Encontrado" : "❌ No encontrado");
+
                 if (!match)
                     allMatch = false;
                 else
                     matchesFound++;
             }
 
-            // 🔹 Validar Nombre (puede tener varios nombres)
+            // 🔹 Validar Nombre(s) con regex flexible
             if (dto.getNombre() != null && !dto.getNombre().isEmpty()) {
-                boolean match = cleanText.contains(dto.getNombre().toUpperCase());
-                System.out.println("🔍 Validando Nombre: " + dto.getNombre().toUpperCase() + " | Match: " + match);
+
+                boolean match = containsFlexible(cleanText, dto.getNombre());
+
                 validation.put("nombre", match ? "✔ Encontrado" : "❌ No encontrado");
+
                 if (!match)
                     allMatch = false;
                 else

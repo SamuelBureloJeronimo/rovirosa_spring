@@ -2,6 +2,8 @@ package com.rovirosa.rovirosa_spring.DTOs.Rutas;
 
 import java.math.BigDecimal;
 
+import com.rovirosa.rovirosa_spring.models.Persona;
+
 public interface RutaDetalleQueryByRepartidorIdDTO {
     Integer getId();
     Integer getRuta_Id();
@@ -12,6 +14,7 @@ public interface RutaDetalleQueryByRepartidorIdDTO {
     String getVenta_FechaInicio();
     
     Integer getVenta_Pago_Id();
+    Persona getVenta_Cliente_Usuario_Persona();
     String getVenta_Pago_Metodo();
     Double getVenta_Pago_PagaCon();
     Double getVenta_Pago_Monto();

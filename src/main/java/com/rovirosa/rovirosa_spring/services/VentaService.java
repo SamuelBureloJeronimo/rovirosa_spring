@@ -8,6 +8,7 @@ import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoDimencionesDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Producto.ProductoQueryDimenDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleQueryByRepartidorIdDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaExceptionResDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaQueryClienteDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaResponseClienteDTO;
@@ -79,7 +80,7 @@ public class VentaService {
         private SimpMessagingTemplate template;
 
         private static final int RADIO_TIERRA_KM = 6371;
-        private static final double RADIO_MAX_ENTREGA_KM = 0.36;
+        private static final double RADIO_MAX_ENTREGA_KM = 0.45;
 
         public static final String RESET = "\u001B[0m";
         public static final String ROJO = "\u001B[31m";
@@ -88,6 +89,17 @@ public class VentaService {
         public static final String AZUL = "\u001B[34m";
         public static final String MORADO = "\u001B[35m";
         public static final String CIAN = "\u001B[36m";
+
+        @Transactional
+        public ApiResponse<Void> cancelarVenta(Integer ventaId) {
+                Integer result = ventaRep.updateEstadoVentaToCancelado(ventaId, LocalDateTime.now().toString());
+                if (result == 0)
+                        return new ApiResponse<>(
+                                        false,
+                                        "No se pudo actualizar el estado de la venta",
+                                        null);
+                return new ApiResponse<>(true, "Venta cancelada exitosamente", null);
+        }
 
         public RutaDetalleResponseDTO getVentaById(Integer ventaId) {
                 RutaDetalleQueryByRepartidorIdDTO venta = rutaDetalleRepository.findFirstByVenta_Id(ventaId);
@@ -118,7 +130,29 @@ public class VentaService {
         }
 
         @Transactional
-        public void crearVenta(VentaPostDTO ventaDTO, MultipartFile comprobante) {
+        public ApiResponse<VentaExceptionResDTO> crearVenta(VentaPostDTO ventaDTO, MultipartFile comprobante) {
+
+                // Válidar que haya stock suficiente para cada producto
+                for (DetalleVentaDTO det : ventaDTO.getDetallesVenta()) {
+                        CatalogoQueryDTO catalogo = catalogoPvRep
+                                        .findFirstCatalogoQueryDTOByProducto_IdAndPuntoVenta_Id(det.getProductoId(),
+                                                        ventaDTO.getPvId());
+                        if (catalogo == null || catalogo.getStock() < det.getCantidad()) {
+
+                                System.out.println("NO HAY STOCK SUFICIENTE PARA EL PRODUCTO ID: " + det.getProductoId()
+                                                + " EN EL PUNTO DE VENTA ID: " + ventaDTO.getPvId());
+                                
+                                VentaExceptionResDTO exRes = new VentaExceptionResDTO();
+                                exRes.message = "No hay stock suficiente para el producto ID: " + det.getProductoId();
+                                exRes.stockInsf = true;
+
+                                return new ApiResponse<VentaExceptionResDTO>(
+                                                false,
+                                                "No hay stock suficiente para el producto ID: " + det.getProductoId(),
+                                                exRes);
+                        }
+                }
+
                 Cliente cliente = new Cliente();
                 cliente.setId(ventaDTO.getClienteId());
 
@@ -158,6 +192,7 @@ public class VentaService {
                 }
                 // Limpiar carrito del usuario
                 this.carritoService.clearCartByUserId(ventaDTO.getUserId());
+                return new ApiResponse<>(true, "Venta creada exitosamente", null);
         }
 
         public List<VentaResponseClienteDTO> getVentasByClienteId(Integer clienteId) {

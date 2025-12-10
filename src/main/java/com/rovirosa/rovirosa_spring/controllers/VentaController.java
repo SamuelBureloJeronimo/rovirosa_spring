@@ -17,6 +17,7 @@ import com.rovirosa.rovirosa_spring.DTOs.ApiResponse;
 import com.rovirosa.rovirosa_spring.DTOs.ChatVenta.ChatVentaGetDTO;
 import com.rovirosa.rovirosa_spring.DTOs.ChatVenta.ChatVentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Rutas.RutaDetalleResponseDTO;
+import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaExceptionResDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaPostDTO;
 import com.rovirosa.rovirosa_spring.DTOs.Venta.VentaResponseClienteDTO;
 import com.rovirosa.rovirosa_spring.services.ChatVentaService;
@@ -37,30 +38,15 @@ public class VentaController {
     private ChatVentaService chatServ;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> crearVenta(
+    public ResponseEntity<ApiResponse<VentaExceptionResDTO>> crearVenta(
         @Valid @RequestPart("venta") VentaPostDTO ventaDTO,
         @RequestPart(value = "comprobante", required = false) MultipartFile comprobante
     ) {
+        ApiResponse<VentaExceptionResDTO> response = ventaService.crearVenta(ventaDTO, comprobante);
 
-        System.out.println("\nCreando venta con los siguientes datos:");
-        System.out.println("Cliente ID: " + ventaDTO.getClienteId());
-        System.out.println("PV ID: " + ventaDTO.getPvId());
-        System.out.println("\nDetallesVenta: ");
+        if(!response.isSuccess())
+            return ResponseEntity.badRequest().body(response);
 
-        for (var detalle : ventaDTO.getDetallesVenta()) {
-            System.out.println(" - Producto ID: " + detalle.getProductoId() + ", Cantidad: " + detalle.getCantidad() + ", Precio Unitario: " + detalle.getPrecioUnitario() + ", Descuento Unitario: " + detalle.getDescuentoUnitario());
-        }
-
-        System.out.println("\nPago Monto: " + ventaDTO.getPago().getMonto());
-        System.out.println("Pago Metodo: " + ventaDTO.getPago().getMetodo());
-
-        System.out.println("\nDireccion Lat: " + ventaDTO.getDireccion().getLat());
-        System.out.println("Direccion Lng: " + ventaDTO.getDireccion().getLng());
-        System.out.println("Direccion Ref: " + ventaDTO.getDireccion().getRef());
-        System.out.println("\n");
-        System.out.println("Comprobante: " + (comprobante != null ? comprobante.getOriginalFilename() : "No proporcionado"));
-
-        ventaService.crearVenta(ventaDTO, comprobante);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ApiResponse<>(true, "Venta creada exitosamente", null));
     }
@@ -115,6 +101,17 @@ public class VentaController {
         @PathVariable Integer ventaId
     ) {
         ApiResponse<Void> response = ventaService.entregarVenta(ventaId);
+        if(response.isSuccess() == false)
+            return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasAnyRole('REPARTIDOR','CLIENTE')")
+    @PutMapping("/cancelar/{ventaId}")
+    public ResponseEntity<ApiResponse<Void>> cancelarVenta(
+        @PathVariable Integer ventaId
+    ) {
+        ApiResponse<Void> response = ventaService.cancelarVenta(ventaId);
         if(response.isSuccess() == false)
             return ResponseEntity.badRequest().body(response);
         return ResponseEntity.ok(response);

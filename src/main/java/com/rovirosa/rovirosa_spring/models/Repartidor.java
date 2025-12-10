@@ -2,6 +2,7 @@ package com.rovirosa.rovirosa_spring.models;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -45,6 +46,9 @@ public class Repartidor implements Serializable {
 
     @Column(name = "lng", nullable = true)
     private BigDecimal lng;
+
+    @Column(name = "updated", nullable = true)
+    private LocalDateTime updated = null;
 
     @Column(name = "estado", nullable = true)
     private String estado = null; // ENUM("en_espera", "cargando", "en_ruta", "descansando")
