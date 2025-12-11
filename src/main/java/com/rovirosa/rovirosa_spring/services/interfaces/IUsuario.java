@@ -11,4 +11,6 @@ public interface IUsuario {
 
     ApiResponse<Void> changePassword(Integer id, String nuevaPassword, String actualPass);
 
+    ApiResponse<Void> deleteUsuario(Integer id);
+
 }

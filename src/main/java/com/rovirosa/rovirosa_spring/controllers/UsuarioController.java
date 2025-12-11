@@ -23,6 +23,7 @@ import com.rovirosa.rovirosa_spring.services.NotificacionService;
 import com.rovirosa.rovirosa_spring.services.RepartidorService;
 import com.rovirosa.rovirosa_spring.services.UsuarioService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -158,6 +159,17 @@ public class UsuarioController {
         if (!perfil.isSuccess())
             return ResponseEntity.status(404).body(perfil);
         return ResponseEntity.ok(perfil);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteUsuario(@PathVariable Integer id) {
+        ApiResponse<Void> res = usuarioService.deleteUsuario(id);
+        if (res.isSuccess()) {
+            return ResponseEntity.ok(res);
+        } else {
+            return ResponseEntity.status(404).body(res);
+        }
     }
 
 }

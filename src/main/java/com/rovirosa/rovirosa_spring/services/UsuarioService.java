@@ -100,4 +100,14 @@ public class UsuarioService implements IUsuario {
 
     }
 
+    @Override
+    public ApiResponse<Void> deleteUsuario(Integer id) {
+        int rowsAffected = usuarioRepository.deleteUsuarioById(id);
+        if (rowsAffected > 0) {
+            return new ApiResponse<>(true, "Usuario eliminado exitosamente", null);
+        } else {
+            return new ApiResponse<>(false, "Usuario no encontrado", null);
+        }
+    }
+
 }
