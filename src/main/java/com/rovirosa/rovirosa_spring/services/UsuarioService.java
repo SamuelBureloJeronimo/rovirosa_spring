@@ -25,6 +25,8 @@ public class UsuarioService implements IUsuario {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private PersonaService personaService;
 
     @Autowired
     private CarritoService carritoService;
@@ -103,12 +105,7 @@ public class UsuarioService implements IUsuario {
     @Transactional
     @Override
     public ApiResponse<Void> deleteUsuario(Integer id) {
-        int rowsAffected = usuarioRepository.deleteUsuarioById(id);
-        if (rowsAffected > 0) {
-            return new ApiResponse<>(true, "Usuario eliminado exitosamente", null);
-        } else {
-            return new ApiResponse<>(false, "Usuario no encontrado", null);
-        }
+        return personaService.deletePersona(id);
     }
 
 }

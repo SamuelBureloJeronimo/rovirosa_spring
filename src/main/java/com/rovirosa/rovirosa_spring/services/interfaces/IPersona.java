@@ -7,4 +7,6 @@ public interface IPersona {
     
     ApiResponse<Persona> getById(Integer id);
 
+    ApiResponse<Void> deletePersona(Integer id);
+
 }
