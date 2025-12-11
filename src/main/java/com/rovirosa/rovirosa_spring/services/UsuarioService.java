@@ -100,6 +100,7 @@ public class UsuarioService implements IUsuario {
 
     }
 
+    @Transactional
     @Override
     public ApiResponse<Void> deleteUsuario(Integer id) {
         int rowsAffected = usuarioRepository.deleteUsuarioById(id);
